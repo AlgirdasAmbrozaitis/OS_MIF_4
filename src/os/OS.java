@@ -4,6 +4,8 @@ TODO:
     tiesiog eilute bandymo
     2 labas
     bandymas
+    2 Labas
+    3 EIMANTAS
  */
 package os;
 
