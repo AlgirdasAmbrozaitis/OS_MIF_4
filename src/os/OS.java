@@ -2,7 +2,8 @@
 TODO:
     1 apsaugoti, kad atpazinus komanda butu validus argumentas
     tiesiog eilute bandymo
-    2 labas
+    2 Labas
+    3 EIMANTAS
  */
 package os;
 
