@@ -243,7 +243,7 @@ public class RealMachine {
         }
     }
     // {"CT", "IC", "SP", "C", "R", "MOD", "PTR", "TI","SI","PI", "INT"}; 
-public void pop(String reg)
+    public void pop(String reg)
     {
         for(char i = 0 ; i < registers.length; i++ )
         {
@@ -325,7 +325,7 @@ public void pop(String reg)
     }
     
     public void doCommand(int number, String value)
-    {
+    {        
         if(value.matches("\\d+"))
         {
             if(Integer.valueOf(value) < 0 && Integer.valueOf(value) >= OS.RM_MEMORY_SIZE)
@@ -334,79 +334,129 @@ public void pop(String reg)
                 return;
             }
         }
-        switch(number)
-         { 
-            case 0 : changeR();
-                     break;
-            case 1 : loadR(Integer.valueOf(value));
-                     break;
-            case 2 : saveR(Integer.valueOf(value));
-                     break;
-            case 3 : loadRR(value);
-                     break;
-            case 4 : addR(Integer.valueOf(value));
-                     break;
-            case 5 : subR(Integer.valueOf(value));
-                     break;
-            case 6 : mulR(Integer.valueOf(value));
-                     break;
-            case 7 : divR(Integer.valueOf(value));
-                     break;
-            case 8 : cmpR(Integer.valueOf(value));
-                     break;
-            case 9 : cmpRL(Integer.valueOf(value));
-                     break;
-            case 10: cmpRG(Integer.valueOf(value));
-                     break;
-            case 11: cmpZ(value);
-                     break;
-            case 12: jumpIf(Integer.valueOf(value));
-                     break;
-            case 13: jump(Integer.valueOf(value));
-                     break;
-            case 14: call(Integer.valueOf(value));
-                     break;
-            case 15: push(value);
-                     break;
-            case 16: pop(value);
-                     break;
-            case 17: returnC();
-                     break;
-            case 18: systemCall(Integer.valueOf(value));
-                     break;
-            case 19: loop(Integer.valueOf(value));
-                     break;
-            case 20: chnge();
-                     break;
-            case 21: sepi( Integer.parseInt(value) );
-                     break;
-            case 22: seti( Integer.parseInt(value) );
-                     break;
-            case 23: ptr( Integer.parseInt(value) );
-                     break;
-            case 24: sp( Integer.parseInt(value) );
-                     break;
-            case 25: in( Integer.parseInt(value) );
-                     break;
-            case 26: start();
-                     break;
-            case 27: calli();
-                     break;
-            case 28: iretn();
-                     break;
-            case 29: sb( Integer.parseInt(value) );
-                     break;
-            case 30: db( Integer.parseInt(value) );
-                     break;
-            case 31: st( Integer.parseInt(value) );
-                     break;
-            case 32: dt( Integer.parseInt(value) );
-                     break;
-            case 33: sz( Integer.parseInt(value) );
-                     break;
-            case 34: xchgn();   
-            default: // throw exception
-         }
+        if(OS.realMachine.isRegisterMOD())
+        {
+            switch(number)
+            { 
+                case 0 : changeR();
+                         return;
+                case 1 : loadR(Integer.valueOf(value));
+                         return;
+                case 2 : saveR(Integer.valueOf(value));
+                         return;
+                case 3 : loadRR(value);
+                         return;            
+                case 4 : addR(Integer.valueOf(value));
+                         return;
+                case 5 : subR(Integer.valueOf(value));
+                         return;
+                case 6 : mulR(Integer.valueOf(value));
+                         return;
+                case 7 : divR(Integer.valueOf(value));
+                         return;
+                case 8 : cmpR(Integer.valueOf(value));
+                         return;
+                case 9 : cmpRL(Integer.valueOf(value));
+                         return;
+                case 10: cmpRG(Integer.valueOf(value));
+                         return;
+                case 11: cmpZ(value);
+                         return;
+                case 12: jumpIf(Integer.valueOf(value));
+                         return;
+                case 13: jump(Integer.valueOf(value));
+                         return;
+                case 14: call(Integer.valueOf(value));
+                         return;
+                case 15: push(value);
+                         return;
+                case 16: pop(value);
+                         return;
+                case 17: returnC();
+                         return;
+                case 18: systemCall(Integer.valueOf(value));
+                         return;
+                case 19: loop(Integer.valueOf(value));
+                         return;
+                default: OS.realMachine.setRegisterPI(2);
+            }
+        }
+        else
+        {
+            switch(number)
+            { 
+                case 0 : changeR();
+                         break;
+                case 1 : loadR(Integer.valueOf(value));
+                         break;
+                case 2 : saveR(Integer.valueOf(value));
+                         break;
+                case 3 : loadRR(value);
+                         break;
+                case 4 : addR(Integer.valueOf(value));
+                         break;
+                case 5 : subR(Integer.valueOf(value));
+                         break;
+                case 6 : mulR(Integer.valueOf(value));
+                         break;
+                case 7 : divR(Integer.valueOf(value));
+                         break;
+                case 8 : cmpR(Integer.valueOf(value));
+                         break;
+                case 9 : cmpRL(Integer.valueOf(value));
+                         break;
+                case 10: cmpRG(Integer.valueOf(value));
+                         break;
+                case 11: cmpZ(value);
+                         break;
+                case 12: jumpIf(Integer.valueOf(value));
+                         break;
+                case 13: jump(Integer.valueOf(value));
+                         break;
+                case 14: call(Integer.valueOf(value));
+                         break;
+                case 15: push(value);
+                         break;
+                case 16: pop(value);
+                         break;
+                case 17: returnC();
+                         break;
+                case 18: systemCall(Integer.valueOf(value));
+                         break;
+                case 19: loop(Integer.valueOf(value));
+                         break;
+                case 20: chnge();
+                         break;
+                case 21: sepi( Integer.parseInt(value) );
+                         break;
+                case 22: seti( Integer.parseInt(value) );
+                         break;
+                case 23: ptr( Integer.parseInt(value) );
+                         break;
+                case 24: sp( Integer.parseInt(value) );
+                         break;
+                case 25: in( Integer.parseInt(value) );
+                         break;
+                case 26: start();
+                         break;
+                case 27: calli();
+                         break;
+                case 28: iretn();
+                         break;
+                case 29: sb( Integer.parseInt(value) );
+                         break;
+                case 30: db( Integer.parseInt(value) );
+                         break;
+                case 31: st( Integer.parseInt(value) );
+                         break;
+                case 32: dt( Integer.parseInt(value) );
+                         break;
+                case 33: sz( Integer.parseInt(value) );
+                         break;
+                case 34: xchgn();   
+                default: // throw exception
+            }
+        }
     }
     
     public void chnge(){
@@ -473,7 +523,7 @@ public void pop(String reg)
        this.registerIC = this.registerINT;    
     }
 
-public void iretn(){
+    public void iretn(){
        pop("CT");
        pop("SP");
        pop("IC");
@@ -652,5 +702,225 @@ public void iretn(){
         return "RealMachine{" + "registerR=" + registerR + ", registerPTR=" + registerPTR + ", registerIC=" + registerIC + ", registerSP=" + registerSP + ", registerINT=" + registerINT + ", registerCT=" + registerCT + ", registerPI=" + registerPI + ", registerSI=" + registerSI + ", registerTI=" + registerTI + ", SB=" + SB + ", DB=" + DB + ", ST=" + ST + ", DT=" + DT + ", SZ=" + SZ + ", registerC=" + registerC + ", registerMOD=" + registerMOD + '}';
     }
     
-    
+    //virtual machine commands
+    public void vchangeR()
+    {
+        int adr = OS.paging.getRMadress(this.registerIC);
+        this.registerR = OS.rmMemory[adr].getCell();
+        this.registerIC = this.registerIC + 1;
+    }
+    public void vloadR(int memCell)
+    {
+        int adr = OS.paging.getRMadress(memCell);
+        this.registerR = OS.rmMemory[adr].getCell();
+    }
+    public void vsaveR(int memCell)
+    {
+        int adr = OS.paging.getRMadress(memCell);
+        if(OS.rmMemory[adr].isState())
+        {
+            OS.realMachine.setRegisterPI(1);
+            return;
+        }
+        else
+        {
+            OS.rmMemory[adr].setCell(this.registerR);
+            //memory[memCell].setState(true);
+            //changeRMmem(memCell, this.registerR);
+        }
+    }
+    public void vloadRR(String reg)
+    {
+        for(char i = 0 ; i < registers.length; i++ )
+        {
+            if ( reg.contains(registers[i]) )
+            {
+                switch(i)
+                {
+                    case 0: this.registerR = String.valueOf(this.registerCT);
+                            return;
+                    case 1: this.registerR = String.valueOf(this.registerIC);
+                            return;
+                    case 2: this.registerR = String.valueOf(this.registerSP);
+                            return;
+                    case 3: this.registerR = String.valueOf(this.registerC);
+                            return;
+                    case 4: this.registerR = String.valueOf(this.registerR);
+                            return;
+                }
+            }
+        }
+    }
+    public void vaddR(int memCell)
+    {
+        int adr = OS.paging.getRMadress(memCell);
+        this.registerR = String.valueOf(Integer.valueOf(this.registerR) + Integer.valueOf(OS.rmMemory[adr].getCell()));
+    }
+    public void vsubR(int memCell)
+    {
+        int adr = OS.paging.getRMadress(memCell);
+        this.registerR = String.valueOf(Integer.valueOf(this.registerR) - Integer.valueOf(OS.rmMemory[adr].getCell()));
+    }
+    public void vmulR(int memCell)
+    {
+        int adr = OS.paging.getRMadress(memCell);
+        this.registerR = String.valueOf(Integer.valueOf(this.registerR) * Integer.valueOf(OS.rmMemory[adr].getCell()));
+    }
+    public void vdivR(int memCell)
+    {
+        int adr = OS.paging.getRMadress(memCell);
+        this.registerR = String.valueOf(Integer.valueOf(this.registerR) / Integer.valueOf(OS.rmMemory[adr].getCell()));
+    }
+    public void vcmpR(int memCell)
+    {
+        int adr = OS.paging.getRMadress(memCell);
+        this.registerC = (Integer.valueOf(this.registerR) == Integer.valueOf(OS.rmMemory[adr].getCell()));
+    }
+    public void vcmpRL(int memCell)
+    {
+        int adr = OS.paging.getRMadress(memCell);
+        this.registerC = (Integer.valueOf(this.registerR) < Integer.valueOf(OS.rmMemory[adr].getCell()));
+    }
+    public void vcmpRG(int memCell)
+    {
+        int adr = OS.paging.getRMadress(memCell);
+        this.registerC = (Integer.valueOf(this.registerR) > Integer.valueOf(OS.rmMemory[adr].getCell()));
+    }
+    public void vcmpZ(String reg)
+    {
+        for(char i = 0 ; i < registers.length; i++ )
+        {
+            if ( reg.contains(registers[i]) )
+            {
+                switch(i)
+                {
+                    case 0: this.registerC = (this.registerCT == 0 );
+                            return;
+                    case 1: this.registerC = (this.registerIC == 0 );
+                            return;
+                    case 2: this.registerC = (this.registerSP == 0 );
+                            return;
+                    case 3: this.registerC = (this.registerC == false );
+                            return;
+                    case 4: this.registerC = (Integer.valueOf(this.registerR) == 0 );
+                            return;
+                }
+            }
+        }
+    }
+    public void vjumpIf(int memCell)
+    {
+        int adr = OS.paging.getRMadress(memCell);
+        if(this.registerC)
+        {
+            this.registerIC = adr;
+        }
+    }
+    public void vjump(int memCell)
+    {
+        int adr = OS.paging.getRMadress(memCell);
+        this.registerIC = adr;
+    }
+    public void vcall(int memCell)
+    {
+        int adr = OS.paging.getRMadress(memCell);
+        push("C");
+        push("R");
+        push("IC");
+        push("SP");
+        push("CT");
+        jump(adr);
+    }
+    public void vpush(String reg)
+    {
+        int adr = OS.paging.getRMadress(this.registerSP);
+        for(char i = 0 ; i < registers.length; i++ )
+        {
+            if ( reg.contains(registers[i]) )
+            {
+                switch(i)
+                {
+                    case 0: //changeRMmem(this.registerSP,String.valueOf(this.registerCT));
+                            OS.rmMemory[adr].setCell(String.valueOf(this.registerCT));
+                            //memory[this.registerSP].setState(true);
+                            this.registerSP = this.registerSP - 1;
+                            return;
+                    case 1: //changeRMmem(this.registerSP,String.valueOf(this.registerIC));
+                            OS.rmMemory[adr].setCell(String.valueOf(this.registerIC));
+                            //memory[this.registerSP].setState(true);
+                            this.registerSP = this.registerSP - 1;
+                            return;
+                    case 2: //changeRMmem(this.registerSP,String.valueOf(this.registerSP));
+                            OS.rmMemory[adr].setCell(String.valueOf(this.registerSP));
+                            //memory[this.registerSP].setState(true);
+                            this.registerSP = this.registerSP - 1;
+                            return;
+                    case 3: //changeRMmem(this.registerSP,String.valueOf(this.registerC));
+                            OS.rmMemory[adr].setCell(String.valueOf(this.registerC));
+                            //memory[this.registerSP].setState(true);
+                            this.registerSP = this.registerSP - 1;
+                            return;
+                    case 4: //changeRMmem(this.registerSP,String.valueOf(this.registerR));
+                            OS.rmMemory[adr].setCell(this.registerR);
+                            //memory[this.registerSP].setState(true);
+                            this.registerSP = this.registerSP - 1;
+                            return;
+                }
+            }
+        }
+    }
+ public void vpop(String reg)
+    {
+        int adr = OS.paging.getRMadress(this.registerSP);
+        for(char i = 0 ; i < registers.length; i++ )
+        {
+            if ( reg.contains(registers[i]) )
+            {
+                switch(i)
+                {
+                    case 0: this.registerSP = this.registerSP + 1;
+                            this.registerCT = Integer.valueOf(OS.rmMemory[adr].getCell()); 
+                            OS.rmMemory[adr].freeCell();
+                            return;
+                    case 1: this.registerSP = this.registerSP + 1;
+                            this.registerIC = Integer.valueOf(OS.rmMemory[adr].getCell());
+                            OS.rmMemory[adr].freeCell();
+                            return;
+                    case 2: this.registerSP = this.registerSP + 1;
+                            this.registerSP = Integer.valueOf(OS.rmMemory[adr].getCell());
+                            OS.rmMemory[adr].freeCell();
+                            return;
+                    case 3: this.registerSP = this.registerSP + 1;
+                            this.registerC = Boolean.valueOf(OS.rmMemory[adr].getCell());
+                            OS.rmMemory[adr].freeCell();
+                            return;
+                    case 4: this.registerSP = this.registerSP + 1;
+                            this.registerR = OS.rmMemory[adr].getCell();
+                            OS.rmMemory[adr].freeCell();
+                            return;
+                }
+            }
+        }
+    }
+    public void vreturnC ()
+    {          
+        pop("CT");
+        pop("SP");
+        pop("IC");
+        pop("R");
+        pop("C");
+    }
+    public void vsystemCall(int number)
+    {
+        OS.realMachine.setRegisterSI(number);
+    }
+    public void vloop(int memCell)
+    {
+        int adr = OS.paging.getRMadress(memCell);
+        if(this.registerCT != 0)
+        {
+            this.registerCT = this.registerCT - 1;
+            jump(adr);
+        }
+    }
 }
