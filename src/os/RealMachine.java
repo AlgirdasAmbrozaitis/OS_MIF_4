@@ -102,6 +102,7 @@ public class RealMachine {
     
     public void addR(int memCell)
     {
+        //int i = Integer.valueOf(this.registerR);
         this.registerR = String.valueOf(Integer.valueOf(this.registerR) + Integer.valueOf(OS.rmMemory[memCell].getCell()));
     }
     
@@ -338,45 +339,45 @@ public class RealMachine {
         {
             switch(number)
             { 
-                case 0 : changeR();
+                case 0 : vchangeR();
                          return;
-                case 1 : loadR(Integer.valueOf(value));
+                case 1 : vloadR(Integer.valueOf(value));
                          return;
-                case 2 : saveR(Integer.valueOf(value));
+                case 2 : vsaveR(Integer.valueOf(value));
                          return;
-                case 3 : loadRR(value);
+                case 3 : vloadRR(value);
                          return;            
-                case 4 : addR(Integer.valueOf(value));
+                case 4 : vaddR(Integer.valueOf(value));
                          return;
-                case 5 : subR(Integer.valueOf(value));
+                case 5 : vsubR(Integer.valueOf(value));
                          return;
-                case 6 : mulR(Integer.valueOf(value));
+                case 6 : vmulR(Integer.valueOf(value));
                          return;
-                case 7 : divR(Integer.valueOf(value));
+                case 7 : vdivR(Integer.valueOf(value));
                          return;
-                case 8 : cmpR(Integer.valueOf(value));
+                case 8 : vcmpR(Integer.valueOf(value));
                          return;
-                case 9 : cmpRL(Integer.valueOf(value));
+                case 9 : vcmpRL(Integer.valueOf(value));
                          return;
-                case 10: cmpRG(Integer.valueOf(value));
+                case 10: vcmpRG(Integer.valueOf(value));
                          return;
-                case 11: cmpZ(value);
+                case 11: vcmpZ(value);
                          return;
-                case 12: jumpIf(Integer.valueOf(value));
+                case 12: vjumpIf(Integer.valueOf(value));
                          return;
-                case 13: jump(Integer.valueOf(value));
+                case 13: vjump(Integer.valueOf(value));
                          return;
-                case 14: call(Integer.valueOf(value));
+                case 14: vcall(Integer.valueOf(value));
                          return;
-                case 15: push(value);
+                case 15: vpush(value);
                          return;
-                case 16: pop(value);
+                case 16: vpop(value);
                          return;
-                case 17: returnC();
+                case 17: vreturnC();
                          return;
-                case 18: systemCall(Integer.valueOf(value));
+                case 18: vsystemCall(Integer.valueOf(value));
                          return;
-                case 19: loop(Integer.valueOf(value));
+                case 19: vloop(Integer.valueOf(value));
                          return;
                 default: OS.realMachine.setRegisterPI(2);
             }
@@ -504,8 +505,8 @@ public class RealMachine {
        push("CT");
        push("INT");
        push("SP");
-       OS.virtualMachine.setRegisterIC(0);
-       OS.virtualMachine.setRegisterSP(99);
+       OS.realMachine.setRegisterIC(0);
+       OS.realMachine.setRegisterSP(99);
        OS.paging.findPTR();
        OS.realMachine.setRegisterMOD(true);
     }

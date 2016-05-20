@@ -83,7 +83,8 @@ public class OS {
         if (realMachine.isRegisterMOD())
         {
             //turim ziureti pagal virtualia masina
-            return virtualMachine.memory[virtualMachine.getRegisterIC()].getCell();
+            int adr = OS.paging.getRMadress(realMachine.getRegisterIC());
+            return rmMemory[adr].getCell();
         }
         else 
         {
@@ -140,31 +141,31 @@ public class OS {
         
         if( !value.equals("COMMAND NOT FOUND") )
         {
-            if( realMachine.isRegisterMOD() )
+            /*if( realMachine.isRegisterMOD() )
             {
                 // MOD = 1, paskiriame komandos vykdyma virtualiai masinai
                     virtualMachine.setRegisterIC(virtualMachine.getRegisterIC() + 1);
                     virtualMachine.doCommand(commandNumber, value );
             } 
             else
-            {
+            {*/
                 // MOD = 0, paskiriame komandos vykdyma realiai masinai
                     realMachine.setRegisterIC(realMachine.getRegisterIC() + 1);
                     realMachine.doCommand(commandNumber, value);
-            }
+            //}
         }
         else 
         {
             // PI = 2, pertraukimo reikšmė dėl neleistino operacijos kodo
-            OS.realMachine.setRegisterPI(2);
+            /*OS.realMachine.setRegisterPI(2);
             if(realMachine.isRegisterMOD())
             {
                 virtualMachine.setRegisterIC(virtualMachine.getRegisterIC() + 1);
             }
             else
-            {
+            {*/
                 realMachine.setRegisterIC(realMachine.getRegisterIC() + 1);
-            }
+            //}
         }
         
     }
@@ -218,7 +219,32 @@ public class OS {
     public static void main(String[] args) {
         // TODO code application logic here
         memoryInit();
+        String komandos[] = {"CHNGR", "10", "START"};
+        for(int i = 0; i < komandos.length; i++)
+        {
+            rmMemory[i].setCell(komandos[i]);
+            
+            //rmMemory[paging.getRMadress(i)].setCell(komandos[i]);
+        }
+        cpu();
+        cpu();
+        //cpu();
+        String virtualiosKomandos[] = {"CHNGR",  "0", "AD3" , "1"};
+        memoryMonitoring();
+        for(int i = 0; i < virtualiosKomandos.length; i++)
+        {
+            int adr = OS.paging.getRMadress(i);
+            System.out.println("adresas kuri ziuresiu: " + adr);
+            rmMemory[adr].setCell(virtualiosKomandos[i]);
+            
+            //rmMemory[paging.getRMadress(i)].setCell(komandos[i]);
+        }
+        cpu();
+        cpu();
+        //cpu();
+        //cpu();
         
+        memoryMonitoring();
         
         
         

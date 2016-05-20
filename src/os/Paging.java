@@ -21,7 +21,7 @@ public class Paging {
        // int i = 0;
         for( int i = 0 + Paging.blocks; i < (OS.RM_MEMORY_SIZE / 10); i++)
         {
-            out.println(i);
+            //out.println(i);
             for(int j = 0; j < 10; j++)
             {
                 if (OS.rmMemory[i*10 + j].isState())
