@@ -3,6 +3,7 @@ TODO:
     1 apsaugoti, kad atpazinus komanda butu validus argumentas
     tiesiog eilute bandymo
     2 labas
+    bandymas
  */
 package os;
 
