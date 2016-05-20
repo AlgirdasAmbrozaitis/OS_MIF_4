@@ -11,6 +11,6 @@ package os;
  */
 public class ResourseDescriptor {
     
-    
+    int x;
     
 }
