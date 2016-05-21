@@ -143,6 +143,10 @@ public class ProcessDescriptor {
         return id;
     }
     
+    public void foo(){
+        
+    }
+    
     
     
     
