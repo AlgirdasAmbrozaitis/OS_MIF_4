@@ -15,7 +15,7 @@ public class ResourseDescriptor {
     private int father_resource; // sukūrusio proceso ID
     private String info; // informacinė resurso dalis
     private ArrList prieinamu_resursu_sarasas = new ArrList();
-    private ArrList used_resourse = new ArrList(); // suvartotų resursų sąrašas
+    private ArrList used_resourse  = new ArrList(); // suvartotų resursų sąrašas
     private ArrList laukianciu_procesu_sarasas = new ArrList();
 
     public int getRes_dist_addr() {
@@ -49,5 +49,41 @@ public class ResourseDescriptor {
     public void setInfo(String info) {
         this.info = info;
     }
+
+    public ArrList getPrieinamu_resursu_sarasas()
+    {
+        return prieinamu_resursu_sarasas;
+    }
+
+    public void setPrieinamu_resursu_sarasas(ArrList prieinamu_resursu_sarasas)
+    {
+        this.prieinamu_resursu_sarasas = prieinamu_resursu_sarasas;
+    }
+
+    public ArrList getUsed_resourse()
+    {
+        return used_resourse;
+    }
+
+    public void setUsed_resourse(ArrList used_resourse)
+    {
+        this.used_resourse = used_resourse;
+    }
+
+    public ArrList getLaukianciu_procesu_sarasas()
+    {
+        return laukianciu_procesu_sarasas;
+    }
+
+    public void setLaukianciu_procesu_sarasas(ArrList laukianciu_procesu_sarasas)
+    {
+        this.laukianciu_procesu_sarasas = laukianciu_procesu_sarasas;
+    }
+
+    public int getRs()
+    {
+        return rs;
+    }
+    
     
 }

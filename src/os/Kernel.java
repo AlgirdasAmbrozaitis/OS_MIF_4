@@ -48,4 +48,17 @@ public class Kernel
     
     
     //resursu primityvai
+    void kurtiResursa(boolean pakartotinio, ArrList prienamumo_aprasymas, int adr)
+    {
+        ResourseDescriptor resDesc = new ResourseDescriptor();
+        resDesc.setRes_dist_addr(adr);
+        resDesc.setRepeated_use(pakartotinio);
+        resDesc.setInfo("");
+        resDesc.setFather_resource(OS.kernel.procDesc.getProcessName());
+        resDesc.setPrieinamu_resursu_sarasas(prienamumo_aprasymas);
+        ArrayList old = OS.processDesc.get(OS.kernel.procDesc.getProcessName()).getCreated_resourses();
+        old.add(resDesc.getRs());
+        OS.processDesc.get(OS.kernel.procDesc.getProcessName()).setCreated_resourses(old);
+        OS.resourseDesc.add(resDesc);
+    }
 }

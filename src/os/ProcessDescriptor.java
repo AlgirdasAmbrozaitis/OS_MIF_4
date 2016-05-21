@@ -21,7 +21,7 @@ public class ProcessDescriptor {
     private ArrayList<Integer> sons_processes = new ArrayList(); // sūnų sąrašas
     private ArrList resource = new ArrList(); // esami proceso resursai
     private int list_where_process_is; // nuoroda, kuriame sąraše esti procesas (LPS,PPS)
-    private int created_resourses; // sukurtų resursų sąrašas
+    private ArrayList<Integer> created_resourses; // sukurtų resursų sąrašas
     
     private ArrayList<Integer> operating_memory  = new ArrayList(); // operatyvioji atmintis
     
@@ -119,11 +119,11 @@ public class ProcessDescriptor {
         this.list_where_process_is = list_where_process_is;
     }
 
-    public int getCreated_resourses() {
+    public ArrayList getCreated_resourses() {
         return created_resourses;
     }
 
-    public void setCreated_resourses(int created_resourses) {
+    public void setCreated_resourses(ArrayList created_resourses) {
         this.created_resourses = created_resourses;
     }
 
