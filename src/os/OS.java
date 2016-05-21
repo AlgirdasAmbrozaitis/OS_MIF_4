@@ -17,6 +17,7 @@ package os;
 
 import static java.lang.String.*;
 import static java.lang.System.out;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,7 +36,9 @@ public class OS {
     
     //agregatai
     public static RealMachine realMachine = new RealMachine();
-    public static VirtualMachine virtualMachine = new VirtualMachine();
+    //public static VirtualMachine virtualMachine = new VirtualMachine();
+    /*public static final ArrayList myarr = new ArrayList();
+    public static ProcessDescriptor = new ProcessDescriptor(0, 0, myarr, myarr, myarr);*/
     
     
     public static Paging paging = new Paging();

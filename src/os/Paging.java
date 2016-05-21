@@ -89,7 +89,7 @@ public class Paging {
         //int blockAddr = 
         return ((10 * Integer.valueOf(OS.rmMemory[((10*(OS.realMachine.getRegisterPTR() % 100)) + virtAdress / 10)].getCell())) + virtAdress % 10);
     }
-    public void addMore()
+    /*public void addMore()
     {
         if((OS.realMachine.getRegisterPTR()/100) == 9)
         {
@@ -136,5 +136,5 @@ public class Paging {
                 return;
             }
         }
-    }  
+    }  */
 }
