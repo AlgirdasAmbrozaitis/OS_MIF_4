@@ -37,8 +37,8 @@ public class OS {
     //agregatai
     public static RealMachine realMachine = new RealMachine();
     //public static VirtualMachine virtualMachine = new VirtualMachine();
-    /*public static final ArrayList myarr = new ArrayList();
-    public static ProcessDescriptor = new ProcessDescriptor(0, 0, myarr, myarr, myarr);*/
+    //public static final ArrayList myarr = new ArrayList();
+    public static ProcessDescriptor[] processDesc = new ProcessDescriptor[VM_MEMORY_SIZE];
     
     
     public static Paging paging = new Paging();

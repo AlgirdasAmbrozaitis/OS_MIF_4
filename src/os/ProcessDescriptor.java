@@ -26,6 +26,11 @@ public class ProcessDescriptor {
     private ArrayList operating_memory; // operatyvioji atmintis
     
     CPU cpu = new CPU();
+    
+    public ProcessDescriptor()
+    {
+        
+    }
 
     public String getState() {
         return state;

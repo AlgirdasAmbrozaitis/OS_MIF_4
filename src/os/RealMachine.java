@@ -50,7 +50,26 @@ public class RealMachine {
         this.registerMOD = false;
         
     }
-    
+    public void setRealMachine(String registerR, int registerPTR, int registerIC, int registerSP, int registerINT, int registerCT,
+                               int registerPI, int registerSI, int SB, int DB, int ST, int DT, int sz, boolean registerC, 
+                               boolean registerMOD)
+    {
+        this.registerR = registerR;
+        this.registerPTR = registerPTR;
+        this.registerIC = registerIC;
+        this.registerSP = registerSP;
+        this.registerINT = registerINT;
+        this.registerCT = registerCT;
+        this.registerPI = registerPI;
+        this.registerSI = registerSI;
+        this.SB = SB;
+        this.DB = DB;
+        this.ST = ST;
+        this.DT = DT;
+        this.SZ = SZ;
+        this.registerC = registerC;
+        this.registerMOD = registerMOD;
+    }
     public void changeR()
     {
         this.registerR = OS.rmMemory[this.registerIC].getCell();
