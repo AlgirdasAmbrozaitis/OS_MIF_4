@@ -59,5 +59,9 @@ public class Kernel
         OS.processDesc.get(OS.kernel.procDesc.getProcessName()).addSon(process.getId());
     
     }
+    
+    void foo(){
+        
+    }
     //resursu primityvai
 }
