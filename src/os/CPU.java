@@ -13,7 +13,7 @@ public class CPU {
 
     private String registerR;
     private int registerPTR, registerIC, registerSP, registerINT, registerCT,
-                registerPI, registerSI, registerTI;
+                registerPI, registerSI;
     private boolean registerC, registerMOD;
     
     CPU(){
@@ -77,14 +77,6 @@ public class CPU {
 
     public void setRegisterSI(int registerSI) {
         this.registerSI = registerSI;
-    }
-
-    public int getRegisterTI() {
-        return registerTI;
-    }
-
-    public void setRegisterTI(int registerTI) {
-        this.registerTI = registerTI;
     }
 
     public boolean isRegisterC() {
