@@ -14,11 +14,9 @@ public class ResourseDescriptor {
     private boolean repeated_use; // Pakartotinio ar vienkartinio naudojimo požymis
     private int father_resource; // sukūrusio proceso ID
     private String info; // informacinė resurso dalis
-    /*
-    private ArrayList   available_resourse, // prieinamų resursų sąrašas
-                        used_resourse; // suvartotų resursų sąrašas
-                      // laukiančių procesų sąrašas
-    */
+    private ArrList prieinamu_resursu_sarasas = new ArrList();
+    private ArrList used_resourse = new ArrList(); // suvartotų resursų sąrašas
+    private ArrList laukianciu_procesu_sarasas = new ArrList();
 
     public int getRes_dist_addr() {
         return res_dist_addr;

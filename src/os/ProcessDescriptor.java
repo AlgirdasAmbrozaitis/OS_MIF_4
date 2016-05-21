@@ -19,7 +19,7 @@ public class ProcessDescriptor {
     private int father_processor; // tėvinio proceso ID
 
     private ArrayList<Integer> sons_processes; // sūnų sąrašas
-    private ArrayList<Struct> resource; // esami proceso resursai
+    private ArrList resource; // esami proceso resursai
     private int list_where_process_is; // nuoroda, kuriame sąraše esti procesas (LPS,PPS)
     private int created_resourses; // sukurtų resursų sąrašas
     
