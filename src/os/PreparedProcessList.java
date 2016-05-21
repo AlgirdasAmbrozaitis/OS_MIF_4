@@ -14,17 +14,17 @@ import java.util.ArrayList;
 */
 public class PreparedProcessList {
         
-    private ArrayList<Process> waitingList = new <Process>ArrayList();
+    private ArrayList<Struct> waitingList = Structnew <Process>ArrayList();
     
     public void add( int id, int res ){
-        Process newProcess = new Process();
+        Struct newProcess = new Struct();
         newProcess.id = id;
         newProcess.part_of_resourse = res;
         waitingList.add(newProcess);
     }
     
     public void remove( int id ){
-        for( Process obj: waitingList ){
+        for( Struct obj: waitingList ){
             if(obj.id == id){
                 waitingList.remove(obj);
             }
@@ -32,7 +32,7 @@ public class PreparedProcessList {
     }
     
     public void findProcessResourse( int id ){
-        for( Process obj: waitingList ){
+        for( Struct obj: waitingList ){
             if(obj.id == id ){
                 out.println("Process have :" + obj.part_of_resourse + "resourse");
             }

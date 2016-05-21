@@ -9,17 +9,20 @@ package os;
  *
  * @author eimantas
  */
-public class Process implements Comparable<Process>{
-    int id;
+public class Struct implements Comparable<Struct>{
+    int processId;
     int part_of_resourse;
     int priority;
     String info;
     
     @Override
-    public int compareTo(Process another) {
-        if( this.priority <= another.priority ){
+    public int compareTo(Struct another) {
+        if( this.priority < another.priority ){
             return 1;
-        } else
+        } else if(( this.priority == another.priority ))
+        {
+            return 0;
+        }else
             return -1;
     }
 }

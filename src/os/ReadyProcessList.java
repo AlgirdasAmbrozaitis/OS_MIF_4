@@ -14,11 +14,11 @@ import java.util.Collections;
  */
 public class ReadyProcessList {
     
-    private ArrayList<Process> rpl = new <Process>ArrayList();
+    private ArrayList<Struct> rpl = Structnew <Process>ArrayList();
     
     void add( int id, int priority ){
         
-        Process newProcess = new Process();
+        Struct newProcess = new Struct();
         newProcess.id = id;
         newProcess.priority = priority;
         rpl.add(newProcess);
@@ -27,7 +27,7 @@ public class ReadyProcessList {
     }
     
     void remove( int id ){
-        for( Process obj: rpl ){
+        for( Struct obj: rpl ){
             if( obj.id == id ){
                 rpl.remove(obj);
             }

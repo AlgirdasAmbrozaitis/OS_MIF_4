@@ -18,6 +18,11 @@ public class CPU {
     
     CPU(){
     } 
+
+    public String getRegisterR()
+    {
+        return registerR;
+    }
     
     public void setRegisterR( String registerR ){
         this.registerR = registerR;
