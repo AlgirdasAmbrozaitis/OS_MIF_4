@@ -47,9 +47,15 @@ public class ArrList {
         for( Struct obj: list ){
             if(obj.processId == id){
                 list.remove(obj);
-                Collections.sort(list);
+                //Collections.sort(list);
             }
         }
+    }
+    public int removeFirst()
+    {
+        int value = list.get(0).processId;
+        list.remove(0);
+        return value;
     }
     
     public void findProcessResourse( int id ){

@@ -21,6 +21,23 @@ public class Kernel
     
     void planuotojas()
     {
+        int processNumber = OS.kernel.procDesc.getProcessName();
+        //ProcessDescriptor processDesc = OS.processDesc.get(processNumber);
+        if (OS.processDesc.get(processNumber).getState().equals("READY"))
+        {
+            OS.processDesc.get(processNumber).setCPU();
+            OS.kernel.pps.addPps(processNumber, OS.processDesc.get(processNumber).getPriority());
+            int next_process = OS.kernel.pps.removeFirst();
+            OS.processDesc.get(next_process).getCpu();
+            OS.kernel.procDesc.setProcessName(next_process);
+        }else
+        {
+            OS.processDesc.get(processNumber).setCPU();
+            //OS.kernel.pps.addPps(processNumber, OS.processDesc.get(processNumber).getPriority());
+            int next_process = OS.kernel.pps.removeFirst();
+            OS.processDesc.get(next_process).getCpu();
+            OS.kernel.procDesc.setProcessName(next_process);
+        }
         
     }
     void pertraukimuApdorotojas()
