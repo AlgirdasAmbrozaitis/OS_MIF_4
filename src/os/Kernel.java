@@ -9,7 +9,7 @@ package os;
  *
  * @author Algirdas
  */
-public class kernel
+public class Kernel
 {
     
 }
