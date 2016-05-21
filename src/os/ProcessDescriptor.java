@@ -32,6 +32,10 @@ public class ProcessDescriptor {
         
     }
     
+    void addSon( int index ){
+        this.sons_processes.add(index);
+    }
+    
     /*
     Proceso veikimui užstatomos/gaunamos realios mašinos registrų reikšmės
     */
@@ -134,6 +138,12 @@ public class ProcessDescriptor {
     public void setOperating_memory(ArrayList<Integer> operating_memory) {
         this.operating_memory = operating_memory;
     }
+
+    public int getId() {
+        return id;
+    }
+    
+    
     
     
 }

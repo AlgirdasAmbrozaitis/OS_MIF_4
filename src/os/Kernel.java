@@ -46,7 +46,23 @@ public class Kernel
     }
     //procesu primityvai
     
+    void createProcess( ArrayList memory, ArrList resourse, int priority ){
+        
+        ProcessDescriptor process = new ProcessDescriptor();
+        process.setCPU();
+        process.setOperating_memory(memory);
+        process.setResource(resourse);
+        process.setPriority(priority);
+        process.setState("READY");
+        process.setList_where_process_is(-1);
+        process.setFather_processor(OS.processDesc.get(OS.kernel.procDesc.getProcessName()).getId());
+        OS.processDesc.get(OS.kernel.procDesc.getProcessName()).addSon(process.getId());
     
+    }
+    
+    void foo(){
+        
+    }
     //resursu primityvai
     void kurtiResursa(boolean pakartotinio, ArrList prienamumo_aprasymas, int adr)
     {
