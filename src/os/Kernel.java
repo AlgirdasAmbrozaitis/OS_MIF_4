@@ -5,11 +5,30 @@
  */
 package os;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Algirdas
  */
 public class Kernel
 {
+    private ArrayList allProcess = new ArrayList();
+    private ArrayList allResourses = new ArrayList();
+    private ProcesorDeskriptor procDesc = new ProcesorDeskriptor();
+    private ArrList pps = new ArrList();
     
+    
+    void planuotojas()
+    {
+        
+    }
+    void pertraukimuApdorotojas()
+    {
+        
+    }
+    //procesu primityvai
+    
+    
+    //resursu primityvai
 }
