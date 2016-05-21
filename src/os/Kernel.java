@@ -57,7 +57,27 @@ public class Kernel
         process.setList_where_process_is(-1);
         process.setFather_processor(OS.processDesc.get(OS.kernel.procDesc.getProcessName()).getId());
         OS.processDesc.get(OS.kernel.procDesc.getProcessName()).addSon(process.getId());
+        OS.processDesc.add(process);
     
+    }
+    
+    void abortProcess( int index ){
+        boolean aborted = false;
+        
+    }
+    
+    void abort(int index){
+        if( OS.processDesc.get(index).getState().equals("RUN")){
+            // do magic
+        }
+        if( OS.processDesc.get(index).getList_where_process_is() == -1 ){
+            pps.remove(index);
+        } else {
+            
+            OS.resourseDesc.get(OS.processDesc.get(index).getList_where_process_is())
+                                                            .getList().remove(index);
+        }
+        
     }
     
     void foo(){

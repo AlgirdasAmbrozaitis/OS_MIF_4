@@ -18,6 +18,9 @@ public class ResourseDescriptor {
     private ArrList used_resourse  = new ArrList(); // suvartotų resursų sąrašas
     private ArrList laukianciu_procesu_sarasas = new ArrList();
 
+    public ArrList getList(){
+        return this.laukianciu_procesu_sarasas;
+    }
     public int getRes_dist_addr() {
         return res_dist_addr;
     }
