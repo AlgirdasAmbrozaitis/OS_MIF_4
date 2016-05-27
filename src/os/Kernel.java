@@ -63,20 +63,47 @@ public class Kernel
     
     void abortProcess( int index ){
         boolean aborted = false;
+        aborted = abort(index);
+        if(aborted){
+            planuotojas();
+        }
         
     }
     
-    void abort(int index){
-        if( OS.processDesc.get(index).getState().equals("RUN")){
-            // do magic
+    boolean abort(int index){
+               if( OS.processDesc.get(index).getState().equals("RUN")){
+            return true;
         }
         if( OS.processDesc.get(index).getList_where_process_is() == -1 ){
             pps.remove(index);
         } else {
             
             OS.resourseDesc.get(OS.processDesc.get(index).getList_where_process_is())
-                                                            .getList().remove(index);
+                                                            .getList().remove(index);// do magic
         }
+        if( OS.processDesc.get(index).getSons_processes().size() > 0 ){
+            for( int i : OS.processDesc.get(index).getSons_processes()){
+                abort(i);
+            }
+        }
+        if( OS.processDesc.get(index).getOperating_memory().getList().size() > 0 ){
+           for( Struct r : OS.processDesc.get(index).getOperating_memory().getList() ){
+               int block_no = 10*r.processId;
+               for( int cn = 0; cn < 10 ; cn++){
+                OS.rmMemory[block_no + cn].freeCell();
+               }
+               OS.processDesc.get(index).getOperating_memory().getList().remove(r);
+           }
+        }
+        if( OS.processDesc.get(index).getResource().getList().size() > 0 ){
+           for( Struct r : OS.processDesc.get(index).getResource().getList() ){
+               if(OS.resourseDesc.get(r.processId).isRepeated_use()){
+                   OS.processDesc.get(index).getResource().getList().remove(r.processId);
+                   //OS.processDesc.get(index).getResource().get
+               }
+           }
+        }
+        return true;
         
     }
     
