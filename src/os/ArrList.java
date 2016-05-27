@@ -15,7 +15,7 @@ import java.util.Collections;
 */
 public class ArrList {
         
-    private ArrayList<Struct> list = new <Struct>ArrayList();
+    private ArrayList<Struct> list = new <Process>ArrayList();
     
     public void addLps( int id, int res, String info, int prior ){
         Struct struct = new Struct();
@@ -43,6 +43,13 @@ public class ArrList {
         Collections.sort(list);
     }
     
+    public void addPa( int part ){
+        Struct struct = new Struct();
+        struct.part_of_resourse = part;
+        list.add(struct);
+        Collections.sort(list);
+    }
+    
     public void remove( int id ){
         for( Struct obj: list ){
             if(obj.processId == id){
@@ -64,5 +71,17 @@ public class ArrList {
                 out.println("Process have :" + obj.part_of_resourse + "resourse");
             }
         }
+    }
+    public Struct get( int index ){
+        for( Struct obj: list){
+            if(obj.processId == index ){
+                return obj;
+            }
+        }
+        return null;
+    }
+    
+    public ArrayList<Struct> getList(){
+        return list;
     }
 }

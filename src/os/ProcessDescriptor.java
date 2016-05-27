@@ -23,7 +23,7 @@ public class ProcessDescriptor {
     private int list_where_process_is; // nuoroda, kuriame sąraše esti procesas (LPS,PPS)
     private ArrayList<Integer> created_resourses; // sukurtų resursų sąrašas
     
-    private ArrayList<Integer> operating_memory  = new ArrayList(); // operatyvioji atmintis
+    private ArrList operating_memory  = new ArrList(); // operatyvioji atmintis
     
     CPU cpu = new CPU();
     
@@ -131,11 +131,11 @@ public class ProcessDescriptor {
         this.created_resourses = created_resourses;
     }
 
-    public ArrayList<Integer> getOperating_memory() {
+    public ArrList getOperating_memory() {
         return operating_memory;
     }
 
-    public void setOperating_memory(ArrayList<Integer> operating_memory) {
+    public void setOperating_memory(ArrList operating_memory) {
         this.operating_memory = operating_memory;
     }
 
