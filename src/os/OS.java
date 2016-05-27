@@ -224,7 +224,11 @@ public class OS {
     }
     public static void main(String[] args) {
         // TODO code application logic here
-        memoryInit();
+        /*ArrayList memory =new ArrayList();
+                 res;
+        int prior;*/
+        //OS.kernel.createProcess(memory, resourse, prior);
+        /*memoryInit();
         String komandos[] = {"CHNGR", "10", "START"};
         for(int i = 0; i < komandos.length; i++)
         {
@@ -255,7 +259,7 @@ public class OS {
         
         
         
-        
+        */
         
         //OSgui.refreshRegisterFields();
         

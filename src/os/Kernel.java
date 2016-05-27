@@ -57,6 +57,7 @@ public class Kernel
         process.setList_where_process_is(-1);
         process.setFather_processor(OS.processDesc.get(OS.kernel.procDesc.getProcessName()).getId());
         OS.processDesc.get(OS.kernel.procDesc.getProcessName()).addSon(process.getId());
+        OS.processDesc.add(process);
     
     }
     
