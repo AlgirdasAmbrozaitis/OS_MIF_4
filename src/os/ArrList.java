@@ -15,7 +15,7 @@ import java.util.Collections;
 */
 public class ArrList {
         
-    private ArrayList<Struct> list = new <Process>ArrayList();
+    private ArrayList<Struct> list = new <Struct>ArrayList();
     
     public void addLps( int id, int res, String info, int prior ){
         Struct struct = new Struct();
@@ -67,6 +67,15 @@ public class ArrList {
     public void remove( int id ){
         for( Struct obj: list ){
             if(obj.processId == id){
+                list.remove(obj);
+                //Collections.sort(list);
+            }
+        }
+    }
+    
+    public void removeR( int id, int part ){
+        for( Struct obj: list ){
+            if(obj.processId == id && obj.part_of_resourse == part){
                 list.remove(obj);
                 //Collections.sort(list);
             }
