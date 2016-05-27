@@ -15,7 +15,7 @@ import java.util.Collections;
 */
 public class ArrList {
         
-    private ArrayList<Struct> list = new <Process>ArrayList();
+    private ArrayList<Struct> list = new <Struct>ArrayList();
     
     public void addLps( int id, int res, String info, int prior ){
         Struct struct = new Struct();
