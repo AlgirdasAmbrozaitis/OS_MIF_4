@@ -47,7 +47,21 @@ public class ArrList {
         Struct struct = new Struct();
         struct.part_of_resourse = part;
         list.add(struct);
-        Collections.sort(list);
+        //Collections.sort(list);
+    }
+    public void addR(int resource, int part ){
+        Struct struct = new Struct();
+        struct.processId = resource;
+        struct.part_of_resourse = part;
+        list.add(struct);
+        //Collections.sort(list);
+    }
+    
+    public void addOa(int resource, int part ){
+        Struct struct = new Struct();
+        struct.processId = resource;
+        struct.part_of_resourse = part;
+        list.add(struct);
     }
     
     public void remove( int id ){

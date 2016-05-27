@@ -61,55 +61,33 @@ public class Kernel
     
     }
     
-    //private ArrayList<Integer> sons_processes = new ArrayList(); // sūnų sąrašas
     void abortProcess( int index ){
         boolean aborted = false;
-        aborted = abort(index);
-        if(aborted == true){
-            planuotojas();
-        }
+        
     }
     
-    boolean abort(int index){
-               if( OS.processDesc.get(index).getState().equals("RUN")){
-            return true;
+    void abort(int index){
+        if( OS.processDesc.get(index).getState().equals("RUN")){
+            // do magic
         }
         if( OS.processDesc.get(index).getList_where_process_is() == -1 ){
             pps.remove(index);
         } else {
             
             OS.resourseDesc.get(OS.processDesc.get(index).getList_where_process_is())
-                                                            .getList().remove(index);// do magic
+                                                            .getList().remove(index);
         }
-        if( OS.processDesc.get(index).getSons_processes().size() > 0 ){
-            for( int i : OS.processDesc.get(index).getSons_processes()){
-                abort(i);
-            }
-        }
-        if( OS.processDesc.get(index).getOperating_memory().getList().size() > 0 ){
-           for( Struct r : OS.processDesc.get(index).getOperating_memory().getList() ){
-               int block_no = 10*r.processId;
-               for( int cn = 0; cn < 10 ; cn++){
-                OS.rmMemory[block_no + cn].freeCell();
-               }
-               OS.processDesc.get(index).getOperating_memory().getList().remove(r);
-           }
-        }
-        if( OS.processDesc.get(index).getResource().getList().size() > 0 ){
-           for( Struct r : OS.processDesc.get(index).getResource().getList() ){
-               if(OS.resourseDesc.get(r.processId).isRepeated_use()){
-                   OS.processDesc.get(index).getResource().getList().remove(r.processId);
-               }
-           }
-        }
-        return true;
         
     }
-
+    
+    void foo(){
+        
+    }
     //resursu primityvai
-    void kurtiResursa(boolean pakartotinio, ArrList prienamumo_aprasymas, int adr)
+    void kurtiResursa(String name, boolean pakartotinio, ArrList prienamumo_aprasymas, int adr)
     {
         ResourseDescriptor resDesc = new ResourseDescriptor();
+        //TODO: prideti varda
         resDesc.setRes_dist_addr(adr);
         resDesc.setRepeated_use(pakartotinio);
         resDesc.setInfo("");
@@ -119,5 +97,55 @@ public class Kernel
         old.add(resDesc.getRs());
         OS.processDesc.get(OS.kernel.procDesc.getProcessName()).setCreated_resourses(old);
         OS.resourseDesc.add(resDesc);
+    }
+    void prasytiResurso(int resourse, int part)
+    {
+        ArrList old = OS.resourseDesc.get(resourse).getLaukianciu_procesu_sarasas();
+        int id = OS.kernel.procDesc.getProcessName();
+        int prior = OS.processDesc.get(id).getPriority();
+        String info = "";
+        old.addLps(id, part, info, prior);
+        OS.resourseDesc.get(resourse).setLaukianciu_procesu_sarasas(old);
+        ArrayList<Integer> aptarnautiProcesai = new ArrayList<>();
+        int aptarnautuProcesuSkaicius = 0;
+        //TODO paskirstytojas
+        boolean einamas = true;
+        for(int i = 0; i < aptarnautuProcesuSkaicius; i++)
+        {
+            if(aptarnautiProcesai.get(i) != OS.kernel.procDesc.getProcessName())
+            {
+                int processName = aptarnautiProcesai.get(i);
+                OS.kernel.pps.addPps(processName, OS.processDesc.get(i).getPriority());
+                OS.processDesc.get(i).setList_where_process_is(-1);
+                String state = OS.processDesc.get(i).getState();
+                if (state.equals("BLOCKED"))
+                {
+                    OS.processDesc.get(i).setState("READY");
+                }
+                else
+                {
+                    OS.processDesc.get(i).setState("READYS");
+                }
+            }
+            else
+            {
+                einamas = false;
+            }
+        }
+        if(einamas)
+        {
+            OS.processDesc.get(id).setState("BLOCKED");
+            OS.processDesc.get(id).setList_where_process_is(resourse);
+            OS.kernel.procDesc.setProcessName(-1);
+            OS.kernel.pps.remove(id);
+        }
+        OS.kernel.planuotojas();
+    }
+    void atlaisvintiResursa(int resourse, int part, int proc)
+    {
+        if(OS.resourseDesc.get(resourse).isRepeated_use())
+        {
+            ArrList old = OS.resourseDesc.get(resourse).getPrieinamu_resursu_sarasas();
+        }
     }
 }
