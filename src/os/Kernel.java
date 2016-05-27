@@ -61,6 +61,25 @@ public class Kernel
     
     }
     
+    void abortProcess( int index ){
+        boolean aborted = false;
+        
+    }
+    
+    void abort(int index){
+        if( OS.processDesc.get(index).getState().equals("RUN")){
+            // do magic
+        }
+        if( OS.processDesc.get(index).getList_where_process_is() == -1 ){
+            pps.remove(index);
+        } else {
+            
+            OS.resourseDesc.get(OS.processDesc.get(index).getList_where_process_is())
+                                                            .getList().remove(index);
+        }
+        
+    }
+    
     void foo(){
         
     }
