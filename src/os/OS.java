@@ -38,8 +38,8 @@ public class OS {
     public static RealMachine realMachine = new RealMachine();
     //public static VirtualMachine virtualMachine = new VirtualMachine();
     //public static final ArrayList myarr = new ArrayList();
-    public static ArrayList<ProcessDescriptor> processDesc = new ArrayList<ProcessDescriptor>();
-    public static ArrayList<ResourseDescriptor> resourseDesc = new ArrayList<ResourseDescriptor>();
+    public static ArrayList<ProcessDescriptor> processDesc = new ArrayList<>();
+    public static ArrayList<ResourseDescriptor> resourseDesc = new ArrayList<>();
     public static Kernel kernel = new Kernel();
     
     
@@ -214,11 +214,11 @@ public class OS {
         executeCommand();
         //OSgui.refreshRegisterFields();
         out.println(realMachine.toString());
-        try {
+        /*try {
             Thread.sleep(2000);
         } catch (InterruptedException ex) {
             Logger.getLogger(OS.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
         
         checkInterupts();      
     }

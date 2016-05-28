@@ -9,6 +9,7 @@ public class ResourseDescriptor {
     
     private static int resource_id_counter = 0; 
     private final int rs = resource_id_counter++;; // Resurso ID
+    private String name = "";
     
     private int res_dist_addr;  // resursų paskirstytojo adresas
     private boolean repeated_use; // Pakartotinio ar vienkartinio naudojimo požymis
@@ -86,6 +87,16 @@ public class ResourseDescriptor {
     public int getRs()
     {
         return rs;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
     }
     
     

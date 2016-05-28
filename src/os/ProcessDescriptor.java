@@ -10,6 +10,7 @@ public class ProcessDescriptor {
     
     private static int process_id_counter = 0; 
     private final int id = process_id_counter++;
+    private String name = "";
     
     private String state; // proceso būsena
     private int priority; // Proceso prioritetas
@@ -138,4 +139,15 @@ public class ProcessDescriptor {
     public int getId() {
         return id;
     }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+    
 }

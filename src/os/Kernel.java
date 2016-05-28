@@ -52,10 +52,11 @@ public class Kernel
     }
     //procesu primityvai
     
-    public void createProcess( ArrList memory, ArrList resourse, int priority, CPU cpu){
+    public void createProcess( ArrList memory, ArrList resourse, int priority, CPU cpu, String name){
         
         ProcessDescriptor process = new ProcessDescriptor();
         //process.setCPU();
+        process.setName(name);
         process.cpu = cpu;
         process.setOperating_memory(memory);
         process.setResource(resourse);
@@ -151,10 +152,10 @@ public class Kernel
         }
     }
     //resursu primityvai
-    public void kurtiResursa(boolean pakartotinio, ArrList prienamumo_aprasymas, int adr)
+    public void kurtiResursa(boolean pakartotinio, ArrList prienamumo_aprasymas, int adr, String name)
     {
         ResourseDescriptor resDesc = new ResourseDescriptor();
-        //TODO: prideti varda
+        resDesc.setName(name);
         resDesc.setRes_dist_addr(adr);
         resDesc.setRepeated_use(pakartotinio);
         resDesc.setInfo("");
@@ -297,6 +298,17 @@ public class Kernel
             if(obj.getRs() == id)
             {
                 return index;
+            }
+        }
+        return -1;
+    }
+    public int findResName(String name,ArrayList<ResourseDescriptor> list)
+    {
+        for(ResourseDescriptor obj : list)
+        {
+            if(obj.getName().equals(name))
+            {
+                return obj.getRs();
             }
         }
         return -1;
