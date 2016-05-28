@@ -13,11 +13,12 @@ import java.util.ArrayList;
  */
 public class Kernel
 {
-    private ArrayList allProcess = new ArrayList();
-    private ArrayList allResourses = new ArrayList();
+    private ArrayList<Integer> allProcess = new ArrayList<>();
+    private ArrayList<Integer> allResourses = new ArrayList<>();
     private ProcesorDeskriptor procDesc = new ProcesorDeskriptor();
     private ArrList pps = new ArrList();
-    
+    private ArrayList<Integer> aptarnautiProcesai = new ArrayList<>();
+    private int aptarnautuProcesuSkaicius = 0;
     
     public void planuotojas()
     {
@@ -133,9 +134,9 @@ public class Kernel
         String info = "";
         old.addLps(id, part, info, prior);
         OS.resourseDesc.get(resourse).setLaukianciu_procesu_sarasas(old);
-        ArrayList<Integer> aptarnautiProcesai = new ArrayList<>();
-        int aptarnautuProcesuSkaicius = 0;
-        //TODO paskirstytojas
+        aptarnautiProcesai = new ArrayList<>();
+        aptarnautuProcesuSkaicius = 0;
+        paskirstytojas(resourse);
         boolean einamas = true;
         for(int i = 0; i < aptarnautuProcesuSkaicius; i++)
         {
@@ -178,9 +179,9 @@ public class Kernel
             old = OS.processDesc.get(proc).getResource();
             old.removeR(resource, part);
             OS.processDesc.get(proc).setResource(old);
-            ArrayList<Integer> aptarnautiProcesai = new ArrayList<>();
-            int aptarnautuProcesuSkaicius = 0;
-            //TODO paskirstytojas
+            aptarnautiProcesai = new ArrayList<>();
+            aptarnautuProcesuSkaicius = 0;
+            paskirstytojas(resource);
             for(int i = 0; i < aptarnautuProcesuSkaicius; i++)
             {
                 if(aptarnautiProcesai.get(i) != OS.kernel.procDesc.getProcessName())
@@ -220,6 +221,10 @@ public class Kernel
     {
         ArrList newL = new ArrList();
         OS.resourseDesc.get(resource).setUsed_resourse(newL);
+    }
+    public void paskirstytojas(int resource)
+    {
+        
     }
     
 }
