@@ -125,6 +125,31 @@ public class Kernel
         }
         OS.processDesc.remove(index);
     }
+    public void stopProc( int index ){
+        int ind = OS.kernel.findProc(index, OS.processDesc);
+        if( OS.processDesc.get(ind).getState().equals("RUN")){
+            OS.processDesc.get(ind).setCPU();
+            OS.processDesc.get(ind).setState("BLOCKED");
+            planuotojas();
+        } else if ( OS.processDesc.get(ind).getState().equals("BLOCKED") ||
+                    OS.processDesc.get(ind).getState().equals("BLOCKEDS")){
+            OS.processDesc.get(ind).setState("BLOCKEDS");
+        } else {
+            OS.processDesc.get(ind).setState("READYS");
+        }
+    }
+    
+    public void acivateProc( int index ){
+        int ind = OS.kernel.findProc(index, OS.processDesc);
+        if( OS.processDesc.get(ind).getState().equals("READYS")){
+            OS.processDesc.get(ind).setState("READYS");
+        } else {
+            OS.processDesc.get(ind).getState().equals("READYS");
+        }
+        if( OS.processDesc.get(ind).equals("READY")){
+            planuotojas();
+        }
+    }
     //resursu primityvai
     public void kurtiResursa(boolean pakartotinio, ArrList prienamumo_aprasymas, int adr)
     {

@@ -1,9 +1,6 @@
 package os;
 
-import java.awt.List;
 import java.util.ArrayList;
-import static java.util.Arrays.asList;
-import java.util.Collections;
 
 /**
  *
