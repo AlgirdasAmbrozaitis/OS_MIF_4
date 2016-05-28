@@ -64,7 +64,7 @@ public class ArrList {
         list.add(struct);
     }
     
-    public void remove( int id ){
+    public void remove( int id ){ // pasalinami visi elementai su vardu <id>
         for( Struct obj: list ){
             if(obj.processId == id){
                 list.remove(obj);
@@ -73,7 +73,7 @@ public class ArrList {
         }
     }
     
-    public void removeR( int id, int part ){
+    public void removeR( int id, int part ){ //pasalinami visi elementa su vardu <id> turintys <part> resurso dali
         for( Struct obj: list ){
             if(obj.processId == id && obj.part_of_resourse == part){
                 list.remove(obj);
@@ -81,7 +81,7 @@ public class ArrList {
             }
         }
     }
-    public int removeFirst()
+    public int removeFirst() //pasalinamas pirmas elementas, pps, lps
     {
         int value = list.get(0).processId;
         list.remove(0);

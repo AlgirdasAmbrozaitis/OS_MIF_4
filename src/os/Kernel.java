@@ -14,8 +14,8 @@ import java.util.Iterator;
  */
 public class Kernel
 {
-    private ArrayList<Integer> allProcess = new ArrayList<>();
-    private ArrayList<Integer> allResourses = new ArrayList<>();
+    //private ArrayList<Integer> allProcess = new ArrayList<>();
+    //private ArrayList<Integer> allResourses = new ArrayList<>();
     private ProcesorDeskriptor procDesc = new ProcesorDeskriptor();
     private ArrList pps = new ArrList();
     private ArrayList<Integer> aptarnautiProcesai = new ArrayList<>();
@@ -25,21 +25,24 @@ public class Kernel
     public void planuotojas()
     {
         int processNumber = OS.kernel.procDesc.getProcessName();
-        //ProcessDescriptor processDesc = OS.processDesc.get(processNumber);
-        if (OS.processDesc.get(processNumber).getState().equals("READY"))
+        processNumber = OS.kernel.findProc(processNumber, OS.processDesc);
+        //TODO gali reikt tikrint ar ne null
+        if (!OS.processDesc.get(processNumber).getState().equals("BLOCKED"))
         {
             OS.processDesc.get(processNumber).setCPU();
-            OS.kernel.pps.addPps(processNumber, OS.processDesc.get(processNumber).getPriority());
+            OS.kernel.pps.addPps(OS.processDesc.get(processNumber).getId(), OS.processDesc.get(processNumber).getPriority());
             int next_process = OS.kernel.pps.removeFirst();
+            next_process = OS.kernel.findProc(next_process, OS.processDesc);
             OS.processDesc.get(next_process).getCpu();
-            OS.kernel.procDesc.setProcessName(next_process);
+            OS.kernel.procDesc.setProcessName(OS.processDesc.get(next_process).getId());
         }else
         {
             OS.processDesc.get(processNumber).setCPU();
             //OS.kernel.pps.addPps(processNumber, OS.processDesc.get(processNumber).getPriority());
             int next_process = OS.kernel.pps.removeFirst();
+            next_process = OS.kernel.findProc(next_process, OS.processDesc);
             OS.processDesc.get(next_process).getCpu();
-            OS.kernel.procDesc.setProcessName(next_process);
+            OS.kernel.procDesc.setProcessName(OS.processDesc.get(next_process).getId());
         }
         
     }
@@ -49,17 +52,20 @@ public class Kernel
     }
     //procesu primityvai
     
-    public void createProcess( ArrList memory, ArrList resourse, int priority ){
+    public void createProcess( ArrList memory, ArrList resourse, int priority, CPU cpu){
         
         ProcessDescriptor process = new ProcessDescriptor();
-        process.setCPU();
+        //process.setCPU();
+        process.cpu = cpu;
         process.setOperating_memory(memory);
         process.setResource(resourse);
         process.setPriority(priority);
         process.setState("READY");
         process.setList_where_process_is(-1);
-        process.setFather_processor(OS.processDesc.get(OS.kernel.procDesc.getProcessName()).getId());
-        OS.processDesc.get(OS.kernel.procDesc.getProcessName()).addSon(process.getId());
+        int father = OS.kernel.procDesc.getProcessName();
+        father = OS.kernel.findProc(father, OS.processDesc);
+        process.setFather_processor(OS.processDesc.get(father).getId());
+        OS.processDesc.get(father).addSon(process.getId());
         OS.processDesc.add(process);
     
     }
@@ -75,6 +81,7 @@ public class Kernel
     
     public void abort(int index){
        
+        index = OS.kernel.findProc(index, OS.processDesc);
         if( OS.processDesc.get(index).getState().equals("RUN")){
             this.aborted = true;
         }
@@ -232,6 +239,32 @@ public class Kernel
     public void paskirstytojas(int resource)
     {
         
+    }
+    public int findProc(int id,ArrayList<ProcessDescriptor> list)
+    {
+        int index = -1;
+        for(ProcessDescriptor obj : list)
+        {
+            index++;
+            if(obj.getId() == id)
+            {
+                return index;
+            }
+        }
+        return -1;
+    }
+    public int findRes(int id,ArrayList<ResourseDescriptor> list)
+    {
+        int index = -1;
+        for(ResourseDescriptor obj : list)
+        {
+            index++;
+            if(obj.getRs() == id)
+            {
+                return index;
+            }
+        }
+        return -1;
     }
     
 }
