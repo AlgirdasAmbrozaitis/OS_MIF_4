@@ -75,6 +75,31 @@ public class Kernel
     }
     //procesu primityvai
     
+    public void resourse_distributor(int r){
+        
+        this.aptarnautuProcesuSkaicius = 0;
+        this.aptarnautiProcesai.clear();
+        
+        int index = OS.kernel.findRes(r, OS.resourseDesc);
+        
+        for( int i = 0; i < OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().getList().size(); i++ ){
+            
+            if( OS.resourseDesc.get(index).getPrieinamu_resursu_sarasas().getList().size() >=
+                OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().get(i).part_of_resourse ){
+                
+                int proc_index = OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().get(i).processId;
+
+                OS.processDesc.get(proc_index).getResource().addR(index, OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().get(i).part_of_resourse);
+                
+                OS.resourseDesc.get(index).getPrieinamu_resursu_sarasas().get(index).part_of_resourse -= OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().get(i).part_of_resourse;
+                
+                OS.resourseDesc.get(index).getPrieinamu_resursu_sarasas().remove(proc_index);
+                this.aptarnautiProcesai.add(proc_index);
+                this.aptarnautuProcesuSkaicius++;    
+            }
+        }
+    }
+    
     public void createProcess( ArrList memory, ArrList resourse, int priority, CPU cpu, String name){
         
         ProcessDescriptor process = new ProcessDescriptor();

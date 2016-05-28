@@ -4,6 +4,7 @@ import java.awt.List;
 import static java.lang.System.out;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 
 /**
  *
@@ -106,5 +107,9 @@ public class ArrList {
     
     public ArrayList<Struct> getList(){
         return list;
+    }
+    
+    public int getSize(){
+        return list.size();
     }
 }
