@@ -48,6 +48,29 @@ public class Kernel
     }
     public void pertraukimuApdorotojas()
     {
+        int index;
+        index = OS.kernel.findResName("VM_INTERRUPTED", OS.resourseDesc);
+        OS.kernel.deaktyvuotiR(index);
+        index = OS.kernel.findResName("PRANESIMAS_VARTOTOJUI", OS.resourseDesc);
+        OS.kernel.deaktyvuotiR(index);
+        if (OS.realMachine.getRegisterTI() == 0)
+        {
+            OS.realMachine.setRegisterTI(50);
+            OS.kernel.planuotojas();
+        }
+        OS.realMachine.setRegisterSI(0);
+        OS.realMachine.setRegisterAI(0);
+        OS.realMachine.setRegisterPI(0);
+        /*index = OS.kernel.findProc(OS.kernel.procDesc.getProcessName(), OS.processDesc);
+        if(!OS.processDesc.get(index).getName().equals("INTERFACE"))
+        {
+            //reikia nustatyti job governor
+        }
+        else
+        {
+                
+        }*/
+       
         
     }
     //procesu primityvai
@@ -269,7 +292,8 @@ public class Kernel
     public void deaktyvuotiR(int resource)
     {
         int index = OS.kernel.findRes(resource, OS.resourseDesc);
-        ArrList newL = new ArrList();
+        ArrList newL = OS.resourseDesc.get(index).getUsed_resourse();
+        newL.getList().clear();
         OS.resourseDesc.get(index).setUsed_resourse(newL);
     }
     public void paskirstytojas(int resource)
@@ -309,6 +333,17 @@ public class Kernel
             if(obj.getName().equals(name))
             {
                 return obj.getRs();
+            }
+        }
+        return -1;
+    }
+    public int findProcName(String name,ArrayList<ProcessDescriptor> list)
+    {
+        for(ProcessDescriptor obj : list)
+        {
+            if(obj.getName().equals(name))
+            {
+                return obj.getId();
             }
         }
         return -1;

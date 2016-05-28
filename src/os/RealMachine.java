@@ -16,7 +16,8 @@ public class RealMachine {
                 registerCT,
                 registerPI,
                 registerSI,
-                registerTI;
+                registerTI,
+                registerAI;
     
     private int SB,
                 DB,
@@ -40,7 +41,8 @@ public class RealMachine {
         this.registerCT = 0;
         this.registerPI = 0;
         this.registerSI = 0;
-        this.registerTI = 10;
+        this.registerTI = 50;
+        this.registerAI = 0;
         this.SB = 0;
         this.DB = 0;
         this.ST = 0;
@@ -50,7 +52,7 @@ public class RealMachine {
         this.registerMOD = false;
         
     }
-    public void setRealMachine(String registerR, int registerPTR, int registerIC, int registerSP, int registerINT, int registerCT,
+    /*public void setRealMachine(String registerR, int registerPTR, int registerIC, int registerSP, int registerINT, int registerCT,
                                int registerPI, int registerSI, int SB, int DB, int ST, int DT, int sz, boolean registerC, 
                                boolean registerMOD)
     {
@@ -69,7 +71,7 @@ public class RealMachine {
         this.SZ = SZ;
         this.registerC = registerC;
         this.registerMOD = registerMOD;
-    }
+    }*/
     public void changeR()
     {
         this.registerR = OS.rmMemory[this.registerIC].getCell();
@@ -495,6 +497,12 @@ public class RealMachine {
         } else; // throw exception   
     }
     
+    public void seai( int x ){ 
+        if( x >= 0 && x <= 999 ){
+            this.registerAI = x;
+        } else; // throw exception   
+    }
+    
     public void ptr( int block_number ){
         if( block_number >= 0 && block_number <= 99 ){
             this.registerPTR = block_number;
@@ -587,6 +595,11 @@ public class RealMachine {
     {
         OS.cd.DataExchange();
     }
+
+    public int getRegisterAI()
+    {
+        return registerAI;
+    }
     
      
     public String getRegisterR() {
@@ -653,6 +666,11 @@ public class RealMachine {
         return registerMOD;
     }
 
+    public void setRegisterAI(int registerAI)
+    {
+        this.registerAI = registerAI;
+    }
+    
     public void setRegisterR(String registerR) {
         this.registerR = registerR;
     }
