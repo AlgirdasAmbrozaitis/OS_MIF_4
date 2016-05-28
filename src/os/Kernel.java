@@ -73,7 +73,7 @@ public class Kernel
        
     }
     
-    void abort(int index){
+    public void abort(int index){
        
         if( OS.processDesc.get(index).getState().equals("RUN")){
             this.aborted = true;
