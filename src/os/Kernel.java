@@ -25,19 +25,19 @@ public class Kernel
     public void planuotojas()
     {
         int processNumber = OS.kernel.procDesc.getProcessName();
-        processNumber = OS.kernel.findProc(processNumber, OS.processDesc);
+        int index = OS.kernel.findProc(processNumber, OS.processDesc);
         //TODO gali reikt tikrint ar ne null
-        if (!OS.processDesc.get(processNumber).getState().equals("BLOCKED"))
+        if (!OS.processDesc.get(index).getState().equals("BLOCKED"))
         {
-            OS.processDesc.get(processNumber).setCPU();
-            OS.kernel.pps.addPps(OS.processDesc.get(processNumber).getId(), OS.processDesc.get(processNumber).getPriority());
+            OS.processDesc.get(index).setCPU();
+            OS.kernel.pps.addPps(OS.processDesc.get(index).getId(), OS.processDesc.get(index).getPriority());
             int next_process = OS.kernel.pps.removeFirst();
             next_process = OS.kernel.findProc(next_process, OS.processDesc);
             OS.processDesc.get(next_process).getCpu();
             OS.kernel.procDesc.setProcessName(OS.processDesc.get(next_process).getId());
         }else
         {
-            OS.processDesc.get(processNumber).setCPU();
+            OS.processDesc.get(index).setCPU();
             //OS.kernel.pps.addPps(processNumber, OS.processDesc.get(processNumber).getPriority());
             int next_process = OS.kernel.pps.removeFirst();
             next_process = OS.kernel.findProc(next_process, OS.processDesc);
@@ -126,7 +126,7 @@ public class Kernel
         OS.processDesc.remove(index);
     }
     //resursu primityvai
-    public void kurtiResursa(String name, boolean pakartotinio, ArrList prienamumo_aprasymas, int adr)
+    public void kurtiResursa(boolean pakartotinio, ArrList prienamumo_aprasymas, int adr)
     {
         ResourseDescriptor resDesc = new ResourseDescriptor();
         //TODO: prideti varda
@@ -135,19 +135,23 @@ public class Kernel
         resDesc.setInfo("");
         resDesc.setFather_resource(OS.kernel.procDesc.getProcessName());
         resDesc.setPrieinamu_resursu_sarasas(prienamumo_aprasymas);
-        ArrayList old = OS.processDesc.get(OS.kernel.procDesc.getProcessName()).getCreated_resourses();
+        int index = OS.kernel.procDesc.getProcessName();
+        index = OS.kernel.findProc(index, OS.processDesc);
+        ArrayList old = OS.processDesc.get(index).getCreated_resourses();
         old.add(resDesc.getRs());
-        OS.processDesc.get(OS.kernel.procDesc.getProcessName()).setCreated_resourses(old);
+        OS.processDesc.get(index).setCreated_resourses(old);
         OS.resourseDesc.add(resDesc);
     }
     public void prasytiResurso(int resourse, int part)
     {
-        ArrList old = OS.resourseDesc.get(resourse).getLaukianciu_procesu_sarasas();
+        int index = OS.kernel.findRes(resourse, OS.resourseDesc);
+        ArrList old = OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas();
         int id = OS.kernel.procDesc.getProcessName();
+        id = OS.kernel.findProc(id, OS.processDesc);
         int prior = OS.processDesc.get(id).getPriority();
         String info = "";
-        old.addLps(id, part, info, prior);
-        OS.resourseDesc.get(resourse).setLaukianciu_procesu_sarasas(old);
+        old.addLps(OS.processDesc.get(id).getId(), part, info, prior);
+        OS.resourseDesc.get(index).setLaukianciu_procesu_sarasas(old);
         aptarnautiProcesai = new ArrayList<>();
         aptarnautuProcesuSkaicius = 0;
         paskirstytojas(resourse);
@@ -157,16 +161,17 @@ public class Kernel
             if(aptarnautiProcesai.get(i) != OS.kernel.procDesc.getProcessName())
             {
                 int processName = aptarnautiProcesai.get(i);
-                OS.kernel.pps.addPps(processName, OS.processDesc.get(i).getPriority());
-                OS.processDesc.get(i).setList_where_process_is(-1);
-                String state = OS.processDesc.get(i).getState();
+                int index1 = OS.kernel.findProc(processName, OS.processDesc);
+                OS.kernel.pps.addPps(processName, OS.processDesc.get(index1).getPriority());
+                OS.processDesc.get(index1).setList_where_process_is(-1);
+                String state = OS.processDesc.get(index1).getState();
                 if (state.equals("BLOCKED"))
                 {
-                    OS.processDesc.get(i).setState("READY");
+                    OS.processDesc.get(index1).setState("READY");
                 }
                 else
                 {
-                    OS.processDesc.get(i).setState("READYS");
+                    OS.processDesc.get(index1).setState("READYS");
                 }
             }
             else
@@ -185,14 +190,16 @@ public class Kernel
     }
     public void atlaisvintiResursa(int resource, int part, int proc)
     {
-        if(OS.resourseDesc.get(resource).isRepeated_use())
+        int index = OS.kernel.findRes(resource, OS.resourseDesc);
+        int index1 = OS.kernel.findProc(proc, OS.processDesc);
+        if(OS.resourseDesc.get(index).isRepeated_use())
         {
-            ArrList old = OS.resourseDesc.get(resource).getPrieinamu_resursu_sarasas();
+            ArrList old = OS.resourseDesc.get(index).getPrieinamu_resursu_sarasas();
             old.addPa(part);
-            OS.resourseDesc.get(resource).setPrieinamu_resursu_sarasas(old);
-            old = OS.processDesc.get(proc).getResource();
+            OS.resourseDesc.get(index).setPrieinamu_resursu_sarasas(old);
+            old = OS.processDesc.get(index1).getResource();
             old.removeR(resource, part);
-            OS.processDesc.get(proc).setResource(old);
+            OS.processDesc.get(index1).setResource(old);
             aptarnautiProcesai = new ArrayList<>();
             aptarnautuProcesuSkaicius = 0;
             paskirstytojas(resource);
@@ -201,16 +208,17 @@ public class Kernel
                 if(aptarnautiProcesai.get(i) != OS.kernel.procDesc.getProcessName())
                 {
                     int processName = aptarnautiProcesai.get(i);
-                    OS.kernel.pps.addPps(processName, OS.processDesc.get(i).getPriority());
-                    OS.processDesc.get(i).setList_where_process_is(-1);
-                    String state = OS.processDesc.get(i).getState();
+                    int index2 = OS.kernel.findProc(processName, OS.processDesc);
+                    OS.kernel.pps.addPps(processName, OS.processDesc.get(index2).getPriority());
+                    OS.processDesc.get(index2).setList_where_process_is(-1);
+                    String state = OS.processDesc.get(index2).getState();
                     if (state.equals("BLOCKED"))
                     {
-                        OS.processDesc.get(i).setState("READY");
+                        OS.processDesc.get(index2).setState("READY");
                     }
                     else
                     {
-                        OS.processDesc.get(i).setState("READYS");
+                        OS.processDesc.get(index2).setState("READYS");
                     }
                 }
             }
@@ -218,23 +226,25 @@ public class Kernel
         }
         else
         {
-            String info = OS.processDesc.get(proc).getResource().get(resource).info;
-            ArrList old = OS.resourseDesc.get(resource).getUsed_resourse();
+            String info = OS.processDesc.get(index1).getResource().get(resource).info;
+            ArrList old = OS.resourseDesc.get(index).getUsed_resourse();
             old.addSu(proc, part, info);
-            OS.resourseDesc.get(resource).setUsed_resourse(old);
-            OS.processDesc.get(proc).getResource().removeR(resource, part);
+            OS.resourseDesc.get(index).setUsed_resourse(old);
+            OS.processDesc.get(index1).getResource().removeR(resource, part);
         }
     }
     public void aktyvuotiR(int resource, int part, String info)
     {
-        ArrList old = OS.resourseDesc.get(resource).getPrieinamu_resursu_sarasas();
+        int index = OS.kernel.findRes(resource, OS.resourseDesc);
+        ArrList old = OS.resourseDesc.get(index).getPrieinamu_resursu_sarasas();
         old.addPa(part);
-        OS.resourseDesc.get(resource).setPrieinamu_resursu_sarasas(old);
+        OS.resourseDesc.get(index).setPrieinamu_resursu_sarasas(old);
     }
     public void deaktyvuotiR(int resource)
     {
+        int index = OS.kernel.findRes(resource, OS.resourseDesc);
         ArrList newL = new ArrList();
-        OS.resourseDesc.get(resource).setUsed_resourse(newL);
+        OS.resourseDesc.get(index).setUsed_resourse(newL);
     }
     public void paskirstytojas(int resource)
     {
