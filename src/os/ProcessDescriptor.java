@@ -31,11 +31,6 @@ public class ProcessDescriptor {
     {
         
     }
-    
-    public void foo(){
-        
-    }
-    
     void addSon( int index ){
         this.sons_processes.add(index);
     }
