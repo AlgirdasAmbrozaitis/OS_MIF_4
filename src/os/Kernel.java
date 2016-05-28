@@ -19,7 +19,7 @@ public class Kernel
     private ArrList pps = new ArrList();
     
     
-    void planuotojas()
+    public void planuotojas()
     {
         int processNumber = OS.kernel.procDesc.getProcessName();
         //ProcessDescriptor processDesc = OS.processDesc.get(processNumber);
@@ -40,13 +40,13 @@ public class Kernel
         }
         
     }
-    void pertraukimuApdorotojas()
+    public void pertraukimuApdorotojas()
     {
         
     }
     //procesu primityvai
     
-    void createProcess( ArrList memory, ArrList resourse, int priority ){
+    public void createProcess( ArrList memory, ArrList resourse, int priority ){
         
         ProcessDescriptor process = new ProcessDescriptor();
         process.setCPU();
@@ -61,7 +61,7 @@ public class Kernel
     
     }
     
-    void abortProcess( int index ){
+    public void abortProcess( int index ){
         boolean aborted = false;
         aborted = abort(index);
         if(aborted){
@@ -70,7 +70,7 @@ public class Kernel
         
     }
     
-    boolean abort(int index){
+    public boolean abort(int index){
                if( OS.processDesc.get(index).getState().equals("RUN")){
             return true;
         }
@@ -111,7 +111,7 @@ public class Kernel
         
     }
     //resursu primityvai
-    void kurtiResursa(String name, boolean pakartotinio, ArrList prienamumo_aprasymas, int adr)
+    public void kurtiResursa(String name, boolean pakartotinio, ArrList prienamumo_aprasymas, int adr)
     {
         ResourseDescriptor resDesc = new ResourseDescriptor();
         //TODO: prideti varda
@@ -125,7 +125,7 @@ public class Kernel
         OS.processDesc.get(OS.kernel.procDesc.getProcessName()).setCreated_resourses(old);
         OS.resourseDesc.add(resDesc);
     }
-    void prasytiResurso(int resourse, int part)
+    public void prasytiResurso(int resourse, int part)
     {
         ArrList old = OS.resourseDesc.get(resourse).getLaukianciu_procesu_sarasas();
         int id = OS.kernel.procDesc.getProcessName();
@@ -168,7 +168,7 @@ public class Kernel
         }
         OS.kernel.planuotojas();
     }
-    void atlaisvintiResursa(int resource, int part, int proc)
+    public void atlaisvintiResursa(int resource, int part, int proc)
     {
         if(OS.resourseDesc.get(resource).isRepeated_use())
         {
@@ -203,8 +203,23 @@ public class Kernel
         }
         else
         {
+            String info = OS.processDesc.get(proc).getResource().get(resource).info;
             ArrList old = OS.resourseDesc.get(resource).getUsed_resourse();
-            //old.addSu(resource, proc, info);
+            old.addSu(proc, part, info);
+            OS.resourseDesc.get(resource).setUsed_resourse(old);
+            OS.processDesc.get(proc).getResource().removeR(resource, part);
         }
     }
+    public void aktyvuotiR(int resource, int part, String info)
+    {
+        ArrList old = OS.resourseDesc.get(resource).getPrieinamu_resursu_sarasas();
+        old.addPa(part);
+        OS.resourseDesc.get(resource).setPrieinamu_resursu_sarasas(old);
+    }
+    public void deaktyvuotiR(int resource)
+    {
+        ArrList newL = new ArrList();
+        OS.resourseDesc.get(resource).setUsed_resourse(newL);
+    }
+    
 }
