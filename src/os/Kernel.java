@@ -6,6 +6,7 @@
 package os;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  *
@@ -19,6 +20,7 @@ public class Kernel
     private ArrList pps = new ArrList();
     private ArrayList<Integer> aptarnautiProcesai = new ArrayList<>();
     private int aptarnautuProcesuSkaicius = 0;
+    private boolean aborted = false;
     
     public void planuotojas()
     {
@@ -63,53 +65,58 @@ public class Kernel
     }
     
     public void abortProcess( int index ){
-        boolean aborted = false;
-        aborted = abort(index);
-        if(aborted){
+        this.aborted = false;
+        abort(index);
+        if(this.aborted){
             planuotojas();
         }
-        
+       
     }
     
-    public boolean abort(int index){
-               if( OS.processDesc.get(index).getState().equals("RUN")){
-            return true;
+    void abort(int index){
+       
+        if( OS.processDesc.get(index).getState().equals("RUN")){
+            this.aborted = true;
         }
+       
         if( OS.processDesc.get(index).getList_where_process_is() == -1 ){
             pps.remove(index);
         } else {
-            
+           
             OS.resourseDesc.get(OS.processDesc.get(index).getList_where_process_is())
                                                             .getList().remove(index);// do magic
         }
+       
         if( OS.processDesc.get(index).getSons_processes().size() > 0 ){
             for( int i : OS.processDesc.get(index).getSons_processes()){
                 abort(i);
             }
         }
+       
         if( OS.processDesc.get(index).getOperating_memory().getList().size() > 0 ){
            for( Struct r : OS.processDesc.get(index).getOperating_memory().getList() ){
                int block_no = 10*r.processId;
                for( int cn = 0; cn < 10 ; cn++){
-                OS.rmMemory[block_no + cn].freeCell();
+                    OS.rmMemory[block_no + cn].freeCell();
                }
                OS.processDesc.get(index).getOperating_memory().getList().remove(r);
+               OS.resourseDesc.get(r.processId).getPrieinamu_resursu_sarasas().addPa(r.part_of_resourse);
+               
            }
         }
         if( OS.processDesc.get(index).getResource().getList().size() > 0 ){
            for( Struct r : OS.processDesc.get(index).getResource().getList() ){
                if(OS.resourseDesc.get(r.processId).isRepeated_use()){
                    OS.processDesc.get(index).getResource().getList().remove(r.processId);
-                   //OS.processDesc.get(index).getResource().get
+                   OS.resourseDesc.get(r.processId).getPrieinamu_resursu_sarasas().addPa(r.part_of_resourse);
                }
            }
         }
-        return true;
-        
-    }
-    
-    void foo(){
-        
+        Iterator<Integer> it = OS.processDesc.get(index).getCreated_resourses().iterator();
+        while(it.hasNext()){
+            OS.resourseDesc.remove(it.next());
+        }
+        OS.processDesc.remove(index);
     }
     //resursu primityvai
     public void kurtiResursa(String name, boolean pakartotinio, ArrList prienamumo_aprasymas, int adr)
