@@ -268,82 +268,82 @@ public class OS {
         
         // darbo pabaiga
         pa.getList().clear();
-        pa.addPa(1);
+        //pa.addPa(1);
         OS.kernel.kurtiResursa(false, pa, adr, "DARBO_PABAIGA");
         
         // virtualios masinos pertraukimas
         pa.getList().clear();
-        pa.addPa(1);
+        //pa.addPa(1);
         OS.kernel.kurtiResursa(false, pa, adr, "VM_INTERRUPTED");
         
         // pranesimas vartotojui
         pa.getList().clear();
-        pa.addPa(1);
+        //pa.addPa(1);
         OS.kernel.kurtiResursa(false, pa, adr, "PRANESIMAS_VARTOTOJUI");
         
         // programos ivedimo
         pa.getList().clear();
-        pa.addPa(1);
+        //pa.addPa(1);
         OS.kernel.kurtiResursa(false, pa, adr, "IVESK_PROGRAMA");
         
         // programos ivedimo pabaiga
         pa.getList().clear();
-        pa.addPa(1);
+        //pa.addPa(1);
         OS.kernel.kurtiResursa(false, pa, adr, "IVESK_PROGRAMA_END");
         
         // duomenu ivedimas
         pa.getList().clear();
-        pa.addPa(1);
+        //pa.addPa(1);
         OS.kernel.kurtiResursa(false, pa, adr, "INPUT_DATA");
         
         // duomenu ivedimo pabaiga
         pa.getList().clear();
-        pa.addPa(1);
+        //pa.addPa(1);
         OS.kernel.kurtiResursa(false, pa, adr, "INPUT_DATA_END");
         
         // duomenu isvedimas
         pa.getList().clear();
-        pa.addPa(1);
+        //pa.addPa(1);
         OS.kernel.kurtiResursa(false, pa, adr, "OUTPUT_DATA");
         
         // duomenu isvedimo pabaiga
         pa.getList().clear();
-        pa.addPa(1);
+        //pa.addPa(1);
         OS.kernel.kurtiResursa(false, pa, adr, "OUTPUT_DATA_END");
         
         // atminties prasymas
         pa.getList().clear();
-        pa.addPa(1);
+        //pa.addPa(1);
         OS.kernel.kurtiResursa(false, pa, adr, "ASK_MEMORY");
         
         // atminties davimas
         pa.getList().clear();
-        pa.addPa(1);
+        //pa.addPa(1);
         OS.kernel.kurtiResursa(false, pa, adr, "MEMORY_GIVEN");
         
         // uzduotis paimta
         pa.getList().clear();
-        pa.addPa(1);
+        //pa.addPa(1);
         OS.kernel.kurtiResursa(false, pa, adr, "UZDUOTIS_PAIMTA");
         
         // uzduotis isorineje atmintyje
         pa.getList().clear();
-        pa.addPa(1);
+        //pa.addPa(1);
         OS.kernel.kurtiResursa(false, pa, adr, "UZDUOTIS_ISORINEJE_ATMINTYJE");
         
         // pakrovimo paketas
         pa.getList().clear();
-        pa.addPa(1);
+        //pa.addPa(1);
         OS.kernel.kurtiResursa(false, pa, adr, "PAKROVIMO_PAKETAS");
         
         // uzduotis poakrauta
         pa.getList().clear();
-        pa.addPa(1);
+        //pa.addPa(1);
         OS.kernel.kurtiResursa(false, pa, adr, "LOADER_END");
         
         // isvedimo vartotojui pabaiga
         pa.getList().clear();
-        pa.addPa(1);
+        //pa.addPa(1);
         OS.kernel.kurtiResursa(false, pa, adr, "OUTPUT_TO_USER_END");
     }
     
