@@ -19,11 +19,11 @@ public class ProcessDescriptor {
     private ArrayList<Integer> sons_processes = new ArrayList(); // sūnų sąrašas
     private ArrList resource = new ArrList(); // esami proceso resursai
     private int list_where_process_is; // nuoroda, kuriame sąraše esti procesas (LPS,PPS)
-    private ArrayList<Integer> created_resourses; // sukurtų resursų sąrašas
+    private ArrayList<Integer> created_resourses = new ArrayList<>(); // sukurtų resursų sąrašas
     
     private ArrList operating_memory  = new ArrList(); // operatyvioji atmintis
     
-    CPU cpu = new CPU(true, 0);
+    CPU cpu;
     
     public ProcessDescriptor()
     {

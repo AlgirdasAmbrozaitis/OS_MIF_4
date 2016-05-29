@@ -222,109 +222,140 @@ public class OS {
         
         checkInterupts();      
     }
+    public static void initializeSystem()
+    {
+        //sukurtas start stop procesas
+        CPU cpu = new CPU(false, 0, 0);
+        ArrList memory = new ArrList();
+        ArrList resource = new ArrList();
+        OS.kernel.createProcess(memory, resource, 0, cpu, "START/STOP");
+
+        //kuriami resursai
+        int adr = 0; //kolkas neaisku
+        ArrList pa = new ArrList();
+        //operatyvi atmintis
+        
+        
+        for(int i = 0; i < OS.rmMemory.length / 10; i++)
+        {
+            pa.addPa(i);
+        }
+        
+        OS.kernel.kurtiResursa(true, pa, adr, "OPERATYVIOJI_ATMINTIS");
+          
+        // ivedimo irenginys
+        pa.getList().clear();
+        pa.addPa(1);
+        OS.kernel.kurtiResursa(true, pa, adr, "IVEDIMO_IRENGINYS");
+        
+        // isvedimo irenginys
+        pa.getList().clear();
+        pa.addPa(1);
+        OS.kernel.kurtiResursa(true, pa, adr, "ISVEDIMO_IRENGINYS");
+        
+        // isorine atmintis
+        pa.getList().clear();
+        for(int i = 0; i < OS.externalMemory.length / 10; i++)
+        {
+            pa.addPa(i);
+        }
+        OS.kernel.kurtiResursa(true, pa, adr, "ISORINE_ATMINTIS");
+        
+        // laukimo resursas
+        pa.getList().clear();
+        pa.addPa(1);
+        OS.kernel.kurtiResursa(true, pa, adr, "SYSTEM_IDLE");
+        
+        // darbo pabaiga
+        pa.getList().clear();
+        pa.addPa(1);
+        OS.kernel.kurtiResursa(false, pa, adr, "DARBO_PABAIGA");
+        
+        // virtualios masinos pertraukimas
+        pa.getList().clear();
+        pa.addPa(1);
+        OS.kernel.kurtiResursa(false, pa, adr, "VM_INTERRUPTED");
+        
+        // pranesimas vartotojui
+        pa.getList().clear();
+        pa.addPa(1);
+        OS.kernel.kurtiResursa(false, pa, adr, "PRANESIMAS_VARTOTOJUI");
+        
+        // programos ivedimo
+        pa.getList().clear();
+        pa.addPa(1);
+        OS.kernel.kurtiResursa(false, pa, adr, "IVESK_PROGRAMA");
+        
+        // programos ivedimo pabaiga
+        pa.getList().clear();
+        pa.addPa(1);
+        OS.kernel.kurtiResursa(false, pa, adr, "IVESK_PROGRAMA_END");
+        
+        // duomenu ivedimas
+        pa.getList().clear();
+        pa.addPa(1);
+        OS.kernel.kurtiResursa(false, pa, adr, "INPUT_DATA");
+        
+        // duomenu ivedimo pabaiga
+        pa.getList().clear();
+        pa.addPa(1);
+        OS.kernel.kurtiResursa(false, pa, adr, "INPUT_DATA_END");
+        
+        // duomenu isvedimas
+        pa.getList().clear();
+        pa.addPa(1);
+        OS.kernel.kurtiResursa(false, pa, adr, "OUTPUT_DATA");
+        
+        // duomenu isvedimo pabaiga
+        pa.getList().clear();
+        pa.addPa(1);
+        OS.kernel.kurtiResursa(false, pa, adr, "OUTPUT_DATA_END");
+        
+        // atminties prasymas
+        pa.getList().clear();
+        pa.addPa(1);
+        OS.kernel.kurtiResursa(false, pa, adr, "ASK_MEMORY");
+        
+        // atminties davimas
+        pa.getList().clear();
+        pa.addPa(1);
+        OS.kernel.kurtiResursa(false, pa, adr, "MEMORY_GIVEN");
+        
+        // uzduotis paimta
+        pa.getList().clear();
+        pa.addPa(1);
+        OS.kernel.kurtiResursa(false, pa, adr, "UZDUOTIS_PAIMTA");
+        
+        // uzduotis isorineje atmintyje
+        pa.getList().clear();
+        pa.addPa(1);
+        OS.kernel.kurtiResursa(false, pa, adr, "UZDUOTIS_ISORINEJE_ATMINTYJE");
+        
+        // pakrovimo paketas
+        pa.getList().clear();
+        pa.addPa(1);
+        OS.kernel.kurtiResursa(false, pa, adr, "PAKROVIMO_PAKETAS");
+        
+        // uzduotis poakrauta
+        pa.getList().clear();
+        pa.addPa(1);
+        OS.kernel.kurtiResursa(false, pa, adr, "LOADER_END");
+        
+        // isvedimo vartotojui pabaiga
+        pa.getList().clear();
+        pa.addPa(1);
+        OS.kernel.kurtiResursa(false, pa, adr, "OUTPUT_TO_USER_END");
+    }
+    
+    public static void printResD(int id)
+    {
+        int index = OS.kernel.findRes(id, OS.resourseDesc);
+        System.out.println(OS.resourseDesc.get(index).getPrieinamu_resursu_sarasas().getList().size());
+    }
     public static void main(String[] args) {
-        // TODO code application logic here
-        /*ArrayList memory =new ArrayList();
-                 res;
-        int prior;*/
-        //OS.kernel.createProcess(memory, resourse, prior);
-        /*memoryInit();
-        String komandos[] = {"CHNGR", "10", "START"};
-        for(int i = 0; i < komandos.length; i++)
-        {
-            rmMemory[i].setCell(komandos[i]);
-            
-            //rmMemory[paging.getRMadress(i)].setCell(komandos[i]);
-        }
-        cpu();
-        cpu();
-        //cpu();
-        String virtualiosKomandos[] = {"CHNGR",  "0", "AD3" , "1"};
-        memoryMonitoring();
-        for(int i = 0; i < virtualiosKomandos.length; i++)
-        {
-            int adr = OS.paging.getRMadress(i);
-            System.out.println("adresas kuri ziuresiu: " + adr);
-            rmMemory[adr].setCell(virtualiosKomandos[i]);
-            
-            //rmMemory[paging.getRMadress(i)].setCell(komandos[i]);
-        }
-        cpu();
-        cpu();
-        //cpu();
-        //cpu();
+        memoryInit();
+        initializeSystem();
         
-        memoryMonitoring();
-        
-        
-        
-        
-        */
-        
-        //OSgui.refreshRegisterFields();
-        
-        //rmMemory[0].setCell("CHNGR");
-        //rmMemory[0].setCell("LOSP");
-        //rmMemory[1].setCell("10");
-        //rmMemory[2].setCell("START");
-
-        //OSgui.refreshRegisterFields();*/
-        //String komandos[] = {"CHNgR", "10", "START"};
-        //String komandos[] = {"BS000", "DB007", "ST001", "DT002", "SZ009", "XCHGN"};
-        //for(int i = 0; i < komandos.length; i++)
-        //{
-        /*    OS.rmMemory[i].setCell(komandos[i]);
-            
-
-        }
-        OSgui.refreshRegisterFields();
-        cpu();
-        OSgui.refreshRegisterFields();
-        cpu();
-        
-        
-        
-        String komandos1[] = {"CHNGR", "99999", "LR900", "SR050", "LOSP"};
-        //String komandos[] = {"JP000", "AAAAA"};
-        for(int i = 0; i < komandos1.length; i++)
-        {
-            virtualMachine.memory[i].setCell(komandos1[i]);
-            
-            rmMemory[paging.getRMadress(i)].setCell(komandos1[i]);
-        }
-        cpu();
-        cpu();
-        cpu();
-        cpu();
-        cpu();
-        cpu();
-        OSgui.refreshRegisterFields();
-        
-        /*String a = "2";
-        String b = "1";
-        String c = String.valueOf(Integer.valueOf(a) - Integer.valueOf(b));
-        boolean d = false;
-        String f = "false";
-        System.out.println(String.valueOf(d));
-        //memoryInit();
-        //virtualMachine.memoryInit();
-        //printMemory();
-        rmMemory[0].setCell("AD050");
-        String command = getCommand();
-        int commandNumber = findCommand(command);
-        String value = getValue(commandNumber, command);
-        System.out.println(Boolean.valueOf(f));
-        */
-        /*while(true)
-        {
-            if(rm.mod == 0)
-            command = memory[rm.ic]
-            else 
-            {
-            command = memory[vm.ic]
-            }
-            atpazystam komnda 
-        }*/
     }
     
 }

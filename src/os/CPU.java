@@ -16,7 +16,7 @@ public class CPU {
                 registerPI, registerSI;
     private boolean registerC, registerMOD;
     
-    CPU(boolean registerMod, int registerPTR ){
+    CPU(boolean registerMod, int registerPTR, int registerIC ){
         this.registerR = "";
         this.registerC = false;
         this.registerCT = 0;
@@ -24,6 +24,7 @@ public class CPU {
         this.registerMOD = registerMod;
         this.registerPTR = registerPTR;
         this.registerSP = 0;
+        this.registerIC = registerIC;
     } 
 
     public String getRegisterR()

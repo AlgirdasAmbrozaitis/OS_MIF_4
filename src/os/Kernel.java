@@ -123,10 +123,17 @@ public class Kernel
         process.setPriority(priority);
         process.setState("READY");
         process.setList_where_process_is(-1);
-        int father = OS.kernel.procDesc.getProcessName();
-        father = OS.kernel.findProc(father, OS.processDesc);
-        process.setFather_processor(OS.processDesc.get(father).getId());
-        OS.processDesc.get(father).addSon(process.getId());
+        if(OS.processDesc.size() != 0)
+        {
+            int father = OS.kernel.procDesc.getProcessName();
+            father = OS.kernel.findProc(father, OS.processDesc);
+            process.setFather_processor(OS.processDesc.get(father).getId());
+            OS.processDesc.get(father).addSon(process.getId());
+        }else
+        {
+            process.setFather_processor(process.getId());
+        }
+        OS.kernel.pps.addPps(process.getId(), process.getPriority());
         OS.processDesc.add(process);
     
     }
@@ -384,6 +391,26 @@ public class Kernel
             }
         }
         return -1;
+    }
+
+    public ProcesorDeskriptor getProcDesc()
+    {
+        return procDesc;
+    }
+
+    public void setProcDesc(ProcesorDeskriptor procDesc)
+    {
+        this.procDesc = procDesc;
+    }
+
+    public ArrList getPps()
+    {
+        return pps;
+    }
+
+    public void setPps(ArrList pps)
+    {
+        this.pps = pps;
     }
     
 }

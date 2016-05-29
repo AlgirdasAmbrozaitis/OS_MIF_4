@@ -13,6 +13,14 @@ public class ProcesorDeskriptor
 {
     private int processCount;
     private int processName;
+
+    public ProcesorDeskriptor()
+    {
+        this.processCount = 1;
+        this.processName = 0;
+    }
+    
+    
     //setters
 
     public void setProcessCount(int processCount)
