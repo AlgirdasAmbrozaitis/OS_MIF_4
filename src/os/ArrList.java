@@ -47,6 +47,7 @@ public class ArrList {
     public void addPa( int part, String info ){
         Struct struct = new Struct();
         struct.part_of_resourse = part;
+        struct.info = info;
         list.add(struct);
         //Collections.sort(list);
     }
