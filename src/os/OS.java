@@ -247,6 +247,7 @@ public class OS {
         ArrList memory = new ArrList();
         ArrList resource = new ArrList();
         OS.kernel.createProcess(memory, resource, 0, cpu, "START/STOP");
+        String info= "";
 
         //kuriami resursai
         int adr = 0; //kolkas neaisku
@@ -256,32 +257,32 @@ public class OS {
         
         for(int i = 0; i < OS.rmMemory.length / 10; i++)
         {
-            pa.addPa(i);
+            pa.addPa(i, info);
         }
         
         OS.kernel.kurtiResursa(true, pa, adr, "OPERATYVIOJI_ATMINTIS");
           
         // ivedimo irenginys
         pa.getList().clear();
-        pa.addPa(1);
+        pa.addPa(1, info);
         OS.kernel.kurtiResursa(true, pa, adr, "IVEDIMO_IRENGINYS");
         
         // isvedimo irenginys
         pa.getList().clear();
-        pa.addPa(1);
+        pa.addPa(1, info);
         OS.kernel.kurtiResursa(true, pa, adr, "ISVEDIMO_IRENGINYS");
         
         // isorine atmintis
         pa.getList().clear();
         for(int i = 0; i < OS.externalMemory.length / 10; i++)
         {
-            pa.addPa(i);
+            pa.addPa(i, info);
         }
         OS.kernel.kurtiResursa(true, pa, adr, "ISORINE_ATMINTIS");
         
         // laukimo resursas
         pa.getList().clear();
-        pa.addPa(1);
+        pa.addPa(1, info);
         OS.kernel.kurtiResursa(true, pa, adr, "SYSTEM_IDLE");
         
         // darbo pabaiga

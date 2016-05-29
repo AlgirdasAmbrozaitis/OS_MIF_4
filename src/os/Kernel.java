@@ -281,14 +281,14 @@ public class Kernel
         }
         OS.kernel.planuotojas();
     }
-    public void atlaisvintiResursa(int resource, int part, int proc)
+    public void atlaisvintiResursa(int resource, int part, int proc, String info)
     {
         int index = OS.kernel.findRes(resource, OS.resourseDesc);
         int index1 = OS.kernel.findProc(proc, OS.processDesc);
         if(OS.resourseDesc.get(index).isRepeated_use())
         {
             ArrList old = OS.resourseDesc.get(index).getPrieinamu_resursu_sarasas();
-            old.addPa(part);
+            old.addPa(part, info);
             OS.resourseDesc.get(index).setPrieinamu_resursu_sarasas(old);
             old = OS.processDesc.get(index1).getResource();
             old.removeR(resource, part);
@@ -319,7 +319,7 @@ public class Kernel
         }
         else
         {
-            String info = OS.processDesc.get(index1).getResource().get(resource).info;
+            info = OS.processDesc.get(index1).getResource().get(resource).info;
             ArrList old = OS.resourseDesc.get(index).getUsed_resourse();
             old.addSu(proc, part, info);
             OS.resourseDesc.get(index).setUsed_resourse(old);
@@ -330,7 +330,7 @@ public class Kernel
     {
         int index = OS.kernel.findRes(resource, OS.resourseDesc);
         ArrList old = OS.resourseDesc.get(index).getPrieinamu_resursu_sarasas();
-        old.addPa(part);
+        old.addPa(part, info);
         OS.resourseDesc.get(index).setPrieinamu_resursu_sarasas(old);
     }
     public void deaktyvuotiR(int resource)
