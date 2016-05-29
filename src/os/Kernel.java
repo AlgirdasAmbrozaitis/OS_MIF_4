@@ -175,7 +175,7 @@ public class Kernel
                     OS.rmMemory[block_no + cn].freeCell();
                }
                OS.processDesc.get(index).getOperating_memory().getList().remove(r);
-               OS.resourseDesc.get(r.processId).getPrieinamu_resursu_sarasas().addPa(r.part_of_resourse);
+               OS.resourseDesc.get(r.processId).getPrieinamu_resursu_sarasas().addPa(r.part_of_resourse, "");
                
            }
         }
@@ -183,7 +183,7 @@ public class Kernel
            for( Struct r : OS.processDesc.get(index).getResource().getList() ){
                if(OS.resourseDesc.get(r.processId).isRepeated_use()){
                    OS.processDesc.get(index).getResource().getList().remove(r.processId);
-                   OS.resourseDesc.get(r.processId).getPrieinamu_resursu_sarasas().addPa(r.part_of_resourse);
+                   OS.resourseDesc.get(r.processId).getPrieinamu_resursu_sarasas().addPa(r.part_of_resourse, "");
                }
            }
         }
