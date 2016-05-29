@@ -133,8 +133,8 @@ public class OS {
         } 
         else 
         { 
-            OS.realMachine.setRegisterPI(2);
-            return "COMMAND NOT FOUND";
+            //OS.realMachine.setRegisterPI(2);
+            return "PROCESS LINE";
         }
     }
     public static void executeCommand()
@@ -144,8 +144,25 @@ public class OS {
         String value = getValue(commandNumber, command);
         
         realMachine.setRegisterTI(realMachine.getRegisterTI() - 1);
-        
-        if( !value.equals("COMMAND NOT FOUND") )
+        if(value.equals("PROCESS LINE"))
+        {
+            String line = rmMemory[realMachine.getRegisterIC()].getCell();
+            if(line.matches("\\d+"))
+            {
+                int proc = OS.kernel.getProcDesc().getProcessName();
+                proc = OS.kernel.findProc(proc, OS.processDesc);
+                String name = OS.processDesc.get(proc).getName();
+                switch(name)
+                {
+                    case "START/STOP":
+                    {
+                        startStop(Integer.valueOf(line));
+                        break;
+                    }
+                }
+            }
+            realMachine.setRegisterIC(realMachine.getRegisterIC() + 1);
+        }else if( !value.equals("COMMAND NOT FOUND") )
         {
             /*if( realMachine.isRegisterMOD() )
             {
@@ -170,7 +187,8 @@ public class OS {
             }
             else
             {*/
-                realMachine.setRegisterIC(realMachine.getRegisterIC() + 1);
+
+            realMachine.setRegisterIC(realMachine.getRegisterIC() + 1);
             //}
         }
         
@@ -188,11 +206,11 @@ public class OS {
     {
         
         //OSgui.refreshRegisterFields();
-        try {
+        /*try {
             Thread.sleep(2000);
         } catch (InterruptedException ex) {
             Logger.getLogger(OS.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
         if (realMachine.getRegisterSI() != 0)
         {
             //OSgui.output("SI was: " + String.valueOf(realMachine.getRegisterSI()) + " ");
@@ -347,14 +365,191 @@ public class OS {
         OS.kernel.kurtiResursa(false, pa, adr, "OUTPUT_TO_USER_END");
     }
     
-    public static void printResD(int id)
+    public static void startStop(int line)
     {
-        int index = OS.kernel.findRes(id, OS.resourseDesc);
-        System.out.println(OS.resourseDesc.get(index).getPrieinamu_resursu_sarasas().getList().size());
+        ArrList memory = new ArrList();
+        ArrList resource = new ArrList();
+        int priority = 0;
+        CPU cpu = new CPU(false, 0 , 0);
+        switch(line)
+        {
+            case 0: 
+            {
+                int ic = 10;
+                cpu = new CPU(false, 0, ic);
+                priority = 1;
+                OS.kernel.createProcess(memory, resource, priority, cpu, "OUTPUT_TO_USER");
+                rmMemory[ic].cell = "0";
+                rmMemory[ic + 1].setCell("LR0");
+                rmMemory[ic + 2].setCell("AD5");
+                rmMemory[ic + 3].setCell("SR0");
+                rmMemory[ic + 4].setCell("JP0");
+                rmMemory[ic + 5].setCell("1");
+                break;
+            }
+            case 1: 
+            {
+                int ic = 20;
+                cpu = new CPU(false, 0, ic);
+                priority = 2;
+                OS.kernel.createProcess(memory, resource, priority, cpu, "INPUT_PROGRAM");
+                rmMemory[ic].cell = "0";
+                rmMemory[ic + 1].setCell("LR0");
+                rmMemory[ic + 2].setCell("AD5");
+                rmMemory[ic + 3].setCell("SR0");
+                rmMemory[ic + 4].setCell("JP0");
+                rmMemory[ic + 5].setCell("1");
+                break;
+            }
+            case 2: 
+            {
+                int ic = 30;
+                cpu = new CPU(false, 0, ic);
+                priority = 2;
+                OS.kernel.createProcess(memory, resource, priority, cpu, "INPUT_DATA");
+                rmMemory[ic].cell = "0";
+                rmMemory[ic + 1].setCell("LR0");
+                rmMemory[ic + 2].setCell("AD5");
+                rmMemory[ic + 3].setCell("SR0");
+                rmMemory[ic + 4].setCell("JP0");
+                rmMemory[ic + 5].setCell("1");
+                break;
+            }
+            case 3: 
+            {
+                int ic = 40;
+                cpu = new CPU(false, 0, ic);
+                priority = 2;
+                OS.kernel.createProcess(memory, resource, priority, cpu, "OUTPUT_DATA");
+                rmMemory[ic].cell = "0";
+                rmMemory[ic + 1].setCell("LR0");
+                rmMemory[ic + 2].setCell("AD5");
+                rmMemory[ic + 3].setCell("SR0");
+                rmMemory[ic + 4].setCell("JP0");
+                rmMemory[ic + 5].setCell("1");
+                break;
+            }
+            case 4: 
+            {
+                int ic = 50;
+                cpu = new CPU(false, 0, ic);
+                priority = 2;
+                OS.kernel.createProcess(memory, resource, priority, cpu, "ADDITIONAL_MEMORY");
+                rmMemory[ic].cell = "0";
+                rmMemory[ic + 1].setCell("LR0");
+                rmMemory[ic + 2].setCell("AD5");
+                rmMemory[ic + 3].setCell("SR0");
+                rmMemory[ic + 4].setCell("JP0");
+                rmMemory[ic + 5].setCell("1");
+                break;
+            }
+            case 5: 
+            {
+                int ic = 60;
+                cpu = new CPU(false, 0, ic);
+                priority = 2;
+                OS.kernel.createProcess(memory, resource, priority, cpu, "MAIN_PROC");
+                rmMemory[ic].cell = "0";
+                rmMemory[ic + 1].setCell("LR0");
+                rmMemory[ic + 2].setCell("AD5");
+                rmMemory[ic + 3].setCell("SR0");
+                rmMemory[ic + 4].setCell("JP0");
+                rmMemory[ic + 5].setCell("1");
+                break;
+            }
+            case 6: 
+            {
+                int ic = 70;
+                cpu = new CPU(false, 0, ic);
+                priority = 2;
+                OS.kernel.createProcess(memory, resource, priority, cpu, "LOADER");
+                rmMemory[ic].cell = "0";
+                rmMemory[ic + 1].setCell("LR0");
+                rmMemory[ic + 2].setCell("AD5");
+                rmMemory[ic + 3].setCell("SR0");
+                rmMemory[ic + 4].setCell("JP0");
+                rmMemory[ic + 5].setCell("1");
+                break;
+            }
+            case 7: 
+            {
+                int ic = 80;
+                cpu = new CPU(false, 0, ic);
+                priority = 5;
+                OS.kernel.createProcess(memory, resource, priority, cpu, "SYSTEM_IDLE");
+                rmMemory[ic].cell = "0";
+                rmMemory[ic + 1].setCell("LR0");
+                rmMemory[ic + 2].setCell("AD5");
+                rmMemory[ic + 3].setCell("SR0");
+                rmMemory[ic + 4].setCell("JP0");
+                rmMemory[ic + 5].setCell("1");
+                break;
+            }
+            case 8: 
+            {
+                for(int i = 0; i < OS.kernel.getPps().getSize(); i++)
+                {
+                    int id = OS.kernel.getPps().getList().get(i).processId;
+                    id = OS.kernel.findProc(id, processDesc);
+                    String name = OS.processDesc.get(id).getName();
+                    System.out.println(name + " prioritetas: " + OS.processDesc.get(id).getPriority());
+                }
+                int res = OS.kernel.findResName("DARBO_PABAIGA", OS.resourseDesc);
+                OS.kernel.prasytiResurso(res, 1);
+                break;
+            }
+            case 9: 
+            {
+                System.exit(0);
+                break;
+            }
+        }
+    }
+    
+    public static void outputToUser(int line)
+    {
+        switch(line)
+        {
+            case 0:
+            {
+                String res = "PRANESIMAS_VARTOTOJUI";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                OS.kernel.prasytiResurso(id, 1);
+                break;
+            }
+            
+        }
     }
     public static void main(String[] args) {
         memoryInit();
+        rmMemory[0].cell = "0";
+        rmMemory[1].setCell("LR0");
+        rmMemory[2].setCell("AD5");
+        rmMemory[3].setCell("SR0");
+        rmMemory[4].setCell("JP0");
+        rmMemory[5].setCell("1");
         initializeSystem();
+        OS.kernel.planuotojas();
+        for(int i = 0; i < 40; i++)
+        {
+            System.out.println(i);
+            cpu();
+            
+            rmMemory[0].setState(false);
+        }
+        for(int i = 0; i < 2; i++)
+        {
+            System.out.println(i);
+            cpu();
+            
+            rmMemory[0].setState(false);
+        }
+        
+        for(int i = 0; i < OS.processDesc.size(); i++)
+        {
+            System.out.println("proceso vardas: " + OS.processDesc.get(i).getName());
+        }
+
         
     }
     

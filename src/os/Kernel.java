@@ -276,7 +276,7 @@ public class Kernel
         {
             OS.processDesc.get(id).setState("BLOCKED");
             OS.processDesc.get(id).setList_where_process_is(resourse);
-            OS.kernel.procDesc.setProcessName(-1);
+            //OS.kernel.procDesc.setProcessName(-1);
             OS.kernel.pps.remove(id);
         }
         OS.kernel.planuotojas();

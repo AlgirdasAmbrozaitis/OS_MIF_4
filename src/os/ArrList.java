@@ -68,8 +68,9 @@ public class ArrList {
     public void remove( int id ){ // pasalinami visi elementai su vardu <id>
         for( Struct obj: list ){
             if(obj.processId == id){
-                list.remove(obj);
+                list.remove(id);
                 //Collections.sort(list);
+                break;
             }
         }
     }
@@ -96,6 +97,7 @@ public class ArrList {
             }
         }
     }
+    
     public Struct get( int index ){
         for( Struct obj: list){
             if(obj.processId == index ){
@@ -112,4 +114,20 @@ public class ArrList {
     public int getSize(){
         return list.size();
     }
+    
+    /*public void sortList()
+    {
+        for(int i = 0; i < list.size(); i++)
+        {
+            for(int j = 0; j < list.size() -1; j++)
+            {
+                if(list.get(j).priority < list.get(j+1).priority)
+                {
+                    Struct newS = list.get(j);
+                    list.get(j) = list.get(j+1);
+                    list.get(j+1) = newS;
+                }
+            }
+        }
+    }*/
 }
