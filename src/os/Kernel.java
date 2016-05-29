@@ -24,6 +24,7 @@ public class Kernel
     
     public void planuotojas()
     {
+        OS.plan = true;
         int processNumber = OS.kernel.procDesc.getProcessName();
         int index = OS.kernel.findProc(processNumber, OS.processDesc);
         //TODO gali reikt tikrint ar ne null
@@ -40,9 +41,9 @@ public class Kernel
             OS.processDesc.get(index).setCPU();
             //OS.kernel.pps.addPps(processNumber, OS.processDesc.get(processNumber).getPriority());
             int next_process = OS.kernel.pps.removeFirst();
-            next_process = OS.kernel.findProc(next_process, OS.processDesc);
-            OS.processDesc.get(next_process).getCpu();
-            OS.kernel.procDesc.setProcessName(OS.processDesc.get(next_process).getId());
+            int next_process1 = OS.kernel.findProc(next_process, OS.processDesc);
+            OS.processDesc.get(next_process1).getCpu();
+            OS.kernel.procDesc.setProcessName(OS.processDesc.get(next_process1).getId());
         }
         
     }
@@ -75,7 +76,7 @@ public class Kernel
     }
     //procesu primityvai
     
-   public void resourse_distributor(int r){
+   public void paskirstytojas(int r){
        
         this.aptarnautuProcesuSkaicius = 0;
         this.aptarnautiProcesai.clear();
@@ -85,21 +86,21 @@ public class Kernel
         for( int i = 0; i < OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().getList().size(); i++ ){
            
             if( OS.resourseDesc.get(index).getPrieinamu_resursu_sarasas().getList().size() >=
-                OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().get(i).part_of_resourse ){
+                OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().getList().get(i).part_of_resourse ){
                
-                int proc_index = OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().get(i).processId;
-                if( !OS.resourseDesc.get(index).getName().equals("OA")){
-                    for( int j = 0; j<OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().get(i).part_of_resourse; j++){
+                int proc_index = OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().getList().get(i).processId;
+                if( !OS.resourseDesc.get(index).getName().equals("OPERATYVIOJI_ATMINTIS")){
+                    for( int j = 0; j<OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().getList().get(i).part_of_resourse; j++){
                         ArrList old = OS.processDesc.get(proc_index).getResource();
-                        int resource = OS.resourseDesc.get(index).getPrieinamu_resursu_sarasas().get(0).part_of_resourse;
+                        int resource = OS.resourseDesc.get(index).getPrieinamu_resursu_sarasas().getList().get(0).part_of_resourse;
                         old.addR(r,resource);
                         OS.resourseDesc.get(index).getPrieinamu_resursu_sarasas().remove(0);
                         OS.processDesc.get(proc_index).setResource(old);
                     }
                 } else {
-                    for( int j = 0; j<OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().get(i).part_of_resourse; j++){
+                    for( int j = 0; j<OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().getList().get(i).part_of_resourse; j++){
                         ArrList old = OS.processDesc.get(proc_index).getOperating_memory();
-                        int resource = OS.resourseDesc.get(index).getPrieinamu_resursu_sarasas().get(0).part_of_resourse;
+                        int resource = OS.resourseDesc.get(index).getPrieinamu_resursu_sarasas().getList().get(0).part_of_resourse;
                         old.addOa(r,resource);
                         OS.resourseDesc.get(index).getPrieinamu_resursu_sarasas().remove(0);
                         OS.processDesc.get(proc_index).setOperating_memory(old);
@@ -277,7 +278,7 @@ public class Kernel
             OS.processDesc.get(id).setState("BLOCKED");
             OS.processDesc.get(id).setList_where_process_is(resourse);
             //OS.kernel.procDesc.setProcessName(-1);
-            OS.kernel.pps.remove(id);
+            //OS.kernel.pps.remove(id);
         }
         OS.kernel.planuotojas();
     }
@@ -319,7 +320,7 @@ public class Kernel
         }
         else
         {
-            info = OS.processDesc.get(index1).getResource().get(resource).info;
+            info = OS.processDesc.get(index1).getResource().getList().get(resource).info;
             ArrList old = OS.resourseDesc.get(index).getUsed_resourse();
             old.addSu(proc, part, info);
             OS.resourseDesc.get(index).setUsed_resourse(old);
@@ -339,10 +340,6 @@ public class Kernel
         ArrList newL = OS.resourseDesc.get(index).getUsed_resourse();
         newL.getList().clear();
         OS.resourseDesc.get(index).setUsed_resourse(newL);
-    }
-    public void paskirstytojas(int resource)
-    {
-        
     }
     public int findProc(int id,ArrayList<ProcessDescriptor> list)
     {

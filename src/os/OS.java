@@ -30,6 +30,7 @@ public class OS {
     /**
      * @param args the command line arguments
      */  
+    public static boolean plan = false;
     public static final int RM_MEMORY_SIZE = 1000;
     public static final int VM_MEMORY_SIZE = 100;
     public static final int EXTERNAL_MEMORY_SIZE = 4000;
@@ -159,9 +160,17 @@ public class OS {
                         startStop(Integer.valueOf(line));
                         break;
                     }
+                    case "SYSTEM_IDLE":
+                    {
+                        idle(Integer.valueOf(line));
+                        break;
+                    }
                 }
             }
-            realMachine.setRegisterIC(realMachine.getRegisterIC() + 1);
+            if(!OS.plan)
+            {
+                realMachine.setRegisterIC(realMachine.getRegisterIC() + 1);
+            }else plan = false;
         }else if( !value.equals("COMMAND NOT FOUND") )
         {
             /*if( realMachine.isRegisterMOD() )
@@ -247,6 +256,8 @@ public class OS {
         ArrList memory = new ArrList();
         ArrList resource = new ArrList();
         OS.kernel.createProcess(memory, resource, 0, cpu, "START/STOP");
+        OS.kernel.getPps().removeFirst();
+        OS.processDesc.get(0).setState("RUN");
         String info= "";
 
         //kuriami resursai
@@ -280,10 +291,15 @@ public class OS {
         }
         OS.kernel.kurtiResursa(true, pa, adr, "ISORINE_ATMINTIS");
         
+        // isorinis atminties irenginys
+        pa.getList().clear();
+        pa.addPa(1, info);
+        OS.kernel.kurtiResursa(true, pa, adr, "ISORINIS_ATMINTIES_IRENGINYS");
+        
         // laukimo resursas
         pa.getList().clear();
         pa.addPa(1, info);
-        OS.kernel.kurtiResursa(true, pa, adr, "SYSTEM_IDLE");
+        OS.kernel.kurtiResursa(true, pa, adr, "LAUKIMAS");
         
         // darbo pabaiga
         pa.getList().clear();
@@ -374,7 +390,7 @@ public class OS {
         CPU cpu = new CPU(false, 0 , 0);
         switch(line)
         {
-            case 0: 
+            /*case 0: 
             {
                 int ic = 10;
                 cpu = new CPU(false, 0, ic);
@@ -471,22 +487,22 @@ public class OS {
                 rmMemory[ic + 4].setCell("JP0");
                 rmMemory[ic + 5].setCell("1");
                 break;
-            }
-            case 7: 
+            }*/
+            case 0: 
             {
                 int ic = 80;
                 cpu = new CPU(false, 0, ic);
                 priority = 5;
                 OS.kernel.createProcess(memory, resource, priority, cpu, "SYSTEM_IDLE");
                 rmMemory[ic].cell = "0";
-                rmMemory[ic + 1].setCell("LR0");
-                rmMemory[ic + 2].setCell("AD5");
-                rmMemory[ic + 3].setCell("SR0");
-                rmMemory[ic + 4].setCell("JP0");
+                rmMemory[ic + 1].setCell("LR80");
+                rmMemory[ic + 2].setCell("AD85");
+                rmMemory[ic + 3].setCell("SR80");
+                rmMemory[ic + 4].setCell("JP80");
                 rmMemory[ic + 5].setCell("1");
                 break;
             }
-            case 8: 
+            case 1: 
             {
                 for(int i = 0; i < OS.kernel.getPps().getSize(); i++)
                 {
@@ -497,6 +513,12 @@ public class OS {
                 }
                 int res = OS.kernel.findResName("DARBO_PABAIGA", OS.resourseDesc);
                 OS.kernel.prasytiResurso(res, 1);
+                int id = OS.kernel.findRes(res, resourseDesc);
+                for(int i = 0; i <OS.resourseDesc.get(id).getLaukianciu_procesu_sarasas().getSize(); i++ )
+                {
+                    System.out.println("darbo pabaigos resursas: " + OS.resourseDesc.get(id).getLaukianciu_procesu_sarasas().getList().get(i).processId);
+                }
+                
                 break;
             }
             case 9: 
@@ -507,7 +529,7 @@ public class OS {
         }
     }
     
-    public static void outputToUser(int line)
+    /*public static void outputToUser(int line)
     {
         switch(line)
         {
@@ -518,7 +540,61 @@ public class OS {
                 OS.kernel.prasytiResurso(id, 1);
                 break;
             }
+            case 1:
+            {
+                String res = "ISVEDIMO_IRENGINYS";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                OS.kernel.prasytiResurso(id, 1);
+                break;
+            }
+            case 2:
+            {
+                //vykdoma komanda xchng
+                break;
+            }
+            case 3:
+            {
+                String res = "ISVEDIMO_IRENGINYS";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                int proc = OS.kernel.getProcDesc().getProcessName();
+                OS.kernel.atlaisvintiResursa(id, 1, proc, "");
+                break;
+            }
+            case 4:
+            {
+                String res = "PRANESIMAS_VARTOTOJUI";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                int proc = OS.kernel.getProcDesc().getProcessName();
+                OS.kernel.atlaisvintiResursa(id, 1, proc, "");
+            }
             
+            
+        }
+    }*/
+    
+    public static void idle(int line)
+    {
+        switch(line)
+        {
+            case 0:
+            {
+                int res = OS.kernel.findResName("LAUKIMAS", OS.resourseDesc);
+                OS.kernel.prasytiResurso(res, 1);
+                //OS.kernel.prasytiResurso(id, 1);
+                break;
+            }
+            case 1:
+            {
+                String res = "LAUKIMAS";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                int proc = OS.kernel.getProcDesc().getProcessName();
+                OS.kernel.atlaisvintiResursa(id, 1, proc, "");
+                break;
+            }
+            default:
+            {
+                rmMemory[80].cell = "0";
+            }
         }
     }
     public static void main(String[] args) {
@@ -531,7 +607,9 @@ public class OS {
         rmMemory[5].setCell("1");
         initializeSystem();
         OS.kernel.planuotojas();
-        for(int i = 0; i < 40; i++)
+        OS.plan = false;
+        //OS.realMachine.setRegisterIC(0);
+        /*for(int i = 0; i < 40; i++)
         {
             System.out.println(i);
             cpu();
@@ -544,13 +622,37 @@ public class OS {
             cpu();
             
             rmMemory[0].setState(false);
-        }
-        
-        for(int i = 0; i < OS.processDesc.size(); i++)
+        }*/
+        int zingsnis = -1;
+        while(true)
         {
-            System.out.println("proceso vardas: " + OS.processDesc.get(i).getName());
+            zingsnis++;
+            try
+            {
+                System.out.println("zingsnis: " + zingsnis);
+                cpu();
+                rmMemory[0].setState(false);
+                rmMemory[80].setState(false);
+                int idd = OS.kernel.getProcDesc().getProcessName();
+                int index = OS.kernel.findProc(idd, processDesc);
+                System.out.println("einamas procesas: " + OS.processDesc.get(index).getName());
+                for(int i = 0; i < OS.kernel.getPps().getSize(); i++)
+                {
+                    int id = OS.kernel.getPps().getList().get(i).processId;
+                    id = OS.kernel.findProc(id, processDesc);
+                    String name = OS.processDesc.get(id).getName();
+                    System.out.println(name + " prioritetas: " + OS.processDesc.get(id).getPriority());
+                }
+                for(int i = 0; i < OS.processDesc.size(); i++)
+                {
+                    System.out.println("proceso vardas: " + OS.processDesc.get(i).getName() + "proceso busena: " + OS.processDesc.get(i).getState());
+                }
+                Thread.sleep(4000);
+            } catch (InterruptedException ex)
+            {
+                Logger.getLogger(OS.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-
         
     }
     
