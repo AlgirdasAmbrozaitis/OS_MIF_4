@@ -48,22 +48,45 @@ public class Kernel
     }
     public void pertraukimuApdorotojas()
     {
+        int index;
+        index = OS.kernel.findResName("VM_INTERRUPTED", OS.resourseDesc);
+        OS.kernel.deaktyvuotiR(index);
+        index = OS.kernel.findResName("PRANESIMAS_VARTOTOJUI", OS.resourseDesc);
+        OS.kernel.deaktyvuotiR(index);
+        if (OS.realMachine.getRegisterTI() == 0)
+        {
+            OS.realMachine.setRegisterTI(50);
+            OS.kernel.planuotojas();
+        }
+        OS.realMachine.setRegisterSI(0);
+        OS.realMachine.setRegisterAI(0);
+        OS.realMachine.setRegisterPI(0);
+        /*index = OS.kernel.findProc(OS.kernel.procDesc.getProcessName(), OS.processDesc);
+        if(!OS.processDesc.get(index).getName().equals("INTERFACE"))
+        {
+            //reikia nustatyti job governor
+        }
+        else
+        {
+                
+        }*/
+       
         
     }
     //procesu primityvai
     
-    public void resourse_distributor(int r){
-        
+   public void resourse_distributor(int r){
+       
         this.aptarnautuProcesuSkaicius = 0;
         this.aptarnautiProcesai.clear();
-        
+       
         int index = OS.kernel.findRes(r, OS.resourseDesc);
-        
+       
         for( int i = 0; i < OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().getList().size(); i++ ){
-            
+           
             if( OS.resourseDesc.get(index).getPrieinamu_resursu_sarasas().getList().size() >=
                 OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().get(i).part_of_resourse ){
-                
+               
                 int proc_index = OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().get(i).processId;
                 if( !OS.resourseDesc.get(index).getName().equals("OA")){
                     for( int j = 0; j<OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().get(i).part_of_resourse; j++){
@@ -82,7 +105,7 @@ public class Kernel
                         OS.processDesc.get(proc_index).setOperating_memory(old);
                     }
                 }
-                
+               
                 this.aptarnautiProcesai.add(proc_index);
                 this.aptarnautuProcesuSkaicius++;    
             }
@@ -127,8 +150,9 @@ public class Kernel
         if( OS.processDesc.get(index).getList_where_process_is() == -1 ){
             pps.remove(index);
         } else {
+           
             OS.resourseDesc.get(OS.processDesc.get(index).getList_where_process_is())
-                                                            .getList().remove(index);
+                                                            .getList().remove(index);// do magic
         }
        
         if( OS.processDesc.get(index).getSons_processes().size() > 0 ){
@@ -145,6 +169,7 @@ public class Kernel
                }
                OS.processDesc.get(index).getOperating_memory().getList().remove(r);
                OS.resourseDesc.get(r.processId).getPrieinamu_resursu_sarasas().addPa(r.part_of_resourse);
+               
            }
         }
         if( OS.processDesc.get(index).getResource().getList().size() > 0 ){
@@ -161,7 +186,6 @@ public class Kernel
         }
         OS.processDesc.remove(index);
     }
-    
     public void stopProc( int index ){
         int ind = OS.kernel.findProc(index, OS.processDesc);
         if( OS.processDesc.get(ind).getState().equals("RUN")){
@@ -305,7 +329,8 @@ public class Kernel
     public void deaktyvuotiR(int resource)
     {
         int index = OS.kernel.findRes(resource, OS.resourseDesc);
-        ArrList newL = new ArrList();
+        ArrList newL = OS.resourseDesc.get(index).getUsed_resourse();
+        newL.getList().clear();
         OS.resourseDesc.get(index).setUsed_resourse(newL);
     }
     public void paskirstytojas(int resource)
@@ -345,6 +370,17 @@ public class Kernel
             if(obj.getName().equals(name))
             {
                 return obj.getRs();
+            }
+        }
+        return -1;
+    }
+    public int findProcName(String name,ArrayList<ProcessDescriptor> list)
+    {
+        for(ProcessDescriptor obj : list)
+        {
+            if(obj.getName().equals(name))
+            {
+                return obj.getId();
             }
         }
         return -1;
