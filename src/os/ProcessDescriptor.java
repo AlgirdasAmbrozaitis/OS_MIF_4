@@ -23,7 +23,7 @@ public class ProcessDescriptor {
     
     private ArrList operating_memory  = new ArrList(); // operatyvioji atmintis
     
-    CPU cpu = new CPU();
+    CPU cpu = new CPU(true, 0);
     
     public ProcessDescriptor()
     {

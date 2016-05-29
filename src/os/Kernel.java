@@ -88,7 +88,7 @@ public class Kernel
                 OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().get(i).part_of_resourse ){
                 
                 int proc_index = OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().get(i).processId;
-
+                
                 OS.processDesc.get(proc_index).getResource().addR(index, OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().get(i).part_of_resourse);
                 
                 OS.resourseDesc.get(index).getPrieinamu_resursu_sarasas().get(index).part_of_resourse -= OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().get(i).part_of_resourse;
