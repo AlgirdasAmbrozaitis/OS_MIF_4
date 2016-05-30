@@ -1183,8 +1183,8 @@ public class OS {
                 ArrList resource = new ArrList();
                 resource = OS.processDesc.get(index).getResource();
                 CPU cpu = new CPU(false, 0, ic);
-                int priority = 2;
-                OS.kernel.createProcess(memory, resource, priority, cpu, "INPUT_PROGRAM");
+                int priority = 3;
+                OS.kernel.createProcess(memory, resource, priority, cpu, "JOB_GOVERNOR");
                 //OS.processDesc.get(index).setResource(new ArrList());
                 rmMemory[ic].cell = "0";
                 //rmMemory[0].cell = "2";
