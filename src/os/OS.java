@@ -33,7 +33,7 @@ public class OS {
      */  
     public static ArrayList<String> inputDataStrings = new ArrayList<>();
     public static ArrayList<Integer> inputDataPtr = new ArrayList<>();
-    public static ArrayList<Integer> uzduotisIsorinejeAtmintyje = new ArrayList<>();    
+    public static ArrayList<ArrayList<Integer>> uzduotisIsorinejeAtmintyje = new ArrayList<>();
     public static int blockedProcessId = -1; 
     public static boolean inputStreamOk = false;
     public static boolean startInput = false;
@@ -570,7 +570,7 @@ public class OS {
                 //vykdoma komanda xchng
                 int id = OS.kernel.getProcDesc().getProcessName();
                 int index = OS.kernel.findProc(id, processDesc);
-                System.out.println(OS.processDesc.get(index).getInfo());
+                outputStream.add(OS.processDesc.get(index).getInfo());
                 OS.rmMemory[1].cell = "3";
                 break;
             }
