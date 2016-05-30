@@ -606,6 +606,12 @@ public class OS {
         rmMemory[4].setCell("JP0");
         rmMemory[5].setCell("1");
         initializeSystem();
+        for(int i = 0; i < OS.resourseDesc.size(); i++)
+        {
+            System.out.println("resurso vardas: " + OS.resourseDesc.get(i).getName());
+            ArrList old = OS.resourseDesc.get(i).getPrieinamu_resursu_sarasas();
+            System.out.println("prieinamu resursu : " + old.getSize());
+        }
         OS.kernel.planuotojas();
         OS.plan = false;
         //OS.realMachine.setRegisterIC(0);
@@ -647,7 +653,7 @@ public class OS {
                 {
                     System.out.println("proceso vardas: " + OS.processDesc.get(i).getName() + "proceso busena: " + OS.processDesc.get(i).getState());
                 }
-                Thread.sleep(4000);
+                Thread.sleep(1000);
             } catch (InterruptedException ex)
             {
                 Logger.getLogger(OS.class.getName()).log(Level.SEVERE, null, ex);

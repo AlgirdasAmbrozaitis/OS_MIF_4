@@ -82,7 +82,9 @@ public class Kernel
         this.aptarnautiProcesai.clear();
        
         int index = OS.kernel.findRes(r, OS.resourseDesc);
-       
+        System.out.println("resurso vardas: " + OS.resourseDesc.get(index).getName());
+        System.out.println("laukianciu procesu: " + OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().getList().size());
+        System.out.println("prieinamu resursu: " + OS.resourseDesc.get(index).getPrieinamu_resursu_sarasas().getSize());
         for( int i = 0; i < OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().getList().size(); i++ ){
            
             if( OS.resourseDesc.get(index).getPrieinamu_resursu_sarasas().getList().size() >=
@@ -222,6 +224,7 @@ public class Kernel
     //resursu primityvai
     public void kurtiResursa(boolean pakartotinio, ArrList prienamumo_aprasymas, int adr, String name)
     {
+        //System.out.println("kuriamo resurso prienamumo argumento dydis: " + prienamumo_aprasymas.getSize());
         ResourseDescriptor resDesc = new ResourseDescriptor();
         resDesc.setName(name);
         resDesc.setRes_dist_addr(adr);
@@ -229,12 +232,14 @@ public class Kernel
         resDesc.setInfo("");
         resDesc.setFather_resource(OS.kernel.procDesc.getProcessName());
         resDesc.setPrieinamu_resursu_sarasas(prienamumo_aprasymas);
+        //System.out.println("kuriamo resurso uzpildymo dydis: " + resDesc.getPrieinamu_resursu_sarasas().getSize());
         int index = OS.kernel.procDesc.getProcessName();
         index = OS.kernel.findProc(index, OS.processDesc);
         ArrayList old = OS.processDesc.get(index).getCreated_resourses();
         old.add(resDesc.getRs());
         OS.processDesc.get(index).setCreated_resourses(old);
         OS.resourseDesc.add(resDesc);
+        System.out.println("paskutinis elementas : " + OS.resourseDesc.get(OS.resourseDesc.size()-1).getPrieinamu_resursu_sarasas().getSize());
     }
     public void prasytiResurso(int resourse, int part)
     {
