@@ -31,10 +31,15 @@ public class OS {
     /**
      * @param args the command line arguments
      */  
+    public static ArrayList<String> inputDataStrings = new ArrayList<>();
+    public static ArrayList<Integer> inputDataPtr = new ArrayList<>();
+    public static ArrayList<Integer> uzduotisIsorinejeAtmintyje = new ArrayList<>();    
+    public static int blockedProcessId = -1; 
     public static boolean inputStreamOk = false;
     public static boolean startInput = false;
     public static boolean inputStarted = false;
-    public static ArrayList<String> input = new ArrayList<>();
+    public static ArrayList<String> inputStream = new ArrayList<>();
+    public static ArrayList<String> outputStream = new ArrayList<>();
     
     public static boolean plan = false;
     public static final int RM_MEMORY_SIZE = 1000;
@@ -712,16 +717,41 @@ public class OS {
             }
             case 4:
             {
-                //xchng
                 if(inputStreamOk)
                 {
                     //xchng
+                    ArrayList<Integer> blocks = new ArrayList<>();
+                    String res = "ISORINE_ATMINTIS";
+                    int idr = OS.kernel.findResName(res, resourseDesc);
+                    int idp = OS.kernel.getProcDesc().getProcessName();
+                    int index = OS.kernel.findProc(idr, processDesc);
+                    for(int i = 0; i < OS.processDesc.get(index).getResource().getSize(); i++)
+                    {
+                        if(OS.processDesc.get(index).getResource().getList().get(i).processId == idr)
+                        {
+                            blocks.add(OS.processDesc.get(index).getResource().getList().get(i).part_of_resourse);
+                        }
+                    }
+                    uzduotisIsorinejeAtmintyje = new ArrayList<>(blocks);
+                    int j = -1;
+                    for(int i = 0; i < inputStream.size(); i++)
+                    {
+                        if(i%10 == 0)
+                        {
+                            j++;
+                        }
+                        externalMemory[blocks.get(j) + i].cell = inputStream.get(i);
+                        
+                    }
                     OS.rmMemory[2].cell = "5";
                     inputStarted = false;
                     inputStreamOk = false;
                 }
                 else
                 {
+                    int id = OS.kernel.getProcDesc().getProcessName();
+                    blockedProcessId = id;
+                    OS.kernel.stopProc(id);
                     OS.rmMemory[2].cell = "4";
                     startInput = true;
                 }
@@ -815,7 +845,44 @@ public class OS {
             }
             case 2:
             {
-                //xchng
+                if(inputStreamOk)
+                {
+                    //xchng
+                    ArrayList<Integer> blocks = new ArrayList<>();
+                    String res = "ISORINE_ATMINTIS";
+                    int idr = OS.kernel.findResName(res, resourseDesc);
+                    int idp = OS.kernel.getProcDesc().getProcessName();
+                    int index = OS.kernel.findProc(idr, processDesc);
+                    for(int i = 0; i < OS.processDesc.get(index).getResource().getSize(); i++)
+                    {
+                        if(OS.processDesc.get(index).getResource().getList().get(i).processId == idr)
+                        {
+                            blocks.add(OS.processDesc.get(index).getResource().getList().get(i).part_of_resourse);
+                        }
+                    }
+                    uzduotisIsorinejeAtmintyje = new ArrayList<>(blocks);
+                    int j = -1;
+                    for(int i = 0; i < inputStream.size(); i++)
+                    {
+                        if(i%10 == 0)
+                        {
+                            j++;
+                        }
+                        externalMemory[blocks.get(j) + i].cell = inputStream.get(i);
+                        
+                    }
+                    OS.rmMemory[2].cell = "5";
+                    inputStarted = false;
+                    inputStreamOk = false;
+                }
+                else
+                {
+                    int id = OS.kernel.getProcDesc().getProcessName();
+                    blockedProcessId = id;
+                    OS.kernel.stopProc(id);
+                    OS.rmMemory[2].cell = "4";
+                    startInput = true;
+                }
                 OS.rmMemory[3].cell = "3";
                 break;
             }
@@ -1172,25 +1239,6 @@ public class OS {
         }
     }
     
-    public static void input()
-    {
-        startInput = false;
-        Scanner in = new Scanner(System.in);
-        while(inputStarted);
-        input = new ArrayList<>();
-        inputStarted = true;
-        String s = "";
-        while(true)
-        {
-            s = in.nextLine();
-            if(s.equals("END"))
-            {
-                break;
-            }
-            input.add(s);
-        }
-        inputStreamOk = true;
-    }
     public static void main(String[] args) {
         memoryInit();
         rmMemory[0].cell = "0";
@@ -1218,12 +1266,34 @@ public class OS {
             rmMemory[0].setState(false);
         }*/
         int zingsnis = -1;
+        /*InputThread inputThread = new InputThread();
+        inputThread.start();
+        
+        try
+        {
+            inputThread.join();
+        } catch (InterruptedException ex)
+        {
+            Logger.getLogger(OS.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        for(int i = 0; i<input.size(); i++)
+        {
+            System.out.println("atrodo : " + input.get(i));
+        }*/
+        startInput = true;
         while(true)
         {
             if(startInput)
             {
-                
+                InputThread inputThread = new InputThread();
+                inputThread.start();
             }
+            if(inputStreamOk)
+            {
+                OS.kernel.acivateProc(blockedProcessId);
+            }
+            zingsnis++;
             try
             {
                 System.out.println("zingsnis: " + zingsnis);
