@@ -100,6 +100,7 @@ public class Kernel
                         OS.resourseDesc.get(index).getPrieinamu_resursu_sarasas().remove(0);
                         OS.processDesc.get(proc_index).setResource(old);
                     }
+                    OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().remove(proc_index);
                 } else {
                     for( int j = 0; j<OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().getList().get(i).part_of_resourse; j++){
                         ArrList old = OS.processDesc.get(proc_index).getOperating_memory();
@@ -108,6 +109,7 @@ public class Kernel
                         OS.resourseDesc.get(index).getPrieinamu_resursu_sarasas().remove(0);
                         OS.processDesc.get(proc_index).setOperating_memory(old);
                     }
+                    OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().remove(proc_index);
                 }
                
                 this.aptarnautiProcesai.add(proc_index);

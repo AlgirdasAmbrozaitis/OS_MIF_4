@@ -1056,9 +1056,56 @@ public class OS {
             {
                 String res = "PAKROVIMO_PAKETAS";
                 int id = OS.kernel.findResName(res, resourseDesc);
-                OS.kernel.prasytiResurso(id, 1);
+                OS.kernel.prasytiResurso(id, 7);
+                OS.rmMemory[7].cell = "1";
                 break;
             }
+            case 1:
+            {
+                String res = "ISORINIS_ATMINTIES_IRENGINYS";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                OS.kernel.prasytiResurso(id, 7);
+                OS.rmMemory[7].cell = "2";
+                break;
+            }
+            case 2:
+            {
+                //XCHNG
+                OS.rmMemory[7].cell = "3";
+                break;
+            }
+            case 3:
+            {
+                String res = "ISORINIS_ATMINTIES_IRENGINYS";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                int proc = OS.kernel.getProcDesc().getProcessName();
+                OS.kernel.atlaisvintiResursa(id, 7, proc, "");
+                OS.rmMemory[7].cell = "4";
+                break;
+            }
+            case 4:
+            {
+                int res = OS.kernel.findResName("LOADER_END", resourseDesc);
+                OS.kernel.aktyvuotiR(res, 7, "");
+                OS.rmMemory[7].cell = "5";
+                break;
+            }
+            case 5:
+            {
+                int id = OS.kernel.getProcDesc().getProcessName();
+                OS.kernel.stopProc(id);
+                OS.rmMemory[7].cell = "6";
+                break;
+            }
+            case 6:
+            {
+                String res = "LOADER_END";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                OS.kernel.deaktyvuotiR(id);
+                OS.rmMemory[7].cell = "0";
+                break;
+            }
+            
         }
         
         
