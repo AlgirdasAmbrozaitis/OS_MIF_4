@@ -1,6 +1,7 @@
 package os;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -69,7 +70,7 @@ public class ProcessDescriptor {
     }
 
     public static void setProcess_id_counter(int process_id_counter) {
-        ProcessDescriptor.process_id_counter = process_id_counter;
+        ProcessDescriptor.process_id_counter = new Integer(process_id_counter);
     }
 
     public String getState() {
@@ -77,7 +78,7 @@ public class ProcessDescriptor {
     }
 
     public void setState(String state) {
-        this.state = state;
+        this.state = new String(state);
     }
 
     public int getPriority() {
@@ -85,7 +86,7 @@ public class ProcessDescriptor {
     }
 
     public void setPriority(int priority) {
-        this.priority = priority;
+        this.priority = new Integer(priority);
     }
 
     public int getFather_processor() {
@@ -93,7 +94,7 @@ public class ProcessDescriptor {
     }
 
     public void setFather_processor(int father_processor) {
-        this.father_processor = father_processor;
+        this.father_processor = new Integer(father_processor);
     }
 
     public ArrayList<Integer> getSons_processes() {
@@ -101,7 +102,7 @@ public class ProcessDescriptor {
     }
 
     public void setSons_processes(ArrayList<Integer> sons_processes) {
-        this.sons_processes = sons_processes;
+        this.sons_processes = new ArrayList(sons_processes);
     }
 
     public ArrList getResource() {
@@ -109,7 +110,7 @@ public class ProcessDescriptor {
     }
 
     public void setResource(ArrList resource) {
-        this.resource = resource;
+        this.resource.myCopy(resource.getList());
     }
 
     public int getList_where_process_is() {
@@ -117,7 +118,7 @@ public class ProcessDescriptor {
     }
 
     public void setList_where_process_is(int list_where_process_is) {
-        this.list_where_process_is = list_where_process_is;
+        this.list_where_process_is = new Integer(list_where_process_is);
     }
 
     public ArrayList getCreated_resourses() {
@@ -125,15 +126,15 @@ public class ProcessDescriptor {
     }
 
     public void setCreated_resourses(ArrayList created_resourses) {
-        this.created_resourses = created_resourses;
+        this.created_resourses = new ArrayList(created_resourses);
     }
 
     public ArrList getOperating_memory() {
         return operating_memory;
     }
 
-    public void setOperating_memory(ArrList operating_memory) {
-        this.operating_memory = operating_memory;
+    public void setOperating_memory( ArrList operating_memory) { 
+        this.operating_memory.myCopy(operating_memory.getList());
     }
 
     public int getId() {
@@ -147,7 +148,7 @@ public class ProcessDescriptor {
 
     public void setName(String name)
     {
-        this.name = name;
+        this.name = new String(name);
     }
     
 }

@@ -116,6 +116,10 @@ public class ArrList {
         return list.size();
     }
     
+    public void myCopy( ArrayList<Struct> copy ){
+        this.list = new ArrayList(copy);
+    }
+    
     /*public void sortList()
     {
         for(int i = 0; i < list.size(); i++)
