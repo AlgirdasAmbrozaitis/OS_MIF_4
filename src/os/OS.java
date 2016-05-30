@@ -160,6 +160,41 @@ public class OS {
                         startStop(Integer.valueOf(line));
                         break;
                     }
+                    case "OUTPUT_TO_USER":
+                    {
+                        outputToUser(Integer.valueOf(line));
+                        break;
+                    }
+                    case "INPUT_PROGRAM":
+                    {
+                        inputProgram(Integer.valueOf(line));
+                        break;
+                    }
+                    case "INPUT_DATA":
+                    {
+                        inputData(Integer.valueOf(line));
+                        break;
+                    }
+                    case "OUTPUT_DATA":
+                    {
+                        outpuData(Integer.valueOf(line));
+                        break;
+                    }
+                    case "ADDITIONAL_MEMORY":
+                    {
+                        additionalMemory(Integer.valueOf(line));
+                        break;
+                    }
+                    case "MAIN_PROC":
+                    {
+                        mainProc(Integer.valueOf(line));
+                        break;
+                    }
+                    case "LOADER":
+                    {
+                        loader(Integer.valueOf(line));
+                        break;
+                    }
                     case "SYSTEM_IDLE":
                     {
                         idle(Integer.valueOf(line));
@@ -497,7 +532,7 @@ public class OS {
         }
     }
     
-    /*public static void outputToUser(int line)
+    public static void outputToUser(int line)
     {
         switch(line)
         {
@@ -538,7 +573,102 @@ public class OS {
             
             
         }
-    }*/
+    }
+    public static void inputProgram(int line)
+    {
+        switch(line)
+        {
+            case 0:
+            {
+                String res = "IVESK_PROGRAMA";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                OS.kernel.prasytiResurso(id, 1);
+                break;
+            }
+        }
+        
+        
+    }
+    
+    
+    public static void inputData(int line)
+    {
+        switch(line)
+        {
+            case 0:
+            {
+                String res = "INPUT_DATA";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                OS.kernel.prasytiResurso(id, 1);
+                break;
+            }
+        }
+        
+        
+    }
+    public static void outpuData(int line)
+    {
+        switch(line)
+        {
+            case 0:
+            {
+                String res = "OUTPUT_DATA";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                OS.kernel.prasytiResurso(id, 1);
+                break;
+            }
+        }
+        
+        
+    }
+    
+    public static void additionalMemory(int line)
+    {
+        switch(line)
+        {
+            case 0:
+            {
+                String res = "ASK_MEMORY";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                OS.kernel.prasytiResurso(id, 1);
+                break;
+            }
+        }
+        
+        
+    }
+    public static void mainProc(int line)
+    {
+        switch(line)
+        {
+            case 0:
+            {
+                String res = "UZDUOTIS_ISORINEJE_ATMINTYJE";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                OS.kernel.prasytiResurso(id, 1);
+                break;
+            }
+        }
+        
+        
+    }
+    
+    public static void loader(int line)
+    {
+        switch(line)
+        {
+            case 0:
+            {
+                String res = "PAKROVIMO_PAKETAS";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                OS.kernel.prasytiResurso(id, 1);
+                break;
+            }
+        }
+        
+        
+    }
+    
     
     public static void idle(int line)
     {
@@ -548,7 +678,7 @@ public class OS {
             {
                 int res = OS.kernel.findResName("LAUKIMAS", OS.resourseDesc);
                 OS.kernel.prasytiResurso(res, 1);
-                OS.rmMemory[80].cell = "1";
+                OS.rmMemory[8].cell = "1";
                 //OS.kernel.prasytiResurso(id, 1);
                 break;
             }
