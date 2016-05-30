@@ -732,7 +732,7 @@ public class OS {
                             blocks.add(OS.processDesc.get(index).getResource().getList().get(i).part_of_resourse);
                         }
                     }
-                    uzduotisIsorinejeAtmintyje = new ArrayList<>(blocks);
+                    uzduotisIsorinejeAtmintyje.add(new ArrayList<>(blocks));
                     int j = -1;
                     for(int i = 0; i < inputStream.size(); i++)
                     {
@@ -860,7 +860,7 @@ public class OS {
                             blocks.add(OS.processDesc.get(index).getResource().getList().get(i).part_of_resourse);
                         }
                     }
-                    uzduotisIsorinejeAtmintyje = new ArrayList<>(blocks);
+                    uzduotisIsorinejeAtmintyje.add(new ArrayList<>(blocks));
                     int j = -1;
                     for(int i = 0; i < inputStream.size(); i++)
                     {
