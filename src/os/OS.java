@@ -839,7 +839,7 @@ public class OS {
                 int id = OS.kernel.findResName(res, resourseDesc);
                 int proc = OS.kernel.getProcDesc().getProcessName();
                 OS.kernel.atlaisvintiResursa(id, 1, proc, "");
-                rmMemory[80].cell = "0";
+                rmMemory[8].cell = "0";
                 break;
             }
             default:
@@ -882,8 +882,8 @@ public class OS {
             {
                 System.out.println("zingsnis: " + zingsnis);
                 cpu();
-                rmMemory[0].setState(false);
-                rmMemory[80].setState(false);
+                //rmMemory[0].setState(false);
+                //rmMemory[80].setState(false);
                 int idd = OS.kernel.getProcDesc().getProcessName();
                 int index = OS.kernel.findProc(idd, processDesc);
                 System.out.println("einamas procesas: " + OS.processDesc.get(index).getName());

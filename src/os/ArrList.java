@@ -69,7 +69,7 @@ public class ArrList {
     public void remove( int id ){ // pasalinami visi elementai su vardu <id>
         for( Struct obj: list ){
             if(obj.processId == id){
-                list.remove(id);
+                list.remove(obj);
                 //Collections.sort(list);
                 break;
             }
