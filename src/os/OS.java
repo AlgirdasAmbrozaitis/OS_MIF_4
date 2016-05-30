@@ -580,6 +580,7 @@ public class OS {
             {
                 int res = OS.kernel.findResName("LAUKIMAS", OS.resourseDesc);
                 OS.kernel.prasytiResurso(res, 1);
+                OS.rmMemory[80].cell = "1";
                 //OS.kernel.prasytiResurso(id, 1);
                 break;
             }

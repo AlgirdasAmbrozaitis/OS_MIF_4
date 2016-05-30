@@ -298,10 +298,15 @@ public class Kernel
     {
         int index = OS.kernel.findRes(resource, OS.resourseDesc);
         int index1 = OS.kernel.findProc(proc, OS.processDesc);
+        
+        //System.out.println("->>>resurso vardas: " + OS.resourseDesc.get(index).getName());
+        
         if(OS.resourseDesc.get(index).isRepeated_use())
         {
             ArrList old = OS.resourseDesc.get(index).getPrieinamu_resursu_sarasas();
+            //System.out.println("senas prienaimu dydis: " + old.getSize());
             old.addPa(part, info);
+            //System.out.println("papildytas prieinamu: " + old.getSize());
             OS.resourseDesc.get(index).setPrieinamu_resursu_sarasas(old);
             old = OS.processDesc.get(index1).getResource();
             old.removeR(resource, part);

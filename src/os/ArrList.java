@@ -80,6 +80,7 @@ public class ArrList {
         for( Struct obj: list ){
             if(obj.processId == id && obj.part_of_resourse == part){
                 list.remove(obj);
+                break;
                 //Collections.sort(list);
             }
         }
