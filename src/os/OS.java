@@ -32,6 +32,11 @@ public class OS {
      * @param args the command line arguments
      */  
     
+    public static int governotId;
+    
+    public static int governorIc = 10;
+    public static int vmIc = 20;
+    
     public static ArrayList<ArrayList<Integer>> loaderOpreatingBlocks = new ArrayList<>();
     public static ArrayList<ArrayList<Integer>> loaderExternalBlocks = new ArrayList<>();
     
@@ -1155,12 +1160,35 @@ public class OS {
             case 2:
             {
                 // naikinti job governor sukurusi fiktyvu resursa
+                int id = OS.kernel.getProcDesc().getProcessName();
+                int index = OS.kernel.findProc(id, processDesc);
+                int procId = OS.processDesc.get(index).getResource().getList().get(0).processId;
+                OS.kernel.abortProcess(procId);
+                OS.processDesc.get(index).getResource().getList().remove(0);
                 OS.rmMemory[6].cell = "0";
                 break;
             }
             case 3:
             {
                 // SUKURTI JOB GOVERNOR
+                int id = OS.kernel.getProcDesc().getProcessName();
+                int index = OS.kernel.findProc(id, processDesc);
+                int ic = governorIc;
+                governorIc++;
+                if(governorIc == 20)
+                {
+                    governorIc = 10;
+                }
+                ArrList memory = new ArrList();
+                ArrList resource = new ArrList();
+                resource = OS.processDesc.get(index).getResource();
+                CPU cpu = new CPU(false, 0, ic);
+                int priority = 2;
+                OS.kernel.createProcess(memory, resource, priority, cpu, "INPUT_PROGRAM");
+                //OS.processDesc.get(index).setResource(new ArrList());
+                rmMemory[ic].cell = "0";
+                //rmMemory[0].cell = "2";
+                //break;
                 // perduoti UZDUOTIS_ISORINEJE_ATMINTYJE
                 OS.rmMemory[6].cell = "4";
                 break;
@@ -1193,6 +1221,8 @@ public class OS {
             case 7:
             {
                 //aktyvuoti JOB GOVERNOR
+                //int index = OS.kernel.findProc(governotId, processDesc);
+                OS.kernel.acivateProc(governotId);
                 break;
             }
         }
