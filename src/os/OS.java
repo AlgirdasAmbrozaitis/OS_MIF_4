@@ -665,7 +665,7 @@ public class OS {
             
         }
     }
-     public static void inputProgram(int line)
+    public static void inputProgram(int line)
     {
         switch(line)
         {
@@ -979,7 +979,7 @@ public class OS {
     }
    public static void mainProc(int line)
     {
-        String info = "";
+        //String info = "";
         switch(line)
         {
             case 0:
