@@ -609,8 +609,7 @@ public class OS {
         for(int i = 0; i < OS.resourseDesc.size(); i++)
         {
             System.out.println("resurso vardas: " + OS.resourseDesc.get(i).getName());
-            ArrList old = OS.resourseDesc.get(i).getPrieinamu_resursu_sarasas();
-            System.out.println("prieinamu resursu : " + old.getSize());
+            System.out.println("prieinamu resursu : " + OS.resourseDesc.get(i).getPrieinamu_resursu_sarasas().getSize());
         }
         OS.kernel.planuotojas();
         OS.plan = false;
