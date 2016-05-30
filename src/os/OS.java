@@ -31,14 +31,29 @@ public class OS {
     /**
      * @param args the command line arguments
      */  
+    
+    public static ArrayList<ArrayList<Integer>> loaderOpreatingBlocks = new ArrayList<>();
+    public static ArrayList<ArrayList<Integer>> loaderExternalBlocks = new ArrayList<>();
+    
+    public static ArrayList<Integer> askMemoryVmId = new ArrayList<>();
+    public static int askMemorySize = 0;
+    public static ArrayList<String> askMemoryR = new ArrayList<>();
+    public static ArrayList<Integer> askMemoryPtr = new ArrayList<>();
+    
+    public static ArrayList<String> outputDataStrings = new ArrayList<>();
+    public static ArrayList<Integer> outputDataPtr = new ArrayList<>();
+    
     public static ArrayList<String> inputDataStrings = new ArrayList<>();
     public static ArrayList<Integer> inputDataPtr = new ArrayList<>();
+    
     public static ArrayList<ArrayList<Integer>> uzduotisIsorinejeAtmintyje = new ArrayList<>();
+    
     public static int blockedProcessId = -1; 
     public static boolean inputStreamOk = false;
     public static boolean startInput = false;
     public static boolean inputStarted = false;
     public static ArrayList<String> inputStream = new ArrayList<>();
+    public static boolean outputStreamInUse = false;
     public static ArrayList<String> outputStream = new ArrayList<>();
     
     public static boolean plan = false;
@@ -570,7 +585,9 @@ public class OS {
                 //vykdoma komanda xchng
                 int id = OS.kernel.getProcDesc().getProcessName();
                 int index = OS.kernel.findProc(id, processDesc);
+                outputStreamInUse = true;
                 outputStream.add(OS.processDesc.get(index).getInfo());
+                outputStreamInUse = false;
                 OS.rmMemory[1].cell = "3";
                 break;
             }
@@ -734,6 +751,7 @@ public class OS {
                     }
                     uzduotisIsorinejeAtmintyje.add(new ArrayList<>(blocks));
                     int j = -1;
+                    int lastI = 0;
                     for(int i = 0; i < inputStream.size(); i++)
                     {
                         if(i%10 == 0)
@@ -741,6 +759,7 @@ public class OS {
                             j++;
                         }
                         externalMemory[blocks.get(j) + i].cell = inputStream.get(i);
+                        lastI = i ;
                         
                     }
                     OS.rmMemory[2].cell = "5";
@@ -848,30 +867,20 @@ public class OS {
                 if(inputStreamOk)
                 {
                     //xchng
-                    ArrayList<Integer> blocks = new ArrayList<>();
-                    String res = "ISORINE_ATMINTIS";
-                    int idr = OS.kernel.findResName(res, resourseDesc);
-                    int idp = OS.kernel.getProcDesc().getProcessName();
-                    int index = OS.kernel.findProc(idr, processDesc);
-                    for(int i = 0; i < OS.processDesc.get(index).getResource().getSize(); i++)
+                    int registerR = Integer.valueOf(inputDataStrings.get(0));
+                    int wordCount = registerR / 100;
+                    int adr = registerR % 100;
+                    int oldPtr = OS.realMachine.getRegisterPTR();
+                    OS.realMachine.setRegisterPTR(inputDataPtr.get(0));
+                    for(int i = 0; i < wordCount; i++)
                     {
-                        if(OS.processDesc.get(index).getResource().getList().get(i).processId == idr)
-                        {
-                            blocks.add(OS.processDesc.get(index).getResource().getList().get(i).part_of_resourse);
-                        }
+                        int adrr = OS.paging.getRMadress(adr + 1);
+                        rmMemory[adrr].setCell(inputStream.get(i));                        
                     }
-                    uzduotisIsorinejeAtmintyje.add(new ArrayList<>(blocks));
-                    int j = -1;
-                    for(int i = 0; i < inputStream.size(); i++)
-                    {
-                        if(i%10 == 0)
-                        {
-                            j++;
-                        }
-                        externalMemory[blocks.get(j) + i].cell = inputStream.get(i);
-                        
-                    }
-                    OS.rmMemory[2].cell = "5";
+                    inputDataPtr.remove(0);
+                    inputDataStrings.remove(0);
+                    OS.realMachine.setRegisterPTR(oldPtr);
+                    OS.rmMemory[3].cell = "3";
                     inputStarted = false;
                     inputStreamOk = false;
                 }
@@ -880,10 +889,10 @@ public class OS {
                     int id = OS.kernel.getProcDesc().getProcessName();
                     blockedProcessId = id;
                     OS.kernel.stopProc(id);
-                    OS.rmMemory[2].cell = "4";
+                    OS.rmMemory[3].cell = "2";
                     startInput = true;
                 }
-                OS.rmMemory[3].cell = "3";
+                //OS.rmMemory[3].cell = "3";
                 break;
             }
             case 3:
@@ -954,6 +963,20 @@ public class OS {
             case 2:
             {
                 //xchng
+                int registerR = Integer.valueOf(outputDataStrings.get(0));
+                int wordCount = registerR / 100;
+                int adr = registerR % 100;
+                int oldPtr = OS.realMachine.getRegisterPTR();
+                OS.realMachine.setRegisterPTR(outputDataPtr.get(0));
+                for(int i = 0; i < wordCount; i++)
+                {
+                    int adrr = OS.paging.getRMadress(adr + 1);
+                    String s = rmMemory[adrr].getCell();
+                    outputStream.add(s);                        
+                }
+                outputDataPtr.remove(0);
+                outputDataStrings.remove(0);
+                
                 OS.rmMemory[4].cell = "3";
                 break;
             }
@@ -1015,9 +1038,12 @@ public class OS {
             }            
             case 1:
             {
-                //arnevirsytas limitas?
-                if(true)
+                int registerR = Integer.valueOf(askMemoryR.get(0));
+                int registerPtr = askMemoryPtr.get(0);
+                int ptrSize = registerPtr - registerPtr%100;
+                if(ptrSize / 100 + 1 - registerR > 0) 
                 {
+                    askMemorySize = ptrSize / 100 + 1 - registerR;
                     OS.rmMemory[5].cell = "2";
                 }else OS.rmMemory[5].cell = "6";
                 
@@ -1026,13 +1052,38 @@ public class OS {
             case 2:
             {
                 int res = OS.kernel.findResName("OPERATYVIOJI_ATMINTIS", OS.resourseDesc);
-                OS.kernel.prasytiResurso(res, 1);
+                OS.kernel.prasytiResurso(res, askMemorySize);
                 OS.rmMemory[5].cell = "3";
                 break;
             }
             case 3:
             {
                 //atminties priskyrimas virtualiai masinai
+                int idp = OS.kernel.getProcDesc().getProcessName();
+                int index = OS.kernel.findProc(idp, processDesc);
+                int indexVm = OS.kernel.findProc(askMemoryVmId.get(0), processDesc);
+                ArrList vmMem = OS.processDesc.get(indexVm).getOperating_memory();
+                int res = OS.kernel.findResName("OPERATYVIOJI_ATMINTIS", resourseDesc);
+                for(int i = 0; i < OS.processDesc.get(index).getOperating_memory().getSize(); i++)
+                {
+                    vmMem.addOa(res, OS.processDesc.get(index).getOperating_memory().getList().get(i).part_of_resourse);
+                }
+                OS.processDesc.get(indexVm).setOperating_memory(vmMem);
+                int ptr = askMemoryPtr.get(0);
+                int newPtr = ptr + askMemorySize * 100;
+                int ptrAdr = ptr % 100;
+                int oldSize = ptr - ptrAdr;
+                oldSize = oldSize / 100 + 1;
+                for(int i = 0; i < askMemorySize; i++)
+                {
+                    OS.rmMemory[ptrAdr * 10 + oldSize + i].setCell(String.valueOf(OS.processDesc.get(index).getOperating_memory().getList().get(i).part_of_resourse));
+                    OS.rmMemory[ptrAdr * 10 + oldSize + i].setState(true);
+                }
+                OS.processDesc.get(indexVm).getCpu2().setRegisterPTR(newPtr);
+                askMemoryPtr.remove(0);
+                askMemoryR.remove(0);
+                askMemorySize = 0;
+                askMemoryVmId.remove(0);
                 OS.rmMemory[5].cell = "4";
                 break;
             }
@@ -1170,6 +1221,18 @@ public class OS {
             case 2:
             {
                 //XCHNG
+                for(int i = 0; i  < loaderExternalBlocks.get(0).size(); i++)
+                {
+                    int externalBlock = loaderExternalBlocks.get(0).get(i);
+                    int operatingBlock = loaderOpreatingBlocks.get(0).get(i);
+                    for(int j = 0; j < 10; j++)
+                    {
+                        rmMemory[operatingBlock + i].setCell(externalMemory[externalBlock + i].cell);
+                        externalMemory[externalBlock + i].freeCell();
+                    }
+                }
+                loaderExternalBlocks.remove(0);
+                loaderOpreatingBlocks.remove(0);
                 OS.rmMemory[7].cell = "3";
                 break;
             }

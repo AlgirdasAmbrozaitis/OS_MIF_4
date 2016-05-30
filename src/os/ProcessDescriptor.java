@@ -65,6 +65,10 @@ public class ProcessDescriptor {
         OS.realMachine.setRegisterC(cpu.isRegisterC());
         OS.realMachine.setRegisterMOD(cpu.isRegisterMOD());
     }
+    public CPU getCpu2()
+    {
+        return this.cpu;
+    }
 
     public static int getProcess_id_counter() {
         return process_id_counter;
