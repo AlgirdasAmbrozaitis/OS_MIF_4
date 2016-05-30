@@ -43,6 +43,7 @@ public class Kernel
             int next_process = OS.kernel.pps.removeFirst();
             int next_process1 = OS.kernel.findProc(next_process, OS.processDesc);
             OS.processDesc.get(next_process1).getCpu();
+            OS.processDesc.get(next_process1).setState("RUN");
             OS.kernel.procDesc.setProcessName(OS.processDesc.get(next_process1).getId());
         }
         
