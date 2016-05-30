@@ -80,7 +80,7 @@ public class Kernel
    public void paskirstytojas(int r){
        
         this.aptarnautuProcesuSkaicius = 0;
-        this.aptarnautiProcesai.clear();
+        this.aptarnautiProcesai = new ArrayList<>();
        
         int index = OS.kernel.findRes(r, OS.resourseDesc);
         System.out.println("resurso vardas: " + OS.resourseDesc.get(index).getName());
@@ -92,6 +92,7 @@ public class Kernel
                 OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().getList().get(i).part_of_resourse ){
                
                 int proc_index = OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().getList().get(i).processId;
+                //System.out.println("resursas procesas :" + OS.processDesc.get(OS.kernel.findProc(proc_index, OS.processDesc)).getName());
                 if( !OS.resourseDesc.get(index).getName().equals("OPERATYVIOJI_ATMINTIS")){
                     for( int j = 0; j<OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().getList().get(i).part_of_resourse; j++){
                         ArrList old = OS.processDesc.get(proc_index).getResource();
@@ -99,7 +100,9 @@ public class Kernel
                         old.addR(r,resource);
                         OS.resourseDesc.get(index).getPrieinamu_resursu_sarasas().remove(0);
                         OS.processDesc.get(proc_index).setResource(old);
+                        
                     }
+                    //System.out.println("pirmas laukiantis procesas: " + OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().get(proc_index).processId);
                     OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().remove(proc_index);
                 } else {
                     for( int j = 0; j<OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().getList().get(i).part_of_resourse; j++){
@@ -108,6 +111,7 @@ public class Kernel
                         old.addOa(r,resource);
                         OS.resourseDesc.get(index).getPrieinamu_resursu_sarasas().remove(0);
                         OS.processDesc.get(proc_index).setOperating_memory(old);
+                        OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().remove(proc_index);
                     }
                     OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().remove(proc_index);
                 }
@@ -116,6 +120,7 @@ public class Kernel
                 this.aptarnautuProcesuSkaicius++;    
             }
         }
+        System.out.println("UPDATE laukianciu procesu: " + OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().getList().size());
     }
     
     public void createProcess( ArrList memory, ArrList resourse, int priority, CPU cpu, String name){
@@ -242,12 +247,12 @@ public class Kernel
         old.add(resDesc.getRs());
         OS.processDesc.get(index).setCreated_resourses(old);
         OS.resourseDesc.add(resDesc);
-        System.out.println("-----------------");
+        //System.out.println("-----------------");
         for(int i = 0; i < OS.resourseDesc.size(); i++)
         {
             
-            System.out.println("vardas: " + OS.resourseDesc.get(i).getName());
-            System.out.println("sisteminiai procesai prieinamu procesu saraso dydis: " + OS.resourseDesc.get(i).getPrieinamu_resursu_sarasas().getSize());
+            //System.out.println("vardas: " + OS.resourseDesc.get(i).getName());
+            //System.out.println("sisteminiai procesai prieinamu procesu saraso dydis: " + OS.resourseDesc.get(i).getPrieinamu_resursu_sarasas().getSize());
         }
         //System.out.println("paskutinis elementas : " + OS.resourseDesc.get(OS.resourseDesc.size()-1).getPrieinamu_resursu_sarasas().getSize());
     }

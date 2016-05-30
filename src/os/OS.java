@@ -665,7 +665,7 @@ public class OS {
             
         }
     }
-     public static void inputProgram(int line)
+    public static void inputProgram(int line)
     {
         switch(line)
         {
@@ -979,7 +979,7 @@ public class OS {
     }
    public static void mainProc(int line)
     {
-        String info = "";
+        //String info = "";
         switch(line)
         {
             case 0:
@@ -1173,8 +1173,8 @@ public class OS {
             {
                 System.out.println("zingsnis: " + zingsnis);
                 cpu();
-                rmMemory[0].setState(false);
-                rmMemory[80].setState(false);
+                //rmMemory[0].setState(false);
+                //rmMemory[80].setState(false);
                 int idd = OS.kernel.getProcDesc().getProcessName();
                 int index = OS.kernel.findProc(idd, processDesc);
                 System.out.println("einamas procesas: " + OS.processDesc.get(index).getName());
