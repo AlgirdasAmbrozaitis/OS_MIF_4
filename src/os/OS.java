@@ -665,7 +665,7 @@ public class OS {
             
         }
     }
-    public static void inputProgram(int line)
+     public static void inputProgram(int line)
     {
         switch(line)
         {
@@ -673,9 +673,99 @@ public class OS {
             {
                 String res = "IVESK_PROGRAMA";
                 int id = OS.kernel.findResName(res, resourseDesc);
-                OS.kernel.prasytiResurso(id, 1);
+                OS.kernel.prasytiResurso(id, 2);
+                OS.rmMemory[2].cell = "1";
                 break;
             }
+            case 1:
+            {
+                String res = "ISORINE_ATMINTIS";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                OS.kernel.prasytiResurso(id, 2);
+                OS.rmMemory[2].cell = "2";
+                break;
+            }
+            case 2:
+            {
+                String res = "ISORINIS_ATMINTIES_IRENGINYS";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                OS.kernel.prasytiResurso(id, 2);
+                OS.rmMemory[2].cell = "3";
+                break;
+            }
+            case 3:
+            {
+                String res = "IVEDIMO_IRENGINYS";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                OS.kernel.prasytiResurso(id, 2);
+                OS.rmMemory[2].cell = "4";
+                break;
+            }
+            case 4:
+            {
+                //xchng
+                OS.rmMemory[2].cell = "5";
+                break;
+            }
+            case 5:
+            {
+                String res = "IVEDIMO_IRENGINYS";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                int proc = OS.kernel.getProcDesc().getProcessName();
+                OS.kernel.atlaisvintiResursa(id, 2, proc, "");
+                OS.rmMemory[2].cell = "6";
+                break;
+            }
+            case 6:
+            {
+                String res = "ISORINIS_ATMINTIES_IRENGINYS";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                int proc = OS.kernel.getProcDesc().getProcessName();
+                OS.kernel.atlaisvintiResursa(id, 2, proc, "");
+                OS.rmMemory[2].cell = "7";
+                break;
+            }
+            case 7:
+            {
+                String res = "IVESK_PROGRAMA";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                int proc = OS.kernel.getProcDesc().getProcessName();
+                OS.kernel.atlaisvintiResursa(id, 2, proc, "");
+                OS.rmMemory[2].cell = "8";
+                break;
+            }
+            case 8:
+            {
+                String res = "INPUT_PROGRAM_END";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                OS.kernel.aktyvuotiR(id, 2, "");
+                OS.rmMemory[2].cell = "9";
+                break;
+            }
+            case 9:
+            {
+                int id = OS.kernel.getProcDesc().getProcessName();
+                OS.kernel.stopProc(id);
+                OS.rmMemory[2].cell = "10";
+                break;
+            }
+            case 10:
+            {
+                String res = "INPUT_PROGRAM_END";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                OS.kernel.deaktyvuotiR(id);
+                OS.rmMemory[2].cell = "11";
+                break;
+            }
+            case 11:
+            {
+                String res = "UZDUOTIS_ISORINEJE_ATMINTYJE";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                OS.kernel.aktyvuotiR(id, 2, "");
+                OS.rmMemory[2].cell = "0";
+                break;
+            }
+            
         }
         
         
@@ -690,7 +780,54 @@ public class OS {
             {
                 String res = "INPUT_DATA";
                 int id = OS.kernel.findResName(res, resourseDesc);
-                OS.kernel.prasytiResurso(id, 1);
+                OS.kernel.prasytiResurso(id, 3);
+                OS.rmMemory[3].cell = "1";
+                break;
+            }
+            case 1:
+            {
+                String res = "IVEDIMO_IRENGINYS";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                OS.kernel.prasytiResurso(id, 3);
+                OS.rmMemory[3].cell = "2";
+                break;
+            }
+            case 2:
+            {
+                //xchng
+                OS.rmMemory[3].cell = "3";
+                break;
+            }
+            case 3:
+            {
+                String res = "INPUT_DATA";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                int proc = OS.kernel.getProcDesc().getProcessName();
+                OS.kernel.atlaisvintiResursa(id, 3, proc, "");
+                OS.rmMemory[3].cell = "4";
+                break;
+            }
+            case 4:
+            {
+                String res = "INPUT_DATA_END";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                OS.kernel.aktyvuotiR(id, 3, "");
+                OS.rmMemory[3].cell = "5";
+                break;
+            }
+            case 5:
+            {
+                int id = OS.kernel.getProcDesc().getProcessName();
+                OS.kernel.stopProc(id);
+                OS.rmMemory[3].cell = "6";
+                break;  
+            }
+            case 6:
+            {
+                String res = "INPUT_DATA_END";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                OS.kernel.deaktyvuotiR(id);
+                OS.rmMemory[3].cell = "0";
                 break;
             }
         }
@@ -705,12 +842,64 @@ public class OS {
             {
                 String res = "OUTPUT_DATA";
                 int id = OS.kernel.findResName(res, resourseDesc);
-                OS.kernel.prasytiResurso(id, 1);
+                OS.kernel.prasytiResurso(id, 4);
+                OS.rmMemory[4].cell = "1";
                 break;
             }
+            case 1:
+            {
+                String res = "ISVEDIMO_IRENGINYS";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                OS.kernel.prasytiResurso(id, 4);
+                OS.rmMemory[4].cell = "2";
+                break;
+            }
+            case 2:
+            {
+                //xchng
+                OS.rmMemory[4].cell = "3";
+                break;
+            }
+            case 3:
+            {
+                String res = "ISVEDIMO_IRENGINYS";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                OS.kernel.prasytiResurso(id, 4);
+                OS.rmMemory[4].cell = "4";
+                break;
+            }
+            case 4:
+            {
+                String res = "OUTPUT_DATA";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                OS.kernel.prasytiResurso(id, 4);
+                OS.rmMemory[4].cell = "5";
+                break;
+            }
+            case 5:
+            {
+                String res = "OUTPUT_DATA_END";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                OS.kernel.aktyvuotiR(id, 4, "");
+                OS.rmMemory[4].cell = "6";
+                break;
+            }
+            case 6:
+            {
+                int id = OS.kernel.getProcDesc().getProcessName();
+                OS.kernel.stopProc(id);
+                OS.rmMemory[4].cell = "7";
+                break;  
+            }
+            case 7:
+            {
+                String res = "OUTPUT_DATA_END";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                OS.kernel.deaktyvuotiR(id);
+                OS.rmMemory[4].cell = "0";
+                break;
+            }   
         }
-        
-        
     }
     
     public static void additionalMemory(int line)
@@ -788,20 +977,75 @@ public class OS {
         
         }
     }
-    public static void mainProc(int line)
+   public static void mainProc(int line)
     {
+        String info = "";
         switch(line)
         {
             case 0:
             {
                 String res = "UZDUOTIS_ISORINEJE_ATMINTYJE";
                 int id = OS.kernel.findResName(res, resourseDesc);
-                OS.kernel.prasytiResurso(id, 1);
+                OS.kernel.prasytiResurso(id, 6);
+                OS.rmMemory[6].cell = "1";
+                break;
+            }
+            case 1:
+            {
+                int id = OS.kernel.getProcDesc().getProcessName();
+                int index = OS.kernel.findProc(id, processDesc);
+                if(OS.processDesc.get(index).getInfo().equals("FIKTYVUS_RESURSAS")){
+                    OS.rmMemory[6].cell = "2";
+                    break;
+                } else {
+                    OS.rmMemory[6].cell = "3";
+                    break;
+                }
+            }
+            case 2:
+            {
+                // naikinti job governor sukurusi fiktyvu resursa
+                OS.rmMemory[6].cell = "0";
+                break;
+            }
+            case 3:
+            {
+                // SUKURTI JOB GOVERNOR
+                // perduoti UZDUOTIS_ISORINEJE_ATMINTYJE
+                OS.rmMemory[6].cell = "4";
+                break;
+            }
+            case 4:
+            {
+                String res = "UZDUOTIS_PAIMTA";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                OS.kernel.prasytiResurso(id, 6);
+                OS.rmMemory[6].cell = "5";
+                break;
+            }
+            case 5:
+            {
+                String res = "UZDUOTIS_ISORINEJE_ATMINTYJE";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                OS.kernel.deaktyvuotiR(id);
+                OS.rmMemory[6].cell = "6";
+                break;
+            }
+            case 6:
+            {
+                String res = "UZDUOTIS_PAIMTA";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                int proc = OS.kernel.getProcDesc().getProcessName();
+                OS.kernel.atlaisvintiResursa(id, 6, proc, "");
+                OS.rmMemory[6].cell = "7";
+                break;
+            }
+            case 7:
+            {
+                //aktyvuoti JOB GOVERNOR
                 break;
             }
         }
-        
-        
     }
     
     public static void loader(int line)
