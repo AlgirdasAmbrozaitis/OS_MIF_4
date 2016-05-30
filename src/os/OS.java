@@ -18,6 +18,7 @@ package os;
 import static java.lang.String.*;
 import static java.lang.System.out;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,6 +31,11 @@ public class OS {
     /**
      * @param args the command line arguments
      */  
+    public static boolean inputStreamOk = false;
+    public static boolean startInput = false;
+    public static boolean inputStarted = false;
+    public static ArrayList<String> input = new ArrayList<>();
+    
     public static boolean plan = false;
     public static final int RM_MEMORY_SIZE = 1000;
     public static final int VM_MEMORY_SIZE = 100;
@@ -557,6 +563,9 @@ public class OS {
             case 2:
             {
                 //vykdoma komanda xchng
+                int id = OS.kernel.getProcDesc().getProcessName();
+                int index = OS.kernel.findProc(id, processDesc);
+                System.out.println(OS.processDesc.get(index).getInfo());
                 OS.rmMemory[1].cell = "3";
                 break;
             }
@@ -673,7 +682,7 @@ public class OS {
             {
                 String res = "IVESK_PROGRAMA";
                 int id = OS.kernel.findResName(res, resourseDesc);
-                OS.kernel.prasytiResurso(id, 2);
+                OS.kernel.prasytiResurso(id, 1);
                 OS.rmMemory[2].cell = "1";
                 break;
             }
@@ -681,7 +690,7 @@ public class OS {
             {
                 String res = "ISORINE_ATMINTIS";
                 int id = OS.kernel.findResName(res, resourseDesc);
-                OS.kernel.prasytiResurso(id, 2);
+                OS.kernel.prasytiResurso(id, 10);
                 OS.rmMemory[2].cell = "2";
                 break;
             }
@@ -689,7 +698,7 @@ public class OS {
             {
                 String res = "ISORINIS_ATMINTIES_IRENGINYS";
                 int id = OS.kernel.findResName(res, resourseDesc);
-                OS.kernel.prasytiResurso(id, 2);
+                OS.kernel.prasytiResurso(id, 1);
                 OS.rmMemory[2].cell = "3";
                 break;
             }
@@ -697,14 +706,26 @@ public class OS {
             {
                 String res = "IVEDIMO_IRENGINYS";
                 int id = OS.kernel.findResName(res, resourseDesc);
-                OS.kernel.prasytiResurso(id, 2);
+                OS.kernel.prasytiResurso(id, 1);
                 OS.rmMemory[2].cell = "4";
                 break;
             }
             case 4:
             {
                 //xchng
-                OS.rmMemory[2].cell = "5";
+                if(inputStreamOk)
+                {
+                    //xchng
+                    OS.rmMemory[2].cell = "5";
+                    inputStarted = false;
+                    inputStreamOk = false;
+                }
+                else
+                {
+                    OS.rmMemory[2].cell = "4";
+                    startInput = true;
+                }
+                
                 break;
             }
             case 5:
@@ -712,7 +733,7 @@ public class OS {
                 String res = "IVEDIMO_IRENGINYS";
                 int id = OS.kernel.findResName(res, resourseDesc);
                 int proc = OS.kernel.getProcDesc().getProcessName();
-                OS.kernel.atlaisvintiResursa(id, 2, proc, "");
+                OS.kernel.atlaisvintiResursa(id, 1, proc, "");
                 OS.rmMemory[2].cell = "6";
                 break;
             }
@@ -721,7 +742,7 @@ public class OS {
                 String res = "ISORINIS_ATMINTIES_IRENGINYS";
                 int id = OS.kernel.findResName(res, resourseDesc);
                 int proc = OS.kernel.getProcDesc().getProcessName();
-                OS.kernel.atlaisvintiResursa(id, 2, proc, "");
+                OS.kernel.atlaisvintiResursa(id, 1, proc, "");
                 OS.rmMemory[2].cell = "7";
                 break;
             }
@@ -730,7 +751,7 @@ public class OS {
                 String res = "IVESK_PROGRAMA";
                 int id = OS.kernel.findResName(res, resourseDesc);
                 int proc = OS.kernel.getProcDesc().getProcessName();
-                OS.kernel.atlaisvintiResursa(id, 2, proc, "");
+                OS.kernel.atlaisvintiResursa(id, 1, proc, "");
                 OS.rmMemory[2].cell = "8";
                 break;
             }
@@ -738,7 +759,7 @@ public class OS {
             {
                 String res = "INPUT_PROGRAM_END";
                 int id = OS.kernel.findResName(res, resourseDesc);
-                OS.kernel.aktyvuotiR(id, 2, "");
+                OS.kernel.aktyvuotiR(id, 1, "");
                 OS.rmMemory[2].cell = "9";
                 break;
             }
@@ -761,7 +782,7 @@ public class OS {
             {
                 String res = "UZDUOTIS_ISORINEJE_ATMINTYJE";
                 int id = OS.kernel.findResName(res, resourseDesc);
-                OS.kernel.aktyvuotiR(id, 2, "");
+                OS.kernel.aktyvuotiR(id, 1, "");
                 OS.rmMemory[2].cell = "0";
                 break;
             }
@@ -780,7 +801,7 @@ public class OS {
             {
                 String res = "INPUT_DATA";
                 int id = OS.kernel.findResName(res, resourseDesc);
-                OS.kernel.prasytiResurso(id, 3);
+                OS.kernel.prasytiResurso(id, 1);
                 OS.rmMemory[3].cell = "1";
                 break;
             }
@@ -788,7 +809,7 @@ public class OS {
             {
                 String res = "IVEDIMO_IRENGINYS";
                 int id = OS.kernel.findResName(res, resourseDesc);
-                OS.kernel.prasytiResurso(id, 3);
+                OS.kernel.prasytiResurso(id, 1);
                 OS.rmMemory[3].cell = "2";
                 break;
             }
@@ -800,29 +821,38 @@ public class OS {
             }
             case 3:
             {
-                String res = "INPUT_DATA";
+                String res = "IVEDIMO_IRENGINYS";
                 int id = OS.kernel.findResName(res, resourseDesc);
                 int proc = OS.kernel.getProcDesc().getProcessName();
-                OS.kernel.atlaisvintiResursa(id, 3, proc, "");
+                OS.kernel.atlaisvintiResursa(id, 1, proc, "");
                 OS.rmMemory[3].cell = "4";
                 break;
             }
             case 4:
             {
-                String res = "INPUT_DATA_END";
+                String res = "INPUT_DATA";
                 int id = OS.kernel.findResName(res, resourseDesc);
-                OS.kernel.aktyvuotiR(id, 3, "");
+                int proc = OS.kernel.getProcDesc().getProcessName();
+                OS.kernel.atlaisvintiResursa(id, 1, proc, "");
                 OS.rmMemory[3].cell = "5";
                 break;
             }
             case 5:
             {
-                int id = OS.kernel.getProcDesc().getProcessName();
-                OS.kernel.stopProc(id);
+                String res = "INPUT_DATA_END";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                OS.kernel.aktyvuotiR(id, 1, "");
                 OS.rmMemory[3].cell = "6";
-                break;  
+                break;
             }
             case 6:
+            {
+                int id = OS.kernel.getProcDesc().getProcessName();
+                OS.kernel.stopProc(id);
+                OS.rmMemory[3].cell = "7";
+                break;  
+            }
+            case 7:
             {
                 String res = "INPUT_DATA_END";
                 int id = OS.kernel.findResName(res, resourseDesc);
@@ -842,7 +872,7 @@ public class OS {
             {
                 String res = "OUTPUT_DATA";
                 int id = OS.kernel.findResName(res, resourseDesc);
-                OS.kernel.prasytiResurso(id, 4);
+                OS.kernel.prasytiResurso(id, 1);
                 OS.rmMemory[4].cell = "1";
                 break;
             }
@@ -850,7 +880,7 @@ public class OS {
             {
                 String res = "ISVEDIMO_IRENGINYS";
                 int id = OS.kernel.findResName(res, resourseDesc);
-                OS.kernel.prasytiResurso(id, 4);
+                OS.kernel.prasytiResurso(id, 1);
                 OS.rmMemory[4].cell = "2";
                 break;
             }
@@ -864,7 +894,8 @@ public class OS {
             {
                 String res = "ISVEDIMO_IRENGINYS";
                 int id = OS.kernel.findResName(res, resourseDesc);
-                OS.kernel.prasytiResurso(id, 4);
+                int proc = OS.kernel.getProcDesc().getProcessName();
+                OS.kernel.atlaisvintiResursa(id, 1, proc, "");
                 OS.rmMemory[4].cell = "4";
                 break;
             }
@@ -872,7 +903,8 @@ public class OS {
             {
                 String res = "OUTPUT_DATA";
                 int id = OS.kernel.findResName(res, resourseDesc);
-                OS.kernel.prasytiResurso(id, 4);
+                int proc = OS.kernel.getProcDesc().getProcessName();
+                OS.kernel.atlaisvintiResursa(id, 1, proc, "");
                 OS.rmMemory[4].cell = "5";
                 break;
             }
@@ -880,7 +912,7 @@ public class OS {
             {
                 String res = "OUTPUT_DATA_END";
                 int id = OS.kernel.findResName(res, resourseDesc);
-                OS.kernel.aktyvuotiR(id, 4, "");
+                OS.kernel.aktyvuotiR(id, 1, "");
                 OS.rmMemory[4].cell = "6";
                 break;
             }
@@ -986,7 +1018,7 @@ public class OS {
             {
                 String res = "UZDUOTIS_ISORINEJE_ATMINTYJE";
                 int id = OS.kernel.findResName(res, resourseDesc);
-                OS.kernel.prasytiResurso(id, 6);
+                OS.kernel.prasytiResurso(id, 1);
                 OS.rmMemory[6].cell = "1";
                 break;
             }
@@ -1019,7 +1051,7 @@ public class OS {
             {
                 String res = "UZDUOTIS_PAIMTA";
                 int id = OS.kernel.findResName(res, resourseDesc);
-                OS.kernel.prasytiResurso(id, 6);
+                OS.kernel.prasytiResurso(id, 1);
                 OS.rmMemory[6].cell = "5";
                 break;
             }
@@ -1036,7 +1068,7 @@ public class OS {
                 String res = "UZDUOTIS_PAIMTA";
                 int id = OS.kernel.findResName(res, resourseDesc);
                 int proc = OS.kernel.getProcDesc().getProcessName();
-                OS.kernel.atlaisvintiResursa(id, 6, proc, "");
+                OS.kernel.atlaisvintiResursa(id, 1, proc, "");
                 OS.rmMemory[6].cell = "7";
                 break;
             }
@@ -1056,7 +1088,7 @@ public class OS {
             {
                 String res = "PAKROVIMO_PAKETAS";
                 int id = OS.kernel.findResName(res, resourseDesc);
-                OS.kernel.prasytiResurso(id, 7);
+                OS.kernel.prasytiResurso(id, 1);
                 OS.rmMemory[7].cell = "1";
                 break;
             }
@@ -1064,7 +1096,7 @@ public class OS {
             {
                 String res = "ISORINIS_ATMINTIES_IRENGINYS";
                 int id = OS.kernel.findResName(res, resourseDesc);
-                OS.kernel.prasytiResurso(id, 7);
+                OS.kernel.prasytiResurso(id, 1);
                 OS.rmMemory[7].cell = "2";
                 break;
             }
@@ -1079,14 +1111,14 @@ public class OS {
                 String res = "ISORINIS_ATMINTIES_IRENGINYS";
                 int id = OS.kernel.findResName(res, resourseDesc);
                 int proc = OS.kernel.getProcDesc().getProcessName();
-                OS.kernel.atlaisvintiResursa(id, 7, proc, "");
+                OS.kernel.atlaisvintiResursa(id, 1, proc, "");
                 OS.rmMemory[7].cell = "4";
                 break;
             }
             case 4:
             {
                 int res = OS.kernel.findResName("LOADER_END", resourseDesc);
-                OS.kernel.aktyvuotiR(res, 7, "");
+                OS.kernel.aktyvuotiR(res, 1, "");
                 OS.rmMemory[7].cell = "5";
                 break;
             }
@@ -1139,6 +1171,26 @@ public class OS {
             }
         }
     }
+    
+    public static void input()
+    {
+        startInput = false;
+        Scanner in = new Scanner(System.in);
+        while(inputStarted);
+        input = new ArrayList<>();
+        inputStarted = true;
+        String s = "";
+        while(true)
+        {
+            s = in.nextLine();
+            if(s.equals("END"))
+            {
+                break;
+            }
+            input.add(s);
+        }
+        inputStreamOk = true;
+    }
     public static void main(String[] args) {
         memoryInit();
         rmMemory[0].cell = "0";
@@ -1168,7 +1220,10 @@ public class OS {
         int zingsnis = -1;
         while(true)
         {
-            zingsnis++;
+            if(startInput)
+            {
+                
+            }
             try
             {
                 System.out.println("zingsnis: " + zingsnis);
