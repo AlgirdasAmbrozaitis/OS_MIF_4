@@ -27,7 +27,7 @@ public class ResourseDescriptor {
     }
 
     public void setRes_dist_addr(int res_dist_addr) {
-        this.res_dist_addr = res_dist_addr;
+        this.res_dist_addr = new Integer(res_dist_addr);
     }
 
     public boolean isRepeated_use() {
@@ -35,7 +35,7 @@ public class ResourseDescriptor {
     }
 
     public void setRepeated_use(boolean repeated_use) {
-        this.repeated_use = repeated_use;
+        this.repeated_use = new Boolean(repeated_use);
     }
 
     public int getFather_resource() {
@@ -43,7 +43,7 @@ public class ResourseDescriptor {
     }
 
     public void setFather_resource(int father_resource) {
-        this.father_resource = father_resource;
+        this.father_resource = new Integer(father_resource);
     }
 
     public String getInfo() {
@@ -51,7 +51,7 @@ public class ResourseDescriptor {
     }
 
     public void setInfo(String info) {
-        this.info = info;
+        this.info = new String(info);
     }
 
     public ArrList getPrieinamu_resursu_sarasas()
@@ -61,7 +61,7 @@ public class ResourseDescriptor {
 
     public void setPrieinamu_resursu_sarasas(ArrList prieinamu_resursu_sarasas)
     {
-        this.prieinamu_resursu_sarasas = prieinamu_resursu_sarasas;
+        this.prieinamu_resursu_sarasas.myCopy(prieinamu_resursu_sarasas.getList());
     }
 
     public ArrList getUsed_resourse()
@@ -71,7 +71,7 @@ public class ResourseDescriptor {
 
     public void setUsed_resourse(ArrList used_resourse)
     {
-        this.used_resourse = used_resourse;
+        this.used_resourse.myCopy(used_resourse.getList());
     }
 
     public ArrList getLaukianciu_procesu_sarasas()
@@ -81,7 +81,7 @@ public class ResourseDescriptor {
 
     public void setLaukianciu_procesu_sarasas(ArrList laukianciu_procesu_sarasas)
     {
-        this.laukianciu_procesu_sarasas = laukianciu_procesu_sarasas;
+        this.laukianciu_procesu_sarasas.myCopy(laukianciu_procesu_sarasas.getList());
     }
 
     public int getRs()
@@ -96,7 +96,7 @@ public class ResourseDescriptor {
 
     public void setName(String name)
     {
-        this.name = name;
+        this.name = new String(name);
     }
     
     

@@ -131,4 +131,8 @@ public class ArrList {
             }
         }
     }*/
+    public void myCopy(ArrayList<Struct> old)
+    {
+        this.list = new ArrayList(old);
+    }
 }

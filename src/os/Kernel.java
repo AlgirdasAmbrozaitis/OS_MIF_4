@@ -239,7 +239,14 @@ public class Kernel
         old.add(resDesc.getRs());
         OS.processDesc.get(index).setCreated_resourses(old);
         OS.resourseDesc.add(resDesc);
-        System.out.println("paskutinis elementas : " + OS.resourseDesc.get(OS.resourseDesc.size()-1).getPrieinamu_resursu_sarasas().getSize());
+        System.out.println("-----------------");
+        for(int i = 0; i < OS.resourseDesc.size(); i++)
+        {
+            
+            System.out.println("vardas: " + OS.resourseDesc.get(i).getName());
+            System.out.println("sisteminiai procesai prieinamu procesu saraso dydis: " + OS.resourseDesc.get(i).getPrieinamu_resursu_sarasas().getSize());
+        }
+        //System.out.println("paskutinis elementas : " + OS.resourseDesc.get(OS.resourseDesc.size()-1).getPrieinamu_resursu_sarasas().getSize());
     }
     public void prasytiResurso(int resourse, int part)
     {
