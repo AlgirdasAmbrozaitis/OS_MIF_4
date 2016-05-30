@@ -534,7 +534,7 @@ public class OS {
     
     public static void outputToUser(int line)
     {
-        String info = "";
+        
         switch(line)
         {
             case 0:
@@ -548,7 +548,7 @@ public class OS {
             {
                 int id = OS.kernel.getProcDesc().getProcessName();
                 int index = OS.kernel.findProc(id, processDesc);
-                info = OS.processDesc.get(index).getResource().getList().get(0).info;
+                OS.processDesc.get(index).setInfo(OS.processDesc.get(index).getResource().getList().get(0).info);
                 int res = OS.kernel.findResName("ISVEDIMO_IRENGINYS", OS.resourseDesc);
                 OS.kernel.prasytiResurso(res, 1);
                 OS.rmMemory[1].cell = "2";
@@ -578,7 +578,9 @@ public class OS {
             }
             case 5:
             {
-                if(info.equals("DARBO_PABAIGA"))
+                int id = OS.kernel.getProcDesc().getProcessName();
+                int index = OS.kernel.findProc(id, processDesc);
+                if(OS.processDesc.get(index).getInfo().equals("DARBO_PABAIGA"))
                 {
                     OS.rmMemory[1].cell = "6";
                 }
@@ -594,7 +596,9 @@ public class OS {
             }
             case 7:
             {
-                if(info.equals("IVESK_PROGRAMA"))
+                int id = OS.kernel.getProcDesc().getProcessName();
+                int index = OS.kernel.findProc(id, processDesc);
+                if(OS.processDesc.get(index).getInfo().equals("IVESK_PROGRAMA"))
                 {
                     OS.rmMemory[1].cell = "8";
                 }
@@ -718,11 +722,71 @@ public class OS {
                 String res = "ASK_MEMORY";
                 int id = OS.kernel.findResName(res, resourseDesc);
                 OS.kernel.prasytiResurso(id, 1);
+                OS.rmMemory[5].cell = "1";
+                break;
+            }            
+            case 1:
+            {
+                //arnevirsytas limitas?
+                if(true)
+                {
+                    OS.rmMemory[5].cell = "2";
+                }else OS.rmMemory[5].cell = "6";
+                
                 break;
             }
+            case 2:
+            {
+                int res = OS.kernel.findResName("OPERATYVIOJI_ATMINTIS", OS.resourseDesc);
+                OS.kernel.prasytiResurso(res, 1);
+                OS.rmMemory[5].cell = "3";
+                break;
+            }
+            case 3:
+            {
+                //atminties priskyrimas virtualiai masinai
+                OS.rmMemory[5].cell = "4";
+                break;
+            }
+            case 4:
+            {
+                int res = OS.kernel.findResName("MEMORY_GIVEN", resourseDesc);
+                OS.kernel.aktyvuotiR(res, 1, "MEMORY_GIVEN");
+                OS.rmMemory[5].cell = "5";
+                break;
+            }
+            case 5:
+            {
+                int id = OS.kernel.findResName("ASK_MEMORY", resourseDesc);
+                int proc = OS.kernel.getProcDesc().getProcessName();
+                OS.kernel.atlaisvintiResursa(id, 1, proc, "");
+                OS.rmMemory[5].cell = "7";
+                break;
+            }
+            case 6:
+            {
+                int res = OS.kernel.findResName("MEMORY_GIVEN", resourseDesc);
+                OS.kernel.aktyvuotiR(res, 1, "MEMORY_NOT_GIVEN");
+                OS.rmMemory[5].cell = "5";
+                break;
+            }
+            case 7:
+            {
+                int id = OS.kernel.getProcDesc().getProcessName();
+                OS.kernel.stopProc(id);
+                OS.rmMemory[5].cell = "8";
+                break;
+            }
+            case 8:
+            {
+                int res = OS.kernel.findResName("MEMORY_GIVEN", resourseDesc);
+                OS.kernel.deaktyvuotiR(res);
+                OS.rmMemory[5].cell = "0";
+                break;
+            }
+        
+        
         }
-        
-        
     }
     public static void mainProc(int line)
     {

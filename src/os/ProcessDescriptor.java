@@ -23,6 +23,7 @@ public class ProcessDescriptor {
     private ArrayList<Integer> created_resourses = new ArrayList<>(); // sukurtų resursų sąrašas
     
     private ArrList operating_memory  = new ArrList(); // operatyvioji atmintis
+    private String info = "";
     
     CPU cpu;
     
@@ -149,6 +150,16 @@ public class ProcessDescriptor {
     public void setName(String name)
     {
         this.name = new String(name);
+    }
+
+    public String getInfo()
+    {
+        return info;
+    }
+
+    public void setInfo(String info)
+    {
+        this.info = new String(info);
     }
     
 }
