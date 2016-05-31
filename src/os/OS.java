@@ -124,9 +124,11 @@ public class OS {
     //darbas su komandomis
     public static String getCommand()
     {
+        System.out.println("MACHINE_STATE = " +realMachine.isRegisterMOD());
         if (realMachine.isRegisterMOD())
         {
             //turim ziureti pagal virtualia masina
+            System.out.println("PTR = " + realMachine.getRegisterPTR());
             int adr = OS.paging.getRMadress(realMachine.getRegisterIC());
             return rmMemory[adr].getCell();
         }
@@ -181,6 +183,9 @@ public class OS {
         int commandNumber = findCommand(command);
         String value = getValue(commandNumber, command);
         
+        System.out.println("COMMAND = " + command);
+        System.out.println("COMMAND_NUMBER = " + commandNumber);
+        System.out.println("VALUE = " + value);
         realMachine.setRegisterTI(realMachine.getRegisterTI() - 1);
         if(value.equals("PROCESS LINE"))
         {
@@ -1250,6 +1255,7 @@ public class OS {
                 //aktyvuoti JOB GOVERNOR
                 //int index = OS.kernel.findProc(governotId, processDesc);
                 OS.kernel.acivateProc(governorId);
+                OS.rmMemory[6].cell = "0";
                 break;
             }
         }
@@ -1286,7 +1292,7 @@ public class OS {
                 governorPtr = ptr;
                 System.out.println("isorines atminties: " + loaderExternalBlocks.get(0).size());
                 System.out.println("operatyvios atminties: " + loaderOpreatingBlocks.get(0).size());
-                for(int i = 0; i  < loaderExternalBlocks.get(0).size(); i++)
+                for(int i = 0; i  < 10; i++)
                 {
                     int externalBlock = loaderExternalBlocks.get(0).get(i);
                     int operatingBlock = loaderOpreatingBlocks.get(0).get(i);
@@ -1446,6 +1452,7 @@ public class OS {
             case 7:
             {
                 int id = OS.kernel.getProcDesc().getProcessName();
+                governorId = id;
                 OS.kernel.stopProc(id);
                 OS.rmMemory[ic].cell = "8";
                 break;
@@ -1466,12 +1473,12 @@ public class OS {
                 }
                 int id = OS.kernel.getProcDesc().getProcessName();
                 int index = OS.kernel.findProc(id, processDesc);
-                ArrList memory = new ArrList();
+                ArrList memoryOA = new ArrList();
                 ArrList resource = new ArrList();
-                memory = OS.processDesc.get(index).getOperating_memory();
-                CPU cpu = new CPU(true, Integer.valueOf(OS.rmMemory[vmIc-1].cell), 0);
+                memoryOA = OS.processDesc.get(index).getOperating_memory();
+                CPU cpu = new CPU(true, governorPtr, 0);
                 int priority = 4;
-                OS.kernel.createProcess(memory, resource, priority, cpu, "VIRTUAL_MACHINE");
+                OS.kernel.createProcess(memoryOA, resource, priority, cpu, "VIRTUAL_MACHINE");
                 OS.rmMemory[ic].cell = "10";
                 break;
             }
@@ -1481,11 +1488,13 @@ public class OS {
                 int id = OS.kernel.findResName(res, resourseDesc);
                 OS.kernel.prasytiResurso(id, 1);
                 OS.rmMemory[ic].cell = "11";
+                break;
             }
             case 11:
             {
                 int id = OS.kernel.getProcDesc().getProcessName();
                 int index = OS.kernel.findProc(id, processDesc);
+                OS.processDesc.get(index).setInfo(OS.processDesc.get(index).getResource().getList().get(0).info);
                 OS.processDesc.get(index).setInfo(OS.processDesc.get(index).getResource().getList().get(0).info);
                 
                 if(OS.processDesc.get(index).getInfo().equals("IVEDIMAS")){
@@ -1499,6 +1508,7 @@ public class OS {
                 } else {
                     OS.rmMemory[ic].cell = "39";
                 }
+                break;
                                 
             }
             case 12:
@@ -1523,6 +1533,7 @@ public class OS {
                 int id = OS.kernel.findResName(res, resourseDesc);
                 OS.kernel.prasytiResurso(id, 1);
                 OS.rmMemory[ic].cell = "15";
+                break;
             }
             case 15:
             {

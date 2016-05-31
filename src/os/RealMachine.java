@@ -856,8 +856,8 @@ public class RealMachine {
     }
     public void vjump(int memCell)
     {
-        int adr = OS.paging.getRMadress(memCell);
-        this.registerIC = adr;
+        //int adr = OS.paging.getRMadress(memCell);
+        this.registerIC = memCell;
     }
     public void vcall(int memCell)
     {

@@ -87,7 +87,12 @@ public class Paging {
     public int getRMadress(int virtAdress)
     {
         //int blockAddr = 
-        return ((10 * Integer.valueOf(OS.rmMemory[((10*(OS.realMachine.getRegisterPTR() % 100)) + virtAdress / 10)].getCell())) + virtAdress % 10);
+        System.out.println("PTR yra = " + OS.realMachine.getRegisterPTR());
+        System.out.println("PTR mod 100 yra = " + OS.realMachine.getRegisterPTR() % 100);
+        System.out.println("mes ziurime i : " + ((10*(OS.realMachine.getRegisterPTR() % 100)) + virtAdress / 10));
+        System.out.println(" kas yra kazkur: " + OS.rmMemory[((10*(OS.realMachine.getRegisterPTR() % 100)) + virtAdress / 10)].getCell());
+        //return ((10 * Integer.valueOf(OS.rmMemory[((10*(OS.realMachine.getRegisterPTR() % 100)) + virtAdress / 10)].getCell())) + virtAdress % 10);
+        return ((10 * Integer.valueOf(OS.rmMemory[(((OS.realMachine.getRegisterPTR() % 100)) + virtAdress / 10)].getCell())) + virtAdress % 10);
     }
     /*public void addMore()
     {

@@ -27,6 +27,8 @@ public class Kernel
         //OS.plan = true;
         int processNumber = OS.kernel.procDesc.getProcessName();
         int index = OS.kernel.findProc(processNumber, OS.processDesc);
+        System.out.println("EINAMO PROCESO_NUMERIS = " + index);
+        System.out.println("EINAMO PROCESO_VARDAS = " + OS.processDesc.get(index).getName());
         //TODO gali reikt tikrint ar ne null
         if (!OS.processDesc.get(index).getState().equals("BLOCKED"))
         {
@@ -34,6 +36,8 @@ public class Kernel
             {
                 int next_process = OS.kernel.pps.removeFirst();
                 int next_process1 = OS.kernel.findProc(next_process, OS.processDesc);
+                System.out.println("SEKANCIO, jei einamas buvo readys, PROCESO_NUMERIS = " + next_process1);
+                System.out.println("SEKANCIO, jei einamas buvo readys, PROCESO_VARDAS = " + OS.processDesc.get(next_process1).getName());
                 OS.processDesc.get(next_process1).getCpu();
                 //OS.processDesc.get(next_process1).setState("RUN");
                 OS.kernel.procDesc.setProcessName(OS.processDesc.get(next_process1).getId());
@@ -43,10 +47,13 @@ public class Kernel
                 OS.processDesc.get(index).setCPU();
                 OS.kernel.pps.addPps(OS.processDesc.get(index).getId(), OS.processDesc.get(index).getPriority());
                 int next_process = OS.kernel.pps.removeFirst();
-                next_process = OS.kernel.findProc(next_process, OS.processDesc);
-                OS.processDesc.get(next_process).getCpu();
-                OS.processDesc.get(next_process).setState("RUN");
-                OS.kernel.procDesc.setProcessName(OS.processDesc.get(next_process).getId());
+                int next_process1 = OS.kernel.findProc(next_process, OS.processDesc);
+                System.out.println("SEKANCIO, jei einamas buvo ready, PROCESO_NUMERIS = " + next_process1);
+                System.out.println("SEKANCIO, jei einamas buvo ready, PROCESO_VARDAS = " + OS.processDesc.get(next_process1).getName());
+                OS.processDesc.get(next_process1).getCpu();
+                System.out.println("IC = " + OS.realMachine.getRegisterIC());
+                OS.processDesc.get(next_process1).setState("RUN");
+                OS.kernel.procDesc.setProcessName(OS.processDesc.get(next_process1).getId());
             }
         }else
         {
@@ -55,8 +62,18 @@ public class Kernel
             //OS.kernel.pps.addPps(processNumber, OS.processDesc.get(processNumber).getPriority());
             int next_process = OS.kernel.pps.removeFirst();
             int next_process1 = OS.kernel.findProc(next_process, OS.processDesc);
+            System.out.println("SEKANCIO, jei einamas buvo blokuotas, PROCESO_NUMERIS = " + next_process1);
+            System.out.println("SEKANCIO, jei einamas buvo blokuotas, PROCESO_VARDAS = " + OS.processDesc.get(next_process1).getName());
+            if(OS.processDesc.get(next_process1).getName() == "VIRTUAL_MACHINE")
+            {
+                int hmmm = 5;
+            }
+            System.out.println("SEKANCIO, jei einamas buvo blokuotas, PROCESO_ID = " + OS.processDesc.get(next_process1).getId());
             OS.processDesc.get(next_process1).getCpu();
+            System.out.println("IC = " + OS.realMachine.getRegisterIC());
+            System.out.println("MOD = " + OS.realMachine.isRegisterMOD());
             OS.processDesc.get(next_process1).setState("RUN");
+            
             OS.kernel.procDesc.setProcessName(OS.processDesc.get(next_process1).getId());
         }
         
@@ -72,6 +89,7 @@ public class Kernel
         {
             OS.realMachine.setRegisterTI(50);
             OS.kernel.planuotojas();
+            return;
         }
         if(OS.realMachine.getRegisterAI() == 1)
         {
@@ -79,6 +97,7 @@ public class Kernel
             OS.kernel.aktyvuotiR(res, 1, "IVESK_PROGRAMA");
 //programos ivedimas
             OS.realMachine.setRegisterAI(0);
+            return;
         }
         if(OS.realMachine.getRegisterAI() == 2)
         {
@@ -86,6 +105,7 @@ public class Kernel
             OS.kernel.aktyvuotiR(res, 1, "DARBO_PABAIGA");
 //OS darbo pabaiga
             OS.realMachine.setRegisterAI(0);
+            return;
         }
         int id = OS.kernel.getProcDesc().getProcessName();
         index = OS.kernel.findProc(id, OS.processDesc);
@@ -105,30 +125,38 @@ public class Kernel
                
                //Virtualios daro pabaiga
                OS.realMachine.setRegisterSI(0);
-            }
+            }else
             if(OS.realMachine.getRegisterSI() == 3)
             {
                //atmintiesPrasymas
                int res = OS.kernel.findResName("VM_INTERRUPTED", OS.resourseDesc);
                OS.kernel.aktyvuotiR(res, 1, "PAPILDOMA_ATMINTIS");
                OS.realMachine.setRegisterSI(0);
-            }
+            }else
             if(OS.realMachine.getRegisterSI() == 2)
             {
                int res = OS.kernel.findResName("VM_INTERRUPTED", OS.resourseDesc);
                OS.kernel.aktyvuotiR(res, 1, "ISVEDIMAS");
                 //isvedimo prasymas
                OS.realMachine.setRegisterSI(0);
-            }
+            }else
             if(OS.realMachine.getRegisterSI() == 1)
             {
                 int res = OS.kernel.findResName("VM_INTERRUPTED", OS.resourseDesc);
                 OS.kernel.aktyvuotiR(res, 1, "IVEDIMAS");
                 //ivedimo prasymas
                 OS.realMachine.setRegisterSI(0);
+            }else
+            {
+                int res = OS.kernel.findResName("VM_INTERRUPTED", OS.resourseDesc);
+                OS.kernel.aktyvuotiR(res, 1, "KLAIDA");
+                //ivedimo prasymas
+                OS.realMachine.setRegisterSI(0);
+                OS.realMachine.setRegisterPI(0);
             }
-            OS.realMachine.setRegisterSI(0);
-            OS.realMachine.setRegisterPI(0);
+                
+            //OS.realMachine.setRegisterSI(0);
+            
         }
         /*index = OS.kernel.findProc(OS.kernel.procDesc.getProcessName(), OS.processDesc);
         if(!OS.processDesc.get(index).getName().equals("INTERFACE"))
