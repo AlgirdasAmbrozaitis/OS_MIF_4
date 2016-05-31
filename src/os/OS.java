@@ -66,6 +66,7 @@ public class OS {
     public static final int VM_MEMORY_SIZE = 100;
     public static final int EXTERNAL_MEMORY_SIZE = 4000;
     
+    public static GUI gui = new GUI();
     //agregatai
     public static RealMachine realMachine = new RealMachine();
     //public static VirtualMachine virtualMachine = new VirtualMachine();
@@ -673,7 +674,7 @@ public class OS {
             case 12:
             {
                 int id = OS.kernel.findProcName("INPUT_PROGRAM", processDesc);
-                OS.kernel.acivateProc(id);
+                OS.kernel.activateProc(id);
                 OS.rmMemory[1].cell = "0";
                 break;
             }
@@ -1128,8 +1129,6 @@ public class OS {
                 OS.rmMemory[5].cell = "0";
                 break;
             }
-        
-        
         }
     }
    public static void mainProc(int line)
@@ -1222,7 +1221,7 @@ public class OS {
             {
                 //aktyvuoti JOB GOVERNOR
                 //int index = OS.kernel.findProc(governotId, processDesc);
-                OS.kernel.acivateProc(governotId);
+                OS.kernel.activateProc(governotId);
                 break;
             }
         }
@@ -1296,11 +1295,8 @@ public class OS {
                 OS.kernel.deaktyvuotiR(id);
                 OS.rmMemory[7].cell = "0";
                 break;
-            }
-            
+            }       
         }
-        
-        
     }
     
     
@@ -1328,6 +1324,400 @@ public class OS {
             default:
             {
                 
+            }
+        }
+    }
+    
+    public static void jobGovernor( int line, int ic ){
+        switch(line){
+            case 0:
+            {
+                String res = "OPERATYVIOJI_ATMINTIS";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                OS.kernel.prasytiResurso(id, 10);
+                OS.rmMemory[ic].cell = "1";
+                ArrayList<Integer> opMemory = new ArrayList();
+                for( int i = 0 ; i < OS.processDesc.get(id).getOperating_memory().getSize(); i++ ){
+                    opMemory.add(OS.processDesc.get(id).getOperating_memory().getList().get(i).part_of_resourse);
+                }
+                loaderOpreatingBlocks.add(new ArrayList(opMemory));
+                opMemory.clear();
+                break;
+            }
+            case 1:
+            {
+                int id = OS.kernel.findResName("PAKROVIMO_PAKETAS", resourseDesc);
+                OS.kernel.aktyvuotiR(id, 1, "");
+                OS.rmMemory[ic].cell = "2";
+                ArrayList<Integer> exMemory = new ArrayList();
+                for( int i = 0 ; i < OS.processDesc.get(id).getResource().getSize(); i++ ){
+                    exMemory.add(OS.processDesc.get(id).getResource().getList().get(i).part_of_resourse);
+                }
+                loaderExternalBlocks.add(new ArrayList(exMemory));
+                exMemory.clear();
+                break;
+            }
+            case 2:
+            {
+                int id = OS.kernel.findResName("LOADER_END", resourseDesc);
+                OS.kernel.prasytiResurso(id, 1);
+                OS.rmMemory[ic].cell = "3";
+                break;
+            }
+            case 3:
+            {
+                int id = OS.kernel.findResName("PAKROVIMO_PAKETAS", resourseDesc);
+                OS.kernel.deaktyvuotiR(id);
+                OS.rmMemory[ic].cell = "4";
+                break;
+            }
+            case 4:
+            {
+                int id = OS.kernel.findProcName("LOADER", processDesc);
+                OS.kernel.activateProc(id);
+                OS.rmMemory[ic].cell = "5";
+                break;
+            }
+            case 5:
+            {
+                String res = "LOADER_END";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                int proc = OS.kernel.getProcDesc().getProcessName();
+                OS.kernel.atlaisvintiResursa(id, 1, proc, "");
+                OS.rmMemory[ic].cell = "6";
+                break;
+            }
+            case 6:
+            {
+                int id = OS.kernel.findResName("UZDUOTIS_PAIMTA", resourseDesc);
+                OS.kernel.aktyvuotiR(id, 1, "");
+                OS.rmMemory[ic].cell = "7";
+                break;
+            }
+            case 7:
+            {
+                int id = OS.kernel.getProcDesc().getProcessName();
+                OS.kernel.stopProc(id);
+                OS.rmMemory[ic].cell = "8";
+                break;
+            }
+            case 8:
+            {
+                int id = OS.kernel.findResName("UZDUOTIS_PAIMTA", resourseDesc);
+                OS.kernel.deaktyvuotiR(id);
+                OS.rmMemory[ic].cell = "9";
+                break;
+            }
+            case 9:
+            {
+                vmIc += 10;
+                if(vmIc == 120)
+                {
+                    vmIc = 20;
+                }
+                int id = OS.kernel.getProcDesc().getProcessName();
+                int index = OS.kernel.findProc(id, processDesc);
+                ArrList memory = new ArrList();
+                ArrList resource = new ArrList();
+                memory = OS.processDesc.get(index).getOperating_memory();
+                CPU cpu = new CPU(true, Integer.valueOf(OS.rmMemory[vmIc-1].cell), 0);
+                int priority = 4;
+                OS.kernel.createProcess(memory, resource, priority, cpu, "VIRTUAL_MACHINE");
+                OS.rmMemory[ic].cell = "10";
+                break;
+            }
+            case 10:
+            {
+                String res = "VM_INTERRUPTED";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                OS.kernel.prasytiResurso(id, 1);
+                OS.rmMemory[ic].cell = "11";
+            }
+            case 11:
+            {
+                int id = OS.kernel.getProcDesc().getProcessName();
+                int index = OS.kernel.findProc(id, processDesc);
+                OS.processDesc.get(index).setInfo(OS.processDesc.get(index).getResource().getList().get(0).info);
+                
+                if(OS.processDesc.get(index).getInfo().equals("IVEDIMAS")){
+                    OS.rmMemory[ic].cell = "12";
+                } else if(OS.processDesc.get(index).getInfo().equals("ISVEDIMAS")){
+                    OS.rmMemory[ic].cell = "19";
+                } else if(OS.processDesc.get(index).getInfo().equals("PAPILDOMA_ATMINTIS")){
+                    OS.rmMemory[ic].cell = "26";
+                } else if(OS.processDesc.get(index).getInfo().equals("BAIGIAMAS_DARBAS")){
+                    OS.rmMemory[ic].cell = "32";
+                } else {
+                    OS.rmMemory[ic].cell = "39";
+                }
+                                
+            }
+            case 12:
+            {
+                String res = "VM_INTERRUPTED";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                int proc = OS.kernel.getProcDesc().getProcessName();
+                OS.kernel.atlaisvintiResursa(id, 1, proc, "");
+                OS.rmMemory[ic].cell = "13";
+                break;
+            }
+            case 13:
+            {
+                int id = OS.kernel.findResName("INPUT_DATA", resourseDesc);
+                OS.kernel.aktyvuotiR(id, 1, "");
+                OS.rmMemory[ic].cell = "14";
+                break;  
+            }
+            case 14:
+            {
+                String res = "INPUT_DATA_END";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                OS.kernel.prasytiResurso(id, 1);
+                OS.rmMemory[ic].cell = "15";
+            }
+            case 15:
+            {
+                int id = OS.kernel.findResName("INPUT_DATA", resourseDesc);
+                OS.kernel.deaktyvuotiR(id);
+                OS.rmMemory[ic].cell = "16";
+                break;
+            }
+            case 16:
+            {
+                String res = "INPUT_DATA_END";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                int proc = OS.kernel.getProcDesc().getProcessName();
+                OS.kernel.atlaisvintiResursa(id, 1, proc, "");
+                OS.rmMemory[ic].cell = "17";
+                break;
+            }
+            case 17:
+            {
+                int id = OS.kernel.findProcName("INPUT_PROGRAM", processDesc);
+                OS.kernel.activateProc(id);
+                OS.rmMemory[ic].cell = "18";
+                break;
+            }
+            case 18:
+            {
+                int id = OS.kernel.findProcName("VIRTUAL_MACHINE", processDesc);
+                OS.kernel.activateProc(id);
+                OS.rmMemory[ic].cell = "10";
+                break;
+            }
+            case 19:
+            {
+                String res = "VM_INTERRUPTED";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                int proc = OS.kernel.getProcDesc().getProcessName();
+                OS.kernel.atlaisvintiResursa(id, 1, proc, "");
+                OS.rmMemory[ic].cell = "20";
+                break;
+            }
+            case 20:
+            {
+                int id = OS.kernel.findResName("OUTPUT_DATA", resourseDesc);
+                OS.kernel.aktyvuotiR(id, 1, "");
+                OS.rmMemory[ic].cell = "21";
+                break;  
+            }
+            case 21:
+            {
+                String res = "OUTPUT_DATA_END";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                OS.kernel.prasytiResurso(id, 1);
+                OS.rmMemory[ic].cell = "22";
+                break;
+            }
+            case 22:
+            {
+                int id = OS.kernel.findResName("OUTPUT_DATA", resourseDesc);
+                OS.kernel.deaktyvuotiR(id);
+                OS.rmMemory[ic].cell = "23";
+                break;
+            }
+            case 23:
+            {
+                String res = "OUTPUT_DATA_END";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                int proc = OS.kernel.getProcDesc().getProcessName();
+                OS.kernel.atlaisvintiResursa(id, 1, proc, "");
+                OS.rmMemory[ic].cell = "24";
+                break;
+            }
+            case 24:
+            {
+                int id = OS.kernel.findProcName("OUTPUT_DATA", processDesc);
+                OS.kernel.activateProc(id);
+                OS.rmMemory[ic].cell = "25";
+                break;
+            }
+            case 25:
+            {
+                int id = OS.kernel.findProcName("VIRTUAL_MACHINE", processDesc);
+                OS.kernel.activateProc(id);
+                OS.rmMemory[ic].cell = "10";
+                break;
+            }
+            case 26:
+            {
+                String res = "VM_INTERRUPTED";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                int proc = OS.kernel.getProcDesc().getProcessName();
+                OS.kernel.atlaisvintiResursa(id, 1, proc, "");
+                OS.rmMemory[ic].cell = "27";
+                break;
+            }
+            case 27:
+            {
+                int id = OS.kernel.findResName("ASK_MEMORY", resourseDesc);
+                OS.kernel.aktyvuotiR(id, 1, "");
+                OS.rmMemory[ic].cell = "28";
+                break;  
+            }
+            case 28:
+            {
+                String res = "MEMORY_GIVEN";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                OS.kernel.prasytiResurso(id, 1);
+                OS.rmMemory[ic].cell = "29";
+                break;
+            }
+            case 29:
+            {
+                int id = OS.kernel.findResName("ASK_MEMORY", resourseDesc);
+                OS.kernel.deaktyvuotiR(id);
+                OS.rmMemory[ic].cell = "30";
+                break;
+            }
+            case 30:
+            {
+                int id = OS.kernel.findProcName("ADDITIONAL_MEMORY", processDesc);
+                OS.kernel.activateProc(id);
+                OS.rmMemory[ic].cell = "31";
+                break;
+            }
+            case 31:
+            {
+                int id = OS.kernel.findProcName("VIRTUAL_MACHINE", processDesc);
+                OS.kernel.activateProc(id);
+                OS.rmMemory[ic].cell = "11";
+                break;
+            }
+            case 32:
+            {
+                String res = "VM_INTERRUPTED";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                int proc = OS.kernel.getProcDesc().getProcessName();
+                OS.kernel.atlaisvintiResursa(id, 1, proc, "");
+                OS.rmMemory[ic].cell = "33";
+                break;
+            }
+            case 33:
+            {
+                int id = OS.kernel.findResName("PRANESIMAS_VARTOTOJUI", resourseDesc);
+                OS.kernel.aktyvuotiR(id, 1, "SEKMINGA DARBO PABAIGA");
+                OS.rmMemory[ic].cell = "34";
+                break;  
+            }
+            case 34:
+            {
+                String res = "OUTPUT_TO_USER_END";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                OS.kernel.prasytiResurso(id, 1);
+                OS.rmMemory[ic].cell = "35";
+                break;
+            }
+            case 35:
+            {
+                int id = OS.kernel.findResName("PRANESIMAS_VARTOTOJUI", resourseDesc);
+                OS.kernel.deaktyvuotiR(id);
+                OS.rmMemory[ic].cell = "36";
+                break;
+            }
+            case 36:
+            {
+                String res = "OUTPUT_TO_USER_END";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                int proc = OS.kernel.getProcDesc().getProcessName();
+                OS.kernel.atlaisvintiResursa(id, 1, proc, "");
+                OS.rmMemory[ic].cell = "37";
+                break;
+            }
+            case 37:
+            {
+                int id = OS.kernel.findResName("OUTPUT_TO_USER", resourseDesc);
+                OS.kernel.deaktyvuotiR(id);
+                OS.rmMemory[ic].cell = "38";
+                break;
+            }
+            case 38:
+            {
+                int id = OS.kernel.findProcName("OUTPUT_TO_USER", processDesc);
+                OS.kernel.activateProc(id);
+                OS.rmMemory[ic].cell = "10";
+                break;
+            }
+            case 39:
+            {
+                String res = "VM_INTERRUPTED";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                int proc = OS.kernel.getProcDesc().getProcessName();
+                OS.kernel.atlaisvintiResursa(id, 1, proc, "");
+                OS.rmMemory[ic].cell = "40";
+                break;
+            }
+            case 40:
+            {
+                int id = OS.kernel.findResName("PRANESIMAS_VARTOTOJUI", resourseDesc);
+                OS.kernel.aktyvuotiR(id, 1, "NESEKMINGA DARBO PABAIGA");
+                OS.rmMemory[ic].cell = "41";
+                break;  
+            }
+            case 41:
+            {
+                String res = "OUTPUT_TO_USER_END";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                OS.kernel.prasytiResurso(id, 1);
+                OS.rmMemory[ic].cell = "42";
+                break;
+            }
+            case 42:
+            {
+                int id = OS.kernel.findResName("OUTPUT_TO_USER", resourseDesc);
+                OS.kernel.deaktyvuotiR(id);
+                OS.rmMemory[ic].cell = "43";
+                break;
+            }
+            case 43:
+            {
+                String res = "OUTPUT_TO_USER_END";
+                int id = OS.kernel.findResName(res, resourseDesc);
+                int proc = OS.kernel.getProcDesc().getProcessName();
+                OS.kernel.atlaisvintiResursa(id, 1, proc, "");
+                OS.rmMemory[ic].cell = "44";
+                break;
+            }
+            case 44:
+            {
+                int id = OS.kernel.findProcName("OUTPUT_TO_USER", processDesc);
+                OS.kernel.activateProc(id);
+                OS.rmMemory[ic].cell = "45";
+                break;
+            }
+            case 45:
+            {
+                int id = OS.kernel.findResName("UZDUOTIS_ISORINEJE_ATMINTYJE", resourseDesc);
+                OS.kernel.aktyvuotiR(id, 1, "FIKTYVUS");
+                OS.rmMemory[ic].cell = "46";
+                break;  
+            }
+            case 46:
+            {
+                int id = OS.kernel.findProcName("VIRTUAL_MACHINE", processDesc);
+                OS.kernel.abortProcess( id );
+                OS.rmMemory[ic].cell = "0";
+                break;  
             }
         }
     }
@@ -1377,6 +1767,13 @@ public class OS {
         startInput = true;
         while(true)
         {
+            while(outputStreamInUse);
+                if(!outputStream.isEmpty()){
+                    for( String output : outputStream ){
+                        OS.gui.getOutputArea().append(output);
+                    }
+                    outputStream = new ArrayList<>();
+            }
             if(startInput)
             {
                 InputThread inputThread = new InputThread();
@@ -1384,13 +1781,15 @@ public class OS {
             }
             if(inputStreamOk)
             {
-                OS.kernel.acivateProc(blockedProcessId);
+                OS.kernel.activateProc(blockedProcessId);
             }
             zingsnis++;
             try
             {
                 System.out.println("zingsnis: " + zingsnis);
                 cpu();
+                gui.refreshGUI();
+                
                 //rmMemory[0].setState(false);
                 //rmMemory[80].setState(false);
                 int idd = OS.kernel.getProcDesc().getProcessName();
@@ -1407,7 +1806,7 @@ public class OS {
                 {
                     System.out.println("proceso vardas: " + OS.processDesc.get(i).getName() + "proceso busena: " + OS.processDesc.get(i).getState());
                 }
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (InterruptedException ex)
             {
                 Logger.getLogger(OS.class.getName()).log(Level.SEVERE, null, ex);

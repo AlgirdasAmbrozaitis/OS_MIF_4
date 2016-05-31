@@ -218,7 +218,7 @@ public class Kernel
         }
     }
     
-    public void acivateProc( int index ){
+    public void activateProc( int index ){
         int ind = OS.kernel.findProc(index, OS.processDesc);
         if( OS.processDesc.get(ind).getState().equals("READYS")){
             OS.processDesc.get(ind).setState("READYS");

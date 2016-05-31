@@ -5,6 +5,9 @@
  */
 package os;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import static java.lang.System.out;
 import java.util.ArrayList;
 import java.util.Scanner;
 //import static os.OS.input;
@@ -18,24 +21,31 @@ import java.util.Scanner;
  */
 public class InputThread extends Thread
 {
+    public static String inputText;
     public void run()
     {
         OS.startInput = false;
-        Scanner in = new Scanner(System.in);
         while(OS.inputStarted);
-        OS.inputStream = new ArrayList<>();
-        OS.inputStarted = true;
-        String s = "";
-        while(true)
-        {
-            s = in.nextLine();
-            System.out.println("ivesta: " + s);
-            if(s.equals("END"))
-            {
-                break;
-            }
-            OS.inputStream.add(s);
-        }
-        OS.inputStreamOk = true;
+        
+        OS.gui.getInputButton().addActionListener(new ActionListener() { 
+            public void actionPerformed(ActionEvent e) { 
+                inputText = new String(OS.gui.getInputArea().getText());
+
+                OS.gui.getInputArea().setText(null);
+                OS.inputStream = new ArrayList<>();
+                
+                while(!inputText.isEmpty()){
+                      if(inputText.contains(" ")){
+                          String word = inputText.substring(0,inputText.indexOf(' '));
+                          OS.inputStream.add(word);
+                          inputText = new String(inputText.substring(inputText.indexOf(' ')+1,inputText.length()));
+                      } else {
+                          OS.inputStream.add(inputText);
+                          inputText = new String();
+                      }
+                }
+                OS.inputStreamOk = true;
+            } 
+          } );
     }
 }
