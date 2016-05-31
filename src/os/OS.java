@@ -32,6 +32,8 @@ public class OS {
      * @param args the command line arguments
      */  
     
+    public static boolean osEnd = false;
+    
     public static int interruptedGovernor;
     
     public static int governorPtr;
@@ -560,6 +562,7 @@ public class OS {
             }
             case 9: 
             {
+                osEnd = true;
                 System.exit(0);
                 break;
             }
