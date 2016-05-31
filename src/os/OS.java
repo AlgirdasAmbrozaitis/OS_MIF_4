@@ -566,6 +566,15 @@ public class OS {
             {
                 int id = OS.kernel.getProcDesc().getProcessName();
                 int index = OS.kernel.findProc(id, processDesc);
+                System.out.println("proceso vardas: "  + OS.processDesc.get(index).getName());
+                int resId = OS.processDesc.get(index).getResource().getList().get(0).processId;
+                int resInd = OS.kernel.findRes(resId, resourseDesc);
+                System.out.println("resurso vardas : " + OS.resourseDesc.get(resInd).getName());
+                System.out.println("turimi resursai: " + OS.processDesc.get(index).getResource().getSize());
+                System.out.println("turimi resursai: " + OS.processDesc.get(index).getResource().getList().get(0).processId);
+                System.out.println("turimi resursai: " + OS.processDesc.get(index).getResource().getList().get(0).info);
+                System.out.println("turimi resursai: " + OS.processDesc.get(index).getResource().getList().get(0).part_of_resourse);
+                System.out.println("turimi resursai: " + OS.processDesc.get(index).getResource().getList().get(0).priority);
                 OS.processDesc.get(index).setInfo(OS.processDesc.get(index).getResource().getList().get(0).info);
                 int res = OS.kernel.findResName("ISVEDIMO_IRENGINYS", OS.resourseDesc);
                 OS.kernel.prasytiResurso(res, 1);

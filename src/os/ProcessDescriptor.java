@@ -83,7 +83,7 @@ public class ProcessDescriptor {
     }
 
     public void setState(String state) {
-        this.state = new String(state);
+        this.state = state;
     }
 
     public int getPriority() {
@@ -107,7 +107,7 @@ public class ProcessDescriptor {
     }
 
     public void setSons_processes(ArrayList<Integer> sons_processes) {
-        this.sons_processes = new ArrayList(sons_processes);
+        this.sons_processes = new ArrayList<>(sons_processes);
     }
 
     public ArrList getResource() {
@@ -130,8 +130,8 @@ public class ProcessDescriptor {
         return created_resourses;
     }
 
-    public void setCreated_resourses(ArrayList created_resourses) {
-        this.created_resourses = new ArrayList(created_resourses);
+    public void setCreated_resourses(ArrayList<Integer> created_resourses) {
+        this.created_resourses = new ArrayList<>(created_resourses);
     }
 
     public ArrList getOperating_memory() {
@@ -153,7 +153,7 @@ public class ProcessDescriptor {
 
     public void setName(String name)
     {
-        this.name = new String(name);
+        this.name = name;
     }
 
     public String getInfo()
@@ -163,7 +163,7 @@ public class ProcessDescriptor {
 
     public void setInfo(String info)
     {
-        this.info = new String(info);
+        this.info = info;
     }
     
 }

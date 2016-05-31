@@ -45,14 +45,17 @@ public class ArrList {
     }
     
     public void addPa( int part, String info ){
+        System.out.println("--------------------------> " + info);
         Struct struct = new Struct();
         struct.part_of_resourse = part;
         struct.info = info;
+        System.out.println("--------------------------> " + struct.info);
         list.add(struct);
         //Collections.sort(list);
     }
-    public void addR(int resource, int part ){
+    public void addR(int resource, int part, String info ){
         Struct struct = new Struct();
+        struct.info = info;
         struct.processId = resource;
         struct.part_of_resourse = part;
         list.add(struct);
@@ -117,8 +120,18 @@ public class ArrList {
         return list.size();
     }
     
-    public void myCopy( ArrayList<Struct> copy ){
+    public void myCopy( ArrayList copy ){
         this.list = new ArrayList(copy);
+        /*this.list = new ArrayList<>();
+        for(Struct obj : copy)
+        {
+            Struct newS = new Struct();
+            newS.info = obj.info;
+            newS.part_of_resourse = obj.part_of_resourse;
+            newS.priority = obj.priority;
+            newS.processId = obj.processId;
+            this.list.add(newS);
+        }*/
     }
     
     /*public void sortList()

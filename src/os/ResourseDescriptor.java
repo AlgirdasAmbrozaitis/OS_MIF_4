@@ -51,7 +51,7 @@ public class ResourseDescriptor {
     }
 
     public void setInfo(String info) {
-        this.info = new String(info);
+        this.info = info;
     }
 
     public ArrList getPrieinamu_resursu_sarasas()
@@ -96,7 +96,7 @@ public class ResourseDescriptor {
 
     public void setName(String name)
     {
-        this.name = new String(name);
+        this.name = name;
     }
     
     
