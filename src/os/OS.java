@@ -32,7 +32,10 @@ public class OS {
      * @param args the command line arguments
      */  
     
-    public static int governotId;
+    public static int interruptedGovernor;
+    
+    public static int governorPtr;
+    public static int governorId;
     
     public static int governorIc = 10;
     public static int vmIc = 20;
@@ -1222,7 +1225,7 @@ public class OS {
             {
                 //aktyvuoti JOB GOVERNOR
                 //int index = OS.kernel.findProc(governotId, processDesc);
-                OS.kernel.acivateProc(governotId);
+                OS.kernel.acivateProc(governorId);
                 break;
             }
         }
@@ -1251,6 +1254,12 @@ public class OS {
             case 2:
             {
                 //XCHNG
+                for(int i = 0; i < loaderOpreatingBlocks.get(0).size(); i++)
+                {
+                    rmMemory[vmIc + i].setCell(String.valueOf(loaderOpreatingBlocks.get(0).get(i)));
+                }
+                int ptr = 9*100+vmIc;
+                governorPtr = ptr;
                 for(int i = 0; i  < loaderExternalBlocks.get(0).size(); i++)
                 {
                     int externalBlock = loaderExternalBlocks.get(0).get(i);
