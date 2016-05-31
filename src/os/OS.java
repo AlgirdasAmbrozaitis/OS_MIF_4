@@ -1736,6 +1736,11 @@ public class OS {
                     }
                     outputStream = new ArrayList<>();
             }
+            try {    
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(OS.class.getName()).log(Level.SEVERE, null, ex);
+            }
             OS.gui.refreshGUI();
             
         }
