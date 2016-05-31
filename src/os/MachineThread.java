@@ -25,6 +25,7 @@ public class MachineThread extends Thread
             }
             if(OS.inputStreamOk)
             {
+                System.out.println("aktivuojamo proceso ID: " + OS.blockedProcessId);
                 OS.kernel.acivateProc(OS.blockedProcessId);
             }
             //zingsnis++;

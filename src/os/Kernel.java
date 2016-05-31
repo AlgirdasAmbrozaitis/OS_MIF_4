@@ -30,14 +30,24 @@ public class Kernel
         //TODO gali reikt tikrint ar ne null
         if (!OS.processDesc.get(index).getState().equals("BLOCKED"))
         {
-            OS.processDesc.get(index).setState("READY");
-            OS.processDesc.get(index).setCPU();
-            OS.kernel.pps.addPps(OS.processDesc.get(index).getId(), OS.processDesc.get(index).getPriority());
-            int next_process = OS.kernel.pps.removeFirst();
-            next_process = OS.kernel.findProc(next_process, OS.processDesc);
-            OS.processDesc.get(next_process).getCpu();
-            OS.processDesc.get(next_process).setState("RUN");
-            OS.kernel.procDesc.setProcessName(OS.processDesc.get(next_process).getId());
+            if(OS.processDesc.get(index).getState().equals("READYS"))
+            {
+                int next_process = OS.kernel.pps.removeFirst();
+                int next_process1 = OS.kernel.findProc(next_process, OS.processDesc);
+                OS.processDesc.get(next_process1).getCpu();
+                //OS.processDesc.get(next_process1).setState("RUN");
+                OS.kernel.procDesc.setProcessName(OS.processDesc.get(next_process1).getId());
+            }else
+            {
+                OS.processDesc.get(index).setState("READY");
+                OS.processDesc.get(index).setCPU();
+                OS.kernel.pps.addPps(OS.processDesc.get(index).getId(), OS.processDesc.get(index).getPriority());
+                int next_process = OS.kernel.pps.removeFirst();
+                next_process = OS.kernel.findProc(next_process, OS.processDesc);
+                OS.processDesc.get(next_process).getCpu();
+                OS.processDesc.get(next_process).setState("RUN");
+                OS.kernel.procDesc.setProcessName(OS.processDesc.get(next_process).getId());
+            }
         }else
         {
             //OS.processDesc.get(index).setState("READY");
@@ -287,7 +297,7 @@ public class Kernel
         int ind = OS.kernel.findProc(index, OS.processDesc);
         if( OS.processDesc.get(ind).getState().equals("RUN")){
             OS.processDesc.get(ind).setCPU();
-            OS.processDesc.get(ind).setState("BLOCKED");
+            OS.processDesc.get(ind).setState("READYS");
             planuotojas();
         } else if ( OS.processDesc.get(ind).getState().equals("BLOCKED") ||
                     OS.processDesc.get(ind).getState().equals("BLOCKEDS")){
@@ -300,13 +310,16 @@ public class Kernel
     public void acivateProc( int index ){
         int ind = OS.kernel.findProc(index, OS.processDesc);
         if( OS.processDesc.get(ind).getState().equals("READYS")){
-            OS.processDesc.get(ind).setState("READYS");
-        } else {
-            OS.processDesc.get(ind).getState().equals("READYS");
-        }
-        if( OS.processDesc.get(ind).equals("READY")){
+            OS.processDesc.get(ind).setState("READY");
+            int prior = OS.processDesc.get(ind).getPriority();
+            OS.kernel.pps.addPps(index, prior);
             planuotojas();
+        } else {
+            OS.processDesc.get(ind).setState("BLOCKED");
         }
+        /*if( OS.processDesc.get(ind).equals("READY")){
+            planuotojas();
+        }*/
     }
     //resursu primityvai
     public void kurtiResursa(boolean pakartotinio, ArrList prienamumo_aprasymas, int adr, String name)

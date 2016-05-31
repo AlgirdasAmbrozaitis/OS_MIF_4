@@ -742,7 +742,7 @@ public class OS {
                     String res = "ISORINE_ATMINTIS";
                     int idr = OS.kernel.findResName(res, resourseDesc);
                     int idp = OS.kernel.getProcDesc().getProcessName();
-                    int index = OS.kernel.findProc(idr, processDesc);
+                    int index = OS.kernel.findProc(idp, processDesc);
                     for(int i = 0; i < OS.processDesc.get(index).getResource().getSize(); i++)
                     {
                         if(OS.processDesc.get(index).getResource().getList().get(i).processId == idr)
@@ -750,6 +750,7 @@ public class OS {
                             blocks.add(OS.processDesc.get(index).getResource().getList().get(i).part_of_resourse);
                         }
                     }
+                    System.out.println("bloku isorineje atmintyje : " + blocks.size());
                     uzduotisIsorinejeAtmintyje.add(new ArrayList<>(blocks));
                     int j = -1;
                     int lastI = 0;
@@ -807,7 +808,7 @@ public class OS {
             }
             case 8:
             {
-                String res = "INPUT_PROGRAM_END";
+                String res = "IVESK_PROGRAMA_END";
                 int id = OS.kernel.findResName(res, resourseDesc);
                 OS.kernel.aktyvuotiR(id, 1, "");
                 OS.rmMemory[2].cell = "9";
@@ -822,7 +823,7 @@ public class OS {
             }
             case 10:
             {
-                String res = "INPUT_PROGRAM_END";
+                String res = "IVESK_PROGRAMA_END";
                 int id = OS.kernel.findResName(res, resourseDesc);
                 OS.kernel.deaktyvuotiR(id);
                 OS.rmMemory[2].cell = "11";
@@ -832,7 +833,7 @@ public class OS {
             {
                 String res = "UZDUOTIS_ISORINEJE_ATMINTYJE";
                 int id = OS.kernel.findResName(res, resourseDesc);
-                OS.kernel.aktyvuotiR(id, 1, "");
+                OS.kernel.aktyvuotiR(id, 1, "Geras");
                 OS.rmMemory[2].cell = "0";
                 break;
             }
@@ -1731,6 +1732,16 @@ public class OS {
         {
             System.out.println("resurso vardas: " + OS.resourseDesc.get(i).getName());
             System.out.println("prieinamu resursu : " + OS.resourseDesc.get(i).getPrieinamu_resursu_sarasas().getSize());
+        }
+        int id = OS.kernel.findResName("OPERATYVIOJI_ATMINTIS", resourseDesc);
+        int index = OS.kernel.findRes(id, resourseDesc);
+        for(int i = 0; i < 14; i ++)
+        {
+            OS.resourseDesc.get(index).getPrieinamu_resursu_sarasas().getList().remove(0);
+        }
+        for (int i = 0; i < OS.resourseDesc.get(index).getPrieinamu_resursu_sarasas().getSize(); i++)
+        {
+            System.out.println("OA: " + OS.resourseDesc.get(index).getPrieinamu_resursu_sarasas().getList().get(i).part_of_resourse);
         }
         OS.kernel.planuotojas();
         OS.plan = false;
