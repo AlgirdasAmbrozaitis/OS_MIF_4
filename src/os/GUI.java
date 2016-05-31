@@ -21,14 +21,15 @@ public class GUI extends javax.swing.JFrame {
     /**
      * Creates new form GUI
      */
+    public boolean machineRunning = true;
+    
     public GUI() {
         initComponents();
         pack();
-        setTitle("Commandor 64");
+        setTitle("MIF_OS_4");
         setVisible(true);
         setResizable(false);
     }
-
     public void initTables(){
         DefaultTableModel plModel = (DefaultTableModel) ProcessList.getModel();
         for( int i = 0; i < OS.processDesc.size();i++){
@@ -46,16 +47,8 @@ public class GUI extends javax.swing.JFrame {
     public void refreshProcessList(){
         try{
             DefaultTableModel plModel = (DefaultTableModel) ProcessList.getModel();
-            for (int i = ProcessList.getRowCount() - 1; i >= 0; i--) {
-                plModel.removeRow(i);
-            }
-//plModel.setRowCount(0);
-            //plModel.getDataVector().removeAllElements();
-            
+            plModel.setRowCount(0);
             for( int i = 0; i < OS.processDesc.size();i++){
-                //plModel.setValueAt(new Object[]{ OS.processDesc.get(i).getName()}, i, 1);
-               // plModel.setValueAt(new Object[]{ OS.processDesc.get(i).getPriority()}, i, 2);
-                //plModel.setValueAt(new Object[]{ OS.processDesc.get(i).getState()}, i, 3);
                 plModel.addRow( new Object[]{ OS.processDesc.get(i).getName(), OS.processDesc.get(i).getPriority(),OS.processDesc.get(i).getState()});
             }
         } catch( ArrayIndexOutOfBoundsException exception ){
@@ -68,7 +61,6 @@ public class GUI extends javax.swing.JFrame {
             DefaultTableModel omMemory = (DefaultTableModel) operatingMemory.getModel();
             omMemory.setRowCount(0);
             for( int i = 0 ; i < OS.RM_MEMORY_SIZE ; i++ ){
-                //omMemory.setValueAt(new Object[]{ OS.rmMemory[i].getCell() }, i, 2);
                 omMemory.addRow( new Object[]{ Integer.toString(i), OS.rmMemory[i].getCell() });
             }
         } catch( ArrayIndexOutOfBoundsException exception ){
@@ -82,19 +74,31 @@ public class GUI extends javax.swing.JFrame {
             extMemory.setRowCount(0);
             for( int i = 0 ; i < OS.EXTERNAL_MEMORY_SIZE ; i++ ){
                 extMemory.addRow( new Object[]{ Integer.toString(i), OS.externalMemory[i].getCell() });
-                //extMemory.setValueAt(new Object[]{ OS.externalMemory[i].getCell() }, i, 2);
             }
         } catch( ArrayIndexOutOfBoundsException exception ){
             out.println("error");
         }
     }
-    
     public void refreshGUI(){
-        refreshExternalMemory();
-        refreshOperatingMemory();
-        refreshProcessList();
+        if(this.machineRunning){
+            refreshExternalMemory();
+            refreshOperatingMemory();
+            refreshProcessList();
+        }
     }
-    
+    public void shutdown(){
+        DefaultTableModel plModel = (DefaultTableModel) ProcessList.getModel();
+        plModel.setRowCount(0);
+        DefaultTableModel omMemory = (DefaultTableModel) operatingMemory.getModel();
+        omMemory.setRowCount(0);
+        DefaultTableModel extMemory = (DefaultTableModel) exMemory.getModel();
+        extMemory.setRowCount(0);
+        jTextArea1.setText(null);
+        jTextArea2.setText(null);
+        jTextArea1.setEditable(false);
+        jTextArea2.setEditable(false);
+        this.machineRunning = false;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -198,7 +202,7 @@ public class GUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
@@ -208,8 +212,8 @@ public class GUI extends javax.swing.JFrame {
                                         .addContainerGap()
                                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(182, 182, 182)
-                                        .addComponent(jLabel5)))
+                                        .addContainerGap()
+                                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(100, 100, 100)
@@ -218,24 +222,28 @@ public class GUI extends javax.swing.JFrame {
                                         .addComponent(jLabel3))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(18, 18, 18)
-                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel4)
-                                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jScrollPane5)
-                                .addGap(18, 18, 18)
-                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(27, 27, 27)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(385, 385, 385)
+                                .addComponent(jLabel4))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(393, 393, 393)
+                                .addComponent(jLabel5)))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(192, 192, 192)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(20, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane5)
+                            .addComponent(jScrollPane4))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -255,27 +263,21 @@ public class GUI extends javax.swing.JFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(6, 6, 6)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)
-                        .addGap(123, 123, 123)))
-                .addGap(18, 18, 18)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton2)
-                        .addGap(168, 168, 168))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton3)
-                        .addContainerGap())))
+                    .addComponent(jButton1)
+                    .addComponent(jButton2)
+                    .addComponent(jButton3))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         //registras AI 0

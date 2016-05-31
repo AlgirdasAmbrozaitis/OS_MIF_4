@@ -39,7 +39,7 @@ public class InputThread extends Thread
                       if(inputText.contains(" ")){
                           String word = inputText.substring(0,inputText.indexOf(' '));
                           System.out.println("___________>>> zodis: " + word);
-                          OS.inputStream.add(word);
+                          OS.inputStream.add(new String(word));
                           inputText = new String(inputText.substring(inputText.indexOf(' ')+1,inputText.length()));
                       } else {
                           OS.inputStream.add(inputText);
@@ -52,6 +52,8 @@ public class InputThread extends Thread
                     System.out.println("inputStream : " + OS.inputStream.get(i));
                 }
                 OS.inputStreamOk = true;
+                //Thread.currentThread().interrupt();
+                return;
             } 
           } );
     }

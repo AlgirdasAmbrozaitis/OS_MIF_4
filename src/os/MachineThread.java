@@ -16,12 +16,16 @@ public class MachineThread extends Thread
 {
     public void run()
     {
+        //boolean kk = false;
         while(!OS.osEnd)
         {
             if(OS.startInput)
             {
+                
+                
                 InputThread inputThread = new InputThread();
                 inputThread.start();
+                
             }
             if(OS.inputStreamOk)
             {

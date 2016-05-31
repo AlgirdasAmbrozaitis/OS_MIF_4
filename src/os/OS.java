@@ -557,7 +557,7 @@ public class OS {
             case 9: 
             {
                 osEnd = true;
-                System.exit(0);
+                gui.shutdown();
                 break;
             }
         }
