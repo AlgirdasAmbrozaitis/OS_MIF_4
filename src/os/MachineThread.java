@@ -28,8 +28,8 @@ public class MachineThread extends Thread
                 OS.kernel.acivateProc(OS.blockedProcessId);
             }
             //zingsnis++;
-            //try
-            //{
+            try
+            {
                 //System.out.println("zingsnis: " + zingsnis);
                 OS.cpu();
                 //rmMemory[0].setState(false);
@@ -48,11 +48,11 @@ public class MachineThread extends Thread
                 {
                     System.out.println("proceso vardas: " + OS.processDesc.get(i).getName() + "proceso busena: " + OS.processDesc.get(i).getState());
                 }*/
-                /*Thread.sleep(1000);
+                Thread.sleep(1000);
             } catch (InterruptedException ex)
             {
                 Logger.getLogger(OS.class.getName()).log(Level.SEVERE, null, ex);
-            }*/
+            }
         }
     }
 }

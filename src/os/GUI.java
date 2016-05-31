@@ -29,11 +29,33 @@ public class GUI extends javax.swing.JFrame {
         setResizable(false);
     }
 
+    public void initTables(){
+        DefaultTableModel plModel = (DefaultTableModel) ProcessList.getModel();
+        for( int i = 0; i < OS.processDesc.size();i++){
+            plModel.addRow( new Object[]{ OS.processDesc.get(i).getName(), OS.processDesc.get(i).getPriority(),OS.processDesc.get(i).getState()});
+        }
+        DefaultTableModel omMemory = (DefaultTableModel) operatingMemory.getModel();
+        for( int i = 0 ; i < OS.RM_MEMORY_SIZE ; i++ ){
+            omMemory.addRow( new Object[]{ Integer.toString(i), OS.rmMemory[i].getCell() });
+        }
+        DefaultTableModel extMemory = (DefaultTableModel) exMemory.getModel();
+        for( int i = 0 ; i < OS.EXTERNAL_MEMORY_SIZE ; i++ ){
+            extMemory.setValueAt(new Object[]{ OS.externalMemory[i].getCell() }, i, 2);
+        }
+    }
     public void refreshProcessList(){
         try{
             DefaultTableModel plModel = (DefaultTableModel) ProcessList.getModel();
-            plModel.setRowCount(0);
+            for (int i = ProcessList.getRowCount() - 1; i >= 0; i--) {
+                plModel.removeRow(i);
+            }
+//plModel.setRowCount(0);
+            //plModel.getDataVector().removeAllElements();
+            
             for( int i = 0; i < OS.processDesc.size();i++){
+                //plModel.setValueAt(new Object[]{ OS.processDesc.get(i).getName()}, i, 1);
+               // plModel.setValueAt(new Object[]{ OS.processDesc.get(i).getPriority()}, i, 2);
+                //plModel.setValueAt(new Object[]{ OS.processDesc.get(i).getState()}, i, 3);
                 plModel.addRow( new Object[]{ OS.processDesc.get(i).getName(), OS.processDesc.get(i).getPriority(),OS.processDesc.get(i).getState()});
             }
         } catch( ArrayIndexOutOfBoundsException exception ){
@@ -42,18 +64,28 @@ public class GUI extends javax.swing.JFrame {
     }
     
     public void refreshOperatingMemory(){
-        DefaultTableModel omMemory = (DefaultTableModel) operatingMemory.getModel();
-        omMemory.setRowCount(0);
-        for( int i = 0 ; i < OS.RM_MEMORY_SIZE ; i++ ){
-            omMemory.addRow( new Object[]{ Integer.toString(i), OS.rmMemory[i].getCell() });
+        try{
+            DefaultTableModel omMemory = (DefaultTableModel) operatingMemory.getModel();
+            omMemory.setRowCount(0);
+            for( int i = 0 ; i < OS.RM_MEMORY_SIZE ; i++ ){
+                //omMemory.setValueAt(new Object[]{ OS.rmMemory[i].getCell() }, i, 2);
+                omMemory.addRow( new Object[]{ Integer.toString(i), OS.rmMemory[i].getCell() });
+            }
+        } catch( ArrayIndexOutOfBoundsException exception ){
+            out.println("error");
         }
     }
     
     public void refreshExternalMemory(){
-        DefaultTableModel extMemory = (DefaultTableModel) exMemory.getModel();
-        extMemory.setRowCount(0);
-        for( int i = 0 ; i < OS.EXTERNAL_MEMORY_SIZE ; i++ ){
-            extMemory.addRow( new Object[]{ Integer.toString(i), OS.externalMemory[i].getCell() });
+        try{
+            DefaultTableModel extMemory = (DefaultTableModel) exMemory.getModel();
+            extMemory.setRowCount(0);
+            for( int i = 0 ; i < OS.EXTERNAL_MEMORY_SIZE ; i++ ){
+                extMemory.addRow( new Object[]{ Integer.toString(i), OS.externalMemory[i].getCell() });
+                //extMemory.setValueAt(new Object[]{ OS.externalMemory[i].getCell() }, i, 2);
+            }
+        } catch( ArrayIndexOutOfBoundsException exception ){
+            out.println("error");
         }
     }
     
@@ -249,14 +281,14 @@ public class GUI extends javax.swing.JFrame {
         //registras AI 0
         jButton1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                OS.realMachine.setRegisterAI(0);
+                OS.realMachine.setRegisterAI(1);
             }
         }
     );
     // AI = 1
     jButton2.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-            OS.realMachine.setRegisterAI(1);
+            OS.realMachine.setRegisterAI(2);
         }
     }
     );

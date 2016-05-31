@@ -737,7 +737,7 @@ public class RealMachine {
     
     @Override
     public String toString() {
-        return "RealMachine{" + "registerR=" + registerR + ", registerPTR=" + registerPTR + ", registerIC=" + registerIC + ", registerSP=" + registerSP + ", registerINT=" + registerINT + ", registerCT=" + registerCT + ", registerPI=" + registerPI + ", registerSI=" + registerSI + ", registerTI=" + registerTI + ", SB=" + SB + ", DB=" + DB + ", ST=" + ST + ", DT=" + DT + ", SZ=" + SZ + ", registerC=" + registerC + ", registerMOD=" + registerMOD + '}';
+        return "RealMachine{" + "registerR=" + registerR + ", registerPTR=" + registerPTR + ", registerIC=" + registerIC + ", registerSP=" + registerSP + ", registerINT=" + registerINT + ", registerCT=" + registerCT + ", registerAI="+registerAI + "registerPI=" + registerPI + ", registerSI=" + registerSI + ", registerTI=" + registerTI + ", SB=" + SB + ", DB=" + DB + ", ST=" + ST + ", DT=" + DT + ", SZ=" + SZ + ", registerC=" + registerC + ", registerMOD=" + registerMOD + '}';
     }
     
     //virtual machine commands

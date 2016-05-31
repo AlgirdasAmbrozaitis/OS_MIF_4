@@ -228,7 +228,7 @@
         <Property name="text" type="java.lang.String" value="&#x12e;ra&#x161;yti program&#x105;"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="//registras AI 0&#xa;jButton1.addActionListener(new ActionListener() { &#xa;            public void actionPerformed(ActionEvent e) { &#xa;                OS.realMachine.setRegisterAI(0);&#xa;            }      &#xa;            } &#xa;                        );"/>
+        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="//registras AI 0&#xa;jButton1.addActionListener(new ActionListener() { &#xa;            public void actionPerformed(ActionEvent e) { &#xa;                OS.realMachine.setRegisterAI(1);&#xa;            }      &#xa;            } &#xa;                        );"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="jButton2">
@@ -236,7 +236,7 @@
         <Property name="text" type="java.lang.String" value="I&#x161;jungti sistem&#x105;"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="// AI = 1&#xa;jButton2.addActionListener(new ActionListener() { &#xa;            public void actionPerformed(ActionEvent e) { &#xa;                OS.realMachine.setRegisterAI(1);&#xa;            }      &#xa;            } &#xa;                        );"/>
+        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="// AI = 1&#xa;jButton2.addActionListener(new ActionListener() { &#xa;            public void actionPerformed(ActionEvent e) { &#xa;                OS.realMachine.setRegisterAI(2);&#xa;            }      &#xa;            } &#xa;                        );"/>
       </AuxValues>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane4">

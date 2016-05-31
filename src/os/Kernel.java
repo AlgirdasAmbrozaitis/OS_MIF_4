@@ -60,14 +60,14 @@ public class Kernel
             OS.realMachine.setRegisterTI(50);
             OS.kernel.planuotojas();
         }
-        if(OS.realMachine.getRegisterAI() == 0)
+        if(OS.realMachine.getRegisterAI() == 1)
         {
             int res = OS.kernel.findResName("PRANESIMAS_VARTOTOJUI", OS.resourseDesc);
             OS.kernel.aktyvuotiR(res, 1, "IVESK_PROGRAMA");
 //programos ivedimas
             OS.realMachine.setRegisterAI(0);
         }
-        if(OS.realMachine.getRegisterAI() == 1)
+        if(OS.realMachine.getRegisterAI() == 2)
         {
             int res = OS.kernel.findResName("PRANESIMAS_VARTOTOJUI", OS.resourseDesc);
             OS.kernel.aktyvuotiR(res, 1, "DARBO_PABAIGA");

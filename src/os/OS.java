@@ -278,6 +278,7 @@ public class OS {
     {
         if (realMachine.getRegisterSI() != 0 || 
             realMachine.getRegisterPI() != 0 ||
+            realMachine.getRegisterAI() != 0 ||
             realMachine.getRegisterTI() == 0)
         {
             opperateInterupts();
@@ -285,28 +286,7 @@ public class OS {
     }
     public static void opperateInterupts()
     {
-        
-        //OSgui.refreshRegisterFields();
-        /*try {
-            Thread.sleep(2000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(OS.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
-        if (realMachine.getRegisterSI() != 0)
-        {
-            //OSgui.output("SI was: " + String.valueOf(realMachine.getRegisterSI()) + " ");
-            realMachine.setRegisterSI(0);
-            
-        }
-        else if (realMachine.getRegisterPI() != 0)
-        {
-            //OSgui.output("PI was: " + String.valueOf(realMachine.getRegisterPI()) + " ");
-            realMachine.setRegisterPI(0);
-        }else if (realMachine.getRegisterTI() == 0)
-        {
-            //OSgui.output("TI was: " + String.valueOf(realMachine.getRegisterTI()) + " ");
-            realMachine.setRegisterTI(10);
-        }
+        OS.kernel.pertraukimuApdorotojas();
     }
     public static void cpu()
     {
@@ -1745,6 +1725,20 @@ public class OS {
         }
         OS.kernel.planuotojas();
         OS.plan = false;
+        MachineThread machineThread = new MachineThread();
+        machineThread.start();
+        while(!osEnd)
+        {
+            while(outputStreamInUse);
+                if(!outputStream.isEmpty()){
+                    for( String output : outputStream ){
+                        OS.gui.getOutputArea().append(output);
+                    }
+                    outputStream = new ArrayList<>();
+            }
+            OS.gui.refreshGUI();
+            
+        }
         //OS.realMachine.setRegisterIC(0);
         /*for(int i = 0; i < 40; i++)
         {
@@ -1760,7 +1754,7 @@ public class OS {
             
             rmMemory[0].setState(false);
         }*/
-        int zingsnis = -1;
+        //int zingsnis = -1;
         /*InputThread inputThread = new InputThread();
         inputThread.start();
         
@@ -1775,7 +1769,7 @@ public class OS {
         for(int i = 0; i<input.size(); i++)
         {
             System.out.println("atrodo : " + input.get(i));
-        }*/
+        }
         startInput = true;
         while(true)
         {
@@ -1823,7 +1817,7 @@ public class OS {
             {
                 Logger.getLogger(OS.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
+        }*/
         
     }
     
