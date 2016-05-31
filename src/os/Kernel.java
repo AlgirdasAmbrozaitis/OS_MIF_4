@@ -60,9 +60,63 @@ public class Kernel
             OS.realMachine.setRegisterTI(50);
             OS.kernel.planuotojas();
         }
-        OS.realMachine.setRegisterSI(0);
-        OS.realMachine.setRegisterAI(0);
-        OS.realMachine.setRegisterPI(0);
+        if(OS.realMachine.getRegisterAI() == 0)
+        {
+            int res = OS.kernel.findResName("PRANESIMAS_VARTOTOJUI", OS.resourseDesc);
+            OS.kernel.aktyvuotiR(res, 1, "IVESK_PROGRAMA");
+//programos ivedimas
+            OS.realMachine.setRegisterAI(0);
+        }
+        if(OS.realMachine.getRegisterAI() == 1)
+        {
+            int res = OS.kernel.findResName("PRANESIMAS_VARTOTOJUI", OS.resourseDesc);
+            OS.kernel.aktyvuotiR(res, 1, "DARBO_PABAIGA");
+//OS darbo pabaiga
+            OS.realMachine.setRegisterAI(0);
+        }
+        int id = OS.kernel.getProcDesc().getProcessName();
+        index = OS.kernel.findProc(id, OS.processDesc);
+        String name = OS.processDesc.get(index).getName();
+        if(name.equals("VIRTUAL_MACHINE"))
+        {
+            int govervId = OS.processDesc.get(index).getFather_processor();
+            OS.interruptedGovernor = govervId;
+            //int governIndex = OS.kernel.findProc(govervId, OS.processDesc);
+            OS.kernel.stopProc(id);
+            if(OS.realMachine.getRegisterSI() == 4)
+            {
+               int res = OS.kernel.findResName("VM_INTERRUPTED", OS.resourseDesc);
+               OS.kernel.aktyvuotiR(res, 1, "BAIGIAMAS_DARBAS");
+                
+               //OS.rmMemory[1].cell = "4";
+               
+               //Virtualios daro pabaiga
+               OS.realMachine.setRegisterSI(0);
+            }
+            if(OS.realMachine.getRegisterSI() == 3)
+            {
+               //atmintiesPrasymas
+               int res = OS.kernel.findResName("VM_INTERRUPTED", OS.resourseDesc);
+               OS.kernel.aktyvuotiR(res, 1, "PAPILDOMA_ATMINTIS");
+               OS.realMachine.setRegisterSI(0);
+            }
+            if(OS.realMachine.getRegisterSI() == 2)
+            {
+               int res = OS.kernel.findResName("VM_INTERRUPTED", OS.resourseDesc);
+               OS.kernel.aktyvuotiR(res, 1, "ISVEDIMAS");
+                //isvedimo prasymas
+               OS.realMachine.setRegisterSI(0);
+            }
+            if(OS.realMachine.getRegisterSI() == 1)
+            {
+                int res = OS.kernel.findResName("VM_INTERRUPTED", OS.resourseDesc);
+                OS.kernel.aktyvuotiR(res, 1, "IVEDIMAS");
+                //ivedimo prasymas
+                OS.realMachine.setRegisterSI(0);
+            }
+            OS.realMachine.setRegisterSI(0);
+            OS.realMachine.setRegisterPI(0);
+        }
         /*index = OS.kernel.findProc(OS.kernel.procDesc.getProcessName(), OS.processDesc);
         if(!OS.processDesc.get(index).getName().equals("INTERFACE"))
         {
@@ -81,8 +135,27 @@ public class Kernel
        
         this.aptarnautuProcesuSkaicius = 0;
         this.aptarnautiProcesai = new ArrayList<>();
-       
         int index = OS.kernel.findRes(r, OS.resourseDesc);
+        if(OS.resourseDesc.get(index).getName().equals("VM_INTERRUPTED"))
+        {
+            if(OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().getList().size() > 0)
+            {
+                if( OS.resourseDesc.get(index).getPrieinamu_resursu_sarasas().getList().size() > 0)
+                {
+                    int proc_index = OS.kernel.findProc(OS.interruptedGovernor, OS.processDesc);
+                    ArrList old = OS.processDesc.get(proc_index).getResource();
+                    int resource = OS.resourseDesc.get(index).getPrieinamu_resursu_sarasas().getList().get(0).part_of_resourse;
+                    old.addR(r,resource);
+                    OS.resourseDesc.get(index).getPrieinamu_resursu_sarasas().remove(0);
+                    OS.processDesc.get(proc_index).setResource(old);
+                    this.aptarnautiProcesai.add(proc_index);
+                    this.aptarnautuProcesuSkaicius++;
+                }
+            }
+        }else
+        {
+       
+        
         System.out.println("resurso vardas: " + OS.resourseDesc.get(index).getName());
         System.out.println("laukianciu procesu: " + OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().getList().size());
         System.out.println("prieinamu resursu: " + OS.resourseDesc.get(index).getPrieinamu_resursu_sarasas().getSize());
@@ -121,6 +194,7 @@ public class Kernel
             }
         }
         System.out.println("UPDATE laukianciu procesu: " + OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().getList().size());
+        }
     }
     
     public void createProcess( ArrList memory, ArrList resourse, int priority, CPU cpu, String name){
@@ -218,7 +292,7 @@ public class Kernel
         }
     }
     
-    public void activateProc( int index ){
+    public void acivateProc( int index ){
         int ind = OS.kernel.findProc(index, OS.processDesc);
         if( OS.processDesc.get(ind).getState().equals("READYS")){
             OS.processDesc.get(ind).setState("READYS");

@@ -32,7 +32,12 @@ public class OS {
      * @param args the command line arguments
      */  
     
-    public static int governotId;
+    public static boolean osEnd = false;
+    
+    public static int interruptedGovernor;
+    
+    public static int governorPtr;
+    public static int governorId;
     
     public static int governorIc = 10;
     public static int vmIc = 20;
@@ -558,6 +563,7 @@ public class OS {
             }
             case 9: 
             {
+                osEnd = true;
                 System.exit(0);
                 break;
             }
@@ -674,7 +680,7 @@ public class OS {
             case 12:
             {
                 int id = OS.kernel.findProcName("INPUT_PROGRAM", processDesc);
-                OS.kernel.activateProc(id);
+                OS.kernel.acivateProc(id);
                 OS.rmMemory[1].cell = "0";
                 break;
             }
@@ -1182,8 +1188,8 @@ public class OS {
                 ArrList resource = new ArrList();
                 resource = OS.processDesc.get(index).getResource();
                 CPU cpu = new CPU(false, 0, ic);
-                int priority = 2;
-                OS.kernel.createProcess(memory, resource, priority, cpu, "INPUT_PROGRAM");
+                int priority = 3;
+                OS.kernel.createProcess(memory, resource, priority, cpu, "JOB_GOVERNOR");
                 //OS.processDesc.get(index).setResource(new ArrList());
                 rmMemory[ic].cell = "0";
                 //rmMemory[0].cell = "2";
@@ -1221,7 +1227,7 @@ public class OS {
             {
                 //aktyvuoti JOB GOVERNOR
                 //int index = OS.kernel.findProc(governotId, processDesc);
-                OS.kernel.activateProc(governotId);
+                OS.kernel.acivateProc(governorId);
                 break;
             }
         }
@@ -1250,6 +1256,12 @@ public class OS {
             case 2:
             {
                 //XCHNG
+                for(int i = 0; i < loaderOpreatingBlocks.get(0).size(); i++)
+                {
+                    rmMemory[vmIc + i].setCell(String.valueOf(loaderOpreatingBlocks.get(0).get(i)));
+                }
+                int ptr = 9*100+vmIc;
+                governorPtr = ptr;
                 for(int i = 0; i  < loaderExternalBlocks.get(0).size(); i++)
                 {
                     int externalBlock = loaderExternalBlocks.get(0).get(i);
@@ -1374,7 +1386,7 @@ public class OS {
             case 4:
             {
                 int id = OS.kernel.findProcName("LOADER", processDesc);
-                OS.kernel.activateProc(id);
+                OS.kernel.acivateProc(id);
                 OS.rmMemory[ic].cell = "5";
                 break;
             }
@@ -1494,14 +1506,14 @@ public class OS {
             case 17:
             {
                 int id = OS.kernel.findProcName("INPUT_PROGRAM", processDesc);
-                OS.kernel.activateProc(id);
+                OS.kernel.acivateProc(id);
                 OS.rmMemory[ic].cell = "18";
                 break;
             }
             case 18:
             {
                 int id = OS.kernel.findProcName("VIRTUAL_MACHINE", processDesc);
-                OS.kernel.activateProc(id);
+                OS.kernel.acivateProc(id);
                 OS.rmMemory[ic].cell = "10";
                 break;
             }
@@ -1548,14 +1560,14 @@ public class OS {
             case 24:
             {
                 int id = OS.kernel.findProcName("OUTPUT_DATA", processDesc);
-                OS.kernel.activateProc(id);
+                OS.kernel.acivateProc(id);
                 OS.rmMemory[ic].cell = "25";
                 break;
             }
             case 25:
             {
                 int id = OS.kernel.findProcName("VIRTUAL_MACHINE", processDesc);
-                OS.kernel.activateProc(id);
+                OS.kernel.acivateProc(id);
                 OS.rmMemory[ic].cell = "10";
                 break;
             }
@@ -1593,14 +1605,14 @@ public class OS {
             case 30:
             {
                 int id = OS.kernel.findProcName("ADDITIONAL_MEMORY", processDesc);
-                OS.kernel.activateProc(id);
+                OS.kernel.acivateProc(id);
                 OS.rmMemory[ic].cell = "31";
                 break;
             }
             case 31:
             {
                 int id = OS.kernel.findProcName("VIRTUAL_MACHINE", processDesc);
-                OS.kernel.activateProc(id);
+                OS.kernel.acivateProc(id);
                 OS.rmMemory[ic].cell = "11";
                 break;
             }
@@ -1654,7 +1666,7 @@ public class OS {
             case 38:
             {
                 int id = OS.kernel.findProcName("OUTPUT_TO_USER", processDesc);
-                OS.kernel.activateProc(id);
+                OS.kernel.acivateProc(id);
                 OS.rmMemory[ic].cell = "10";
                 break;
             }
@@ -1701,7 +1713,7 @@ public class OS {
             case 44:
             {
                 int id = OS.kernel.findProcName("OUTPUT_TO_USER", processDesc);
-                OS.kernel.activateProc(id);
+                OS.kernel.acivateProc(id);
                 OS.rmMemory[ic].cell = "45";
                 break;
             }
@@ -1781,7 +1793,7 @@ public class OS {
             }
             if(inputStreamOk)
             {
-                OS.kernel.activateProc(blockedProcessId);
+                OS.kernel.acivateProc(blockedProcessId);
             }
             zingsnis++;
             try
