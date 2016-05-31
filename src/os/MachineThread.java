@@ -49,7 +49,7 @@ public class MachineThread extends Thread
                 {
                     System.out.println("proceso vardas: " + OS.processDesc.get(i).getName() + "proceso busena: " + OS.processDesc.get(i).getState());
                 }*/
-                Thread.sleep(1000);
+                Thread.sleep(200);
             } catch (InterruptedException ex)
             {
                 Logger.getLogger(OS.class.getName()).log(Level.SEVERE, null, ex);

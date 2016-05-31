@@ -193,13 +193,18 @@ public class Kernel
                     //System.out.println("pirmas laukiantis procesas: " + OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().get(proc_index).processId);
                     OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().remove(proc_index);
                 } else {
+                    System.out.println("prasoma atminties: " + OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().getList().get(i).part_of_resourse);
                     for( int j = 0; j<OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().getList().get(i).part_of_resourse; j++){
+                        System.out.println(" senas oa dydis " + OS.processDesc.get(proc_index).getOperating_memory().getSize());
                         ArrList old = OS.processDesc.get(proc_index).getOperating_memory();
+                        
                         int resource = OS.resourseDesc.get(index).getPrieinamu_resursu_sarasas().getList().get(0).part_of_resourse;
+                        System.out.println("daejau");
                         old.addOa(r,resource);
+                        System.out.println(" naujas oa dydis " + old.getSize());
                         OS.resourseDesc.get(index).getPrieinamu_resursu_sarasas().getList().remove(0);
                         OS.processDesc.get(proc_index).setOperating_memory(old);
-                        OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().remove(proc_index);
+                        //OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().remove(proc_index);
                     }
                     OS.resourseDesc.get(index).getLaukianciu_procesu_sarasas().remove(proc_index);
                 }
@@ -477,7 +482,7 @@ public class Kernel
                 }
             }
         }
-        planuotojas();
+        //planuotojas();
         
         
         

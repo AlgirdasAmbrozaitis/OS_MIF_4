@@ -232,6 +232,14 @@ public class OS {
                         loader(Integer.valueOf(line));
                         break;
                     }
+                    case "JOB_GOVERNOR":
+                    {
+                        //int id = OS.kernel.getProcDesc().getProcessName();
+                        //int index = OS.kernel.findProc(id, processDesc);
+                        int ic = OS.realMachine.getRegisterIC();
+                        jobGovernor(Integer.valueOf(line), ic);
+                        break;
+                    }
                     case "SYSTEM_IDLE":
                     {
                         idle(Integer.valueOf(line));
@@ -747,6 +755,7 @@ public class OS {
                     {
                         if(OS.processDesc.get(index).getResource().getList().get(i).processId == idr)
                         {
+                            System.out.println("Duoti blokai: " + OS.processDesc.get(index).getResource().getList().get(i).part_of_resourse);
                             blocks.add(OS.processDesc.get(index).getResource().getList().get(i).part_of_resourse);
                         }
                     }
@@ -754,16 +763,28 @@ public class OS {
                     uzduotisIsorinejeAtmintyje.add(new ArrayList<>(blocks));
                     int j = -1;
                     int lastI = 0;
-                    for(int i = 0; i < inputStream.size(); i++)
+                    ArrayList<String> fromInputStream = new ArrayList<>();
+                    int blocknr = 0;
+                    for(int i = 0; i < inputStream.size(); i++ )
+                    {
+                        if(i % 10 == 0)
+                        {
+                            blocknr = blocks.get(0);
+                            blocks.remove(0);
+                        }
+                        OS.externalMemory[(blocknr * 10) + (i % 10)].setCell(inputStream.get(i));
+                    }
+                    
+                    /*for(int i = 0; i < inputStream.size(); i++)
                     {
                         if(i%10 == 0)
                         {
                             j++;
                         }
-                        externalMemory[blocks.get(j) + i].cell = inputStream.get(i);
-                        lastI = i ;
+                        externalMemory[blocks.get(j) *10 + i].cell = inputStream.get(i);
+                        //lastI = i ;
                         
-                    }
+                    }*/
                     OS.rmMemory[2].cell = "5";
                     inputStarted = false;
                     inputStreamOk = false;
@@ -1176,7 +1197,18 @@ public class OS {
                 }
                 ArrList memory = new ArrList();
                 ArrList resource = new ArrList();
-                resource = OS.processDesc.get(index).getResource();
+                
+                int resId = OS.kernel.findResName("ISORINE_ATMINTIS", resourseDesc);
+                for(int i = 0; i < OS.uzduotisIsorinejeAtmintyje.get(0).size(); i++)
+                {
+                    System.out.println("os.OS.mainProc()" + OS.uzduotisIsorinejeAtmintyje.get(0).get(i));
+                    resource.addR(id, OS.uzduotisIsorinejeAtmintyje.get(0).get(i), "");
+                }
+                OS.uzduotisIsorinejeAtmintyje.remove(0);
+                //resource = OS.uzduotisIsorinejeAtmintyje.get(0);
+                //resource.myCopy(OS.processDesc.get(index).getResource().getList());
+                
+                System.out.println("resursai kurie turetu buti proskirti!!!! : " + resource.getSize() );
                 CPU cpu = new CPU(false, 0, ic);
                 int priority = 3;
                 OS.kernel.createProcess(memory, resource, priority, cpu, "JOB_GOVERNOR");
@@ -1252,14 +1284,16 @@ public class OS {
                 }
                 int ptr = 9*100+vmIc;
                 governorPtr = ptr;
+                System.out.println("isorines atminties: " + loaderExternalBlocks.get(0).size());
+                System.out.println("operatyvios atminties: " + loaderOpreatingBlocks.get(0).size());
                 for(int i = 0; i  < loaderExternalBlocks.get(0).size(); i++)
                 {
                     int externalBlock = loaderExternalBlocks.get(0).get(i);
                     int operatingBlock = loaderOpreatingBlocks.get(0).get(i);
                     for(int j = 0; j < 10; j++)
                     {
-                        rmMemory[operatingBlock + i].setCell(externalMemory[externalBlock + i].cell);
-                        externalMemory[externalBlock + i].freeCell();
+                        rmMemory[operatingBlock *10 + j].setCell(externalMemory[externalBlock *10 + j].cell);
+                        externalMemory[externalBlock *10 + j].freeCell();
                     }
                 }
                 loaderExternalBlocks.remove(0);
@@ -1334,29 +1368,42 @@ public class OS {
         switch(line){
             case 0:
             {
+                int procId = OS.kernel.getProcDesc().getProcessName();
+                int index = OS.kernel.findProc(procId, processDesc);
+                
+                
+                //opMemory.clear();
+                
                 String res = "OPERATYVIOJI_ATMINTIS";
                 int id = OS.kernel.findResName(res, resourseDesc);
                 OS.kernel.prasytiResurso(id, 10);
                 OS.rmMemory[ic].cell = "1";
-                ArrayList<Integer> opMemory = new ArrayList();
-                for( int i = 0 ; i < OS.processDesc.get(id).getOperating_memory().getSize(); i++ ){
-                    opMemory.add(OS.processDesc.get(id).getOperating_memory().getList().get(i).part_of_resourse);
-                }
-                loaderOpreatingBlocks.add(new ArrayList(opMemory));
-                opMemory.clear();
                 break;
             }
             case 1:
             {
+                int procId = OS.kernel.getProcDesc().getProcessName();
+                System.out.println("proceso id = " + procId);
+                int index = OS.kernel.findProc(procId, processDesc);
+                System.out.println("proceso indeksas = " + index);
+                
+                ArrayList<Integer> opMemory = new ArrayList();
+                for( int i = 0 ; i < OS.processDesc.get(index).getOperating_memory().getSize(); i++ ){
+                    opMemory.add(OS.processDesc.get(index).getOperating_memory().getList().get(i).part_of_resourse);
+                }
+                loaderOpreatingBlocks.add(new ArrayList(opMemory));
+                
+                //OS.rmMemory[ic].cell = "2";
+                ArrayList<Integer> exMemory = new ArrayList();
+                System.out.println("turimu resursu dydis : " + OS.processDesc.get(index).getName());
+                for( int i = 0 ; i < OS.processDesc.get(index).getResource().getSize(); i++ ){
+                    exMemory.add(OS.processDesc.get(index).getResource().getList().get(i).part_of_resourse);
+                }
+                loaderExternalBlocks.add(new ArrayList(exMemory));
+                //exMemory.clear();
                 int id = OS.kernel.findResName("PAKROVIMO_PAKETAS", resourseDesc);
                 OS.kernel.aktyvuotiR(id, 1, "");
                 OS.rmMemory[ic].cell = "2";
-                ArrayList<Integer> exMemory = new ArrayList();
-                for( int i = 0 ; i < OS.processDesc.get(id).getResource().getSize(); i++ ){
-                    exMemory.add(OS.processDesc.get(id).getResource().getList().get(i).part_of_resourse);
-                }
-                loaderExternalBlocks.add(new ArrayList(exMemory));
-                exMemory.clear();
                 break;
             }
             case 2:
@@ -1757,7 +1804,7 @@ public class OS {
                     outputStream = new ArrayList<>();
             }
             try {    
-                Thread.sleep(1000);
+                Thread.sleep(200);
             } catch (InterruptedException ex) {
                 Logger.getLogger(OS.class.getName()).log(Level.SEVERE, null, ex);
             }
